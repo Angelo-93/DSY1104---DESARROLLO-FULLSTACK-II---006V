@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto — INFORCORE</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="contenedor site-header__barra">
+      <a href="index.html" class="marca">
+        <span class="marca__nucleo" aria-hidden="true"></span>
+        INFORCORE
+      </a>
+      <nav class="nav-principal" aria-label="Navegación principal">
+        <a href="index.html">Home</a>
+        <a href="productos.html">Productos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contacto.html" aria-current="page">Contacto</a>
+      </nav>
+      <div class="header-acciones">
+        <span class="header-acciones__cuenta">
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Registrarse</a>
+        </span>
+        <button type="button" class="carrito-boton" id="botonCarrito" aria-label="Ver carrito de compras">
+          Carrito
+          <span class="carrito-contador" id="contadorCarrito">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="seccion">
+      <div class="contenedor">
+        <nav class="migas" aria-label="Ruta de navegación">
+          <a href="index.html">Home</a> / Contacto
+        </nav>
+
+        <h1>Contacto</h1>
+        <p>¿Tienes dudas sobre algún producto o cotización? Escríbenos y te respondemos a la brevedad.</p>
+
+        <form class="formulario" id="formContacto" novalidate>
+          <div class="campo">
+            <label for="campoNombreContacto">Nombre completo</label>
+            <input type="text" id="campoNombreContacto" name="nombre" maxlength="100">
+            <span class="campo-error" id="errorNombreContacto"></span>
+          </div>
+
+          <div class="campo">
+            <label for="campoCorreoContacto">Correo electrónico (opcional)</label>
+            <input type="email" id="campoCorreoContacto" name="correo" maxlength="100" placeholder="tucorreo@duoc.cl">
+            <span class="campo-error" id="errorCorreoContacto"></span>
+          </div>
+
+          <div class="campo">
+            <label for="campoComentario">Mensaje</label>
+            <textarea id="campoComentario" name="comentario" rows="5" maxlength="500"></textarea>
+            <span class="campo-ayuda">Máximo 500 caracteres.</span>
+            <span class="campo-error" id="errorComentario"></span>
+          </div>
+
+          <button type="submit" class="boton boton--primario boton--bloque">Enviar mensaje</button>
+          <p class="mensaje-confirmacion" id="mensajeContacto" role="status"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="contenedor site-footer__contenido">
+      <div class="site-footer__marca">
+        <div class="marca">
+          <span class="marca__nucleo" aria-hidden="true"></span>
+          INFORCORE
+        </div>
+        <p>Av. Holanda 099, Of. 1101, Providencia, Santiago.</p>
+      </div>
+      <div>
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:ventas@inforcore.cl">ventas@inforcore.cl</a></li>
+          <li>Providencia, Santiago</li>
+        </ul>
+      </div>
+    </div>
+    <div class="site-footer__legal">
+      © 2026 INFORCORE. Proyecto académico DSY1104 Desarrollo Fullstack II.
+    </div>
+  </footer>
+
+  <div class="modal-carrito" id="modalCarrito" aria-hidden="true">
+    <div class="modal-carrito__contenido" role="dialog" aria-modal="true" aria-labelledby="carritoTitulo">
+      <div class="modal-carrito__header">
+        <h2 id="carritoTitulo">Tu carrito</h2>
+        <button type="button" id="carritoCerrar" class="modal-carrito__cerrar" aria-label="Cerrar carrito">×</button>
+      </div>
+      <div class="modal-carrito__cuerpo" id="carritoCuerpo"></div>
+      <div class="modal-carrito__footer">
+        <div class="flex-entre">
+          <span>Total</span>
+          <span id="carritoTotal" class="modal-carrito__total">$0</span>
+        </div>
+        <button type="button" class="boton boton--primario boton--bloque" id="carritoFinalizar">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data/productos.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/validaciones.js"></script>
+  <script src="js/contacto.js"></script>
+  <script src="js/carrito.js"></script>
+</body>
+</html>
