@@ -510,7 +510,108 @@ textarea:focus-visible {
   color: #a9c3d8;
 }
 
-/* ---------- 11. Responsivo ---------- */
+/* ---------- 11. Filtros de catálogo y ficha de producto ---------- */
+.filtros-productos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--espacio-sm);
+  margin-bottom: var(--espacio-md);
+}
+
+.filtros-productos select,
+.filtros-productos input[type="search"] {
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: 0.55rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+.filtros-productos input[type="search"] {
+  flex: 1;
+  min-width: 200px;
+}
+
+.contador-resultados {
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+}
+
+.migas {
+  font-size: 0.85rem;
+  color: var(--color-texto-secundario);
+  margin-bottom: var(--espacio-md);
+}
+
+.migas a {
+  color: var(--color-texto-secundario);
+}
+
+.producto-detalle {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-lg);
+  align-items: start;
+}
+
+.producto-detalle__categoria {
+  color: var(--color-primario);
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-transform: none;
+}
+
+.producto-detalle__precio {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--color-primario-oscuro);
+  margin: var(--espacio-xs) 0 var(--espacio-sm);
+}
+
+.cantidad-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: var(--espacio-sm);
+}
+
+.cantidad-selector button {
+  width: 2.1rem;
+  height: 2.1rem;
+  border: 1px solid var(--color-borde);
+  background: var(--color-fondo);
+  border-radius: var(--radio-borde);
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.cantidad-selector button:hover {
+  border-color: var(--color-primario);
+}
+
+.cantidad-selector input {
+  width: 3.2rem;
+  text-align: center;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: 0.45rem;
+  font-size: 0.95rem;
+}
+
+.mensaje-confirmacion {
+  font-size: 0.85rem;
+  color: var(--color-exito);
+  min-height: 1.2em;
+}
+
+.relacionados {
+  margin-top: var(--espacio-xl);
+}
+
+/* ---------- 12. Responsivo ---------- */
 @media (max-width: 860px) {
   .hero__contenido {
     grid-template-columns: 1fr;
@@ -521,6 +622,10 @@ textarea:focus-visible {
   }
 
   .fila-doble {
+    grid-template-columns: 1fr;
+  }
+
+  .producto-detalle {
     grid-template-columns: 1fr;
   }
 }

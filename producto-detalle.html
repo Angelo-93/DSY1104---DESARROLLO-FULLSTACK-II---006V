@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de producto — INFORCORE</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="contenedor site-header__barra">
+      <a href="index.html" class="marca">
+        <span class="marca__nucleo" aria-hidden="true"></span>
+        INFORCORE
+      </a>
+
+      <nav class="nav-principal" aria-label="Navegación principal">
+        <a href="index.html">Home</a>
+        <a href="productos.html" aria-current="page">Productos</a>
+        <a href="nosotros.html">Nosotros</a>
+        <a href="blogs.html">Blogs</a>
+        <a href="contacto.html">Contacto</a>
+      </nav>
+
+      <div class="header-acciones">
+        <span class="header-acciones__cuenta">
+          <a href="login.html">Iniciar sesión</a>
+          <a href="registro.html">Registrarse</a>
+        </span>
+
+        <button type="button" class="carrito-boton" id="botonCarrito" aria-label="Ver carrito de compras">
+          Carrito
+          <span class="carrito-contador" id="contadorCarrito">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="seccion">
+      <div class="contenedor" id="contenedorDetalle">
+
+        <nav class="migas" aria-label="Ruta de navegación">
+          <a href="index.html">Home</a> /
+          <a href="productos.html">Productos</a> /
+          <span id="migaNombreProducto">Producto</span>
+        </nav>
+
+        <div class="producto-detalle">
+          <div id="detalleImagen" class="placeholder-imagen" aria-hidden="true">
+            <span>Categoría</span>
+          </div>
+
+          <div>
+            <p class="producto-detalle__categoria" id="detalleCategoria"></p>
+            <h1 id="detalleNombre"></h1>
+            <p class="producto-card__specs" id="detalleSpecs"></p>
+            <p id="detalleDescripcion"></p>
+
+            <p class="producto-detalle__precio" id="detallePrecio"></p>
+            <div id="detalleBadgeStock"></div>
+
+            <div class="cantidad-selector">
+              <button type="button" id="btnMenos" aria-label="Disminuir cantidad">−</button>
+              <input type="number" id="inputCantidad" value="1" min="1" aria-label="Cantidad">
+              <button type="button" id="btnMas" aria-label="Aumentar cantidad">+</button>
+            </div>
+
+            <button type="button" class="boton boton--primario" id="btnAgregarDetalle">
+              Añadir al carrito
+            </button>
+
+            <p class="mensaje-confirmacion" id="mensajeConfirmacion" role="status"></p>
+          </div>
+        </div>
+
+        <section class="relacionados" aria-labelledby="tituloRelacionados">
+          <h2 id="tituloRelacionados">Productos relacionados</h2>
+          <div id="grillaRelacionados" class="grid-auto"></div>
+        </section>
+
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="contenedor site-footer__contenido">
+      <div class="site-footer__marca">
+        <div class="marca">
+          <span class="marca__nucleo" aria-hidden="true"></span>
+          INFORCORE
+        </div>
+        <p>Av. Holanda 099, Of. 1101, Providencia, Santiago.</p>
+      </div>
+
+      <div>
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="productos.html">Productos</a></li>
+          <li><a href="nosotros.html">Nosotros</a></li>
+          <li><a href="blogs.html">Blogs</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:ventas@inforcore.cl">ventas@inforcore.cl</a></li>
+          <li>Providencia, Santiago</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="site-footer__legal">
+      © 2026 INFORCORE. Proyecto académico DSY1104 Desarrollo Fullstack II.
+    </div>
+  </footer>
+
+  <script src="js/data/productos.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/producto-detalle.js"></script>
+</body>
+</html>
