@@ -7,40 +7,32 @@
 
 /* ---------- 1. Variables (paleta e identidad) ---------- */
 :root {
-  /* Color principal: azul corporativo profundo */
   --color-primario: #0b3d63;
   --color-primario-oscuro: #082a45;
   --color-primario-claro: #14568c;
 
-  /* Superficies neutras */
   --color-fondo: #ffffff;
   --color-superficie: #f4f6f8;
   --color-borde: #dde3e8;
 
-  /* Texto */
   --color-texto: #1c2b36;
   --color-texto-secundario: #5a6b78;
   --color-texto-invertido: #ffffff;
 
-  /* Acento — reservado solo para stock crítico y carrito */
   --color-acento: #d98c1f;
   --color-acento-oscuro: #b5710f;
 
-  /* Estados */
   --color-exito: #1f7a4d;
   --color-error: #b3261e;
 
-  /* Tipografía */
   --fuente-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
 
-  /* Espaciados */
   --espacio-xs: 0.5rem;
   --espacio-sm: 1rem;
   --espacio-md: 1.5rem;
   --espacio-lg: 2.5rem;
   --espacio-xl: 4rem;
 
-  /* Layout */
   --ancho-maximo: 1180px;
   --radio-borde: 4px;
   --sombra-suave: 0 1px 3px rgba(11, 61, 99, 0.12);
@@ -100,7 +92,6 @@ p {
   color: var(--color-texto-secundario);
 }
 
-/* Accesibilidad: foco visible en todo elemento interactivo */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
@@ -408,7 +399,37 @@ textarea:focus-visible {
   border-radius: 999px;
 }
 
-/* ---------- 9. Formularios ---------- */
+/* ---------- 9. Tarjetas de blog ---------- */
+.blog-card {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: var(--espacio-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--sombra-suave);
+}
+
+.blog-card__excerpt {
+  font-size: 0.9rem;
+  color: var(--color-texto-secundario);
+}
+
+.blog-card__enlace {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.blog-detalle__cuerpo {
+  max-width: 70ch;
+}
+
+.blog-detalle__cuerpo p {
+  color: var(--color-texto);
+}
+
+/* ---------- 10. Formularios ---------- */
 .formulario {
   display: flex;
   flex-direction: column;
@@ -461,7 +482,7 @@ textarea:focus-visible {
   gap: var(--espacio-sm);
 }
 
-/* ---------- 10. Pie de página ---------- */
+/* ---------- 11. Pie de página ---------- */
 .site-footer {
   background: var(--color-primario-oscuro);
   color: #cfe0ee;
@@ -510,7 +531,7 @@ textarea:focus-visible {
   color: #a9c3d8;
 }
 
-/* ---------- 11. Filtros de catálogo y ficha de producto ---------- */
+/* ---------- 12. Filtros de catálogo y ficha de producto ---------- */
 .filtros-productos {
   display: flex;
   flex-wrap: wrap;
@@ -611,7 +632,7 @@ textarea:focus-visible {
   margin-top: var(--espacio-xl);
 }
 
-/* ---------- 12. Responsivo ---------- */
+/* ---------- 13. Responsivo ---------- */
 @media (max-width: 860px) {
   .hero__contenido {
     grid-template-columns: 1fr;
