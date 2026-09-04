@@ -1,0 +1,535 @@
+/* =========================================================
+   INFORCORE — Hoja de estilos principal
+   Tienda online de hardware corporativo y educacional.
+   Se aplica a todas las páginas públicas y al panel admin
+   (el panel usa la clase body.admin para sus variantes).
+   ========================================================= */
+
+/* ---------- 1. Variables (paleta e identidad) ---------- */
+:root {
+  /* Color principal: azul corporativo profundo */
+  --color-primario: #0b3d63;
+  --color-primario-oscuro: #082a45;
+  --color-primario-claro: #14568c;
+
+  /* Superficies neutras */
+  --color-fondo: #ffffff;
+  --color-superficie: #f4f6f8;
+  --color-borde: #dde3e8;
+
+  /* Texto */
+  --color-texto: #1c2b36;
+  --color-texto-secundario: #5a6b78;
+  --color-texto-invertido: #ffffff;
+
+  /* Acento — reservado solo para stock crítico y carrito */
+  --color-acento: #d98c1f;
+  --color-acento-oscuro: #b5710f;
+
+  /* Estados */
+  --color-exito: #1f7a4d;
+  --color-error: #b3261e;
+
+  /* Tipografía */
+  --fuente-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+
+  /* Espaciados */
+  --espacio-xs: 0.5rem;
+  --espacio-sm: 1rem;
+  --espacio-md: 1.5rem;
+  --espacio-lg: 2.5rem;
+  --espacio-xl: 4rem;
+
+  /* Layout */
+  --ancho-maximo: 1180px;
+  --radio-borde: 4px;
+  --sombra-suave: 0 1px 3px rgba(11, 61, 99, 0.12);
+}
+
+/* ---------- 2. Reset básico ---------- */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--fuente-base);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: var(--color-primario-claro);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--espacio-sm);
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--color-primario-oscuro);
+}
+
+h1 { font-size: 2.25rem; }
+h2 { font-size: 1.75rem; }
+h3 { font-size: 1.25rem; }
+
+p {
+  margin: 0 0 var(--espacio-sm);
+  color: var(--color-texto-secundario);
+}
+
+/* Accesibilidad: foco visible en todo elemento interactivo */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ---------- 3. Contenedor y utilidades de layout ---------- */
+.contenedor {
+  width: min(100% - 2.5rem, var(--ancho-maximo));
+  margin-inline: auto;
+}
+
+.seccion {
+  padding-block: var(--espacio-xl);
+}
+
+.seccion--superficie {
+  background: var(--color-superficie);
+}
+
+.grid-auto {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: var(--espacio-md);
+}
+
+.flex-entre {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-sm);
+}
+
+.texto-centro { text-align: center; }
+
+/* ---------- 4. Encabezado y navegación ---------- */
+.site-header {
+  background: var(--color-fondo);
+  border-bottom: 1px solid var(--color-borde);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.site-header__barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--espacio-md);
+  padding-block: var(--espacio-sm);
+  flex-wrap: wrap;
+}
+
+.marca {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--color-primario-oscuro);
+}
+
+.marca__nucleo {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--color-primario);
+  display: inline-block;
+}
+
+.nav-principal {
+  display: flex;
+  gap: var(--espacio-md);
+  flex-wrap: wrap;
+}
+
+.nav-principal a {
+  color: var(--color-texto);
+  font-size: 0.95rem;
+}
+
+.nav-principal a:hover,
+.nav-principal a[aria-current="page"] {
+  color: var(--color-primario);
+  text-decoration: none;
+  border-bottom: 2px solid var(--color-primario);
+}
+
+.header-acciones {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-md);
+  font-size: 0.9rem;
+}
+
+.header-acciones__cuenta a + a {
+  margin-left: var(--espacio-xs);
+  padding-left: var(--espacio-xs);
+  border-left: 1px solid var(--color-borde);
+}
+
+.carrito-boton {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: none;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: 0.45rem 0.8rem;
+  cursor: pointer;
+  color: var(--color-texto);
+  font-size: 0.9rem;
+}
+
+.carrito-boton:hover {
+  border-color: var(--color-primario);
+}
+
+.carrito-contador {
+  background: var(--color-acento);
+  color: var(--color-texto-invertido);
+  border-radius: 999px;
+  min-width: 1.4rem;
+  height: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding-inline: 0.3rem;
+}
+
+/* ---------- 5. Botones ---------- */
+.boton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-radius: var(--radio-borde);
+  padding: 0.7rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.boton:hover {
+  text-decoration: none;
+}
+
+.boton--primario {
+  background: var(--color-primario);
+  color: var(--color-texto-invertido);
+}
+
+.boton--primario:hover {
+  background: var(--color-primario-oscuro);
+}
+
+.boton--secundario {
+  background: transparent;
+  color: var(--color-primario);
+  border-color: var(--color-primario);
+}
+
+.boton--secundario:hover {
+  background: var(--color-primario);
+  color: var(--color-texto-invertido);
+}
+
+.boton--bloque {
+  width: 100%;
+}
+
+.boton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---------- 6. Hero (portada) ---------- */
+.hero {
+  background: linear-gradient(135deg, var(--color-primario-oscuro), var(--color-primario));
+  color: var(--color-texto-invertido);
+}
+
+.hero__contenido {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: center;
+  gap: var(--espacio-lg);
+  padding-block: var(--espacio-xl);
+}
+
+.hero__etiqueta {
+  color: #cfe0ee;
+  font-weight: 600;
+  margin-bottom: var(--espacio-xs);
+}
+
+.hero h1 {
+  color: var(--color-texto-invertido);
+}
+
+.hero p {
+  color: #d9e6ef;
+  max-width: 46ch;
+}
+
+.hero__imagen {
+  aspect-ratio: 4 / 3;
+  border: 1px dashed rgba(255, 255, 255, 0.4);
+  border-radius: var(--radio-borde);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 0.85rem;
+  text-align: center;
+  padding: var(--espacio-sm);
+}
+
+.hero .boton--secundario {
+  border-color: rgba(255, 255, 255, 0.8);
+  color: var(--color-texto-invertido);
+}
+
+.hero .boton--secundario:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--color-texto-invertido);
+}
+
+/* ---------- 7. Placeholder de imagen (reemplaza fotos reales) ---------- */
+.placeholder-imagen {
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  background:
+    linear-gradient(to bottom right, transparent 49.6%, var(--color-borde) 50%, transparent 50.4%),
+    linear-gradient(to bottom left, transparent 49.6%, var(--color-borde) 50%, transparent 50.4%),
+    var(--color-superficie);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-texto-secundario);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+/* ---------- 8. Tarjetas de producto ---------- */
+.producto-card {
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: var(--espacio-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: var(--sombra-suave);
+}
+
+.producto-card__nombre {
+  color: var(--color-texto);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.producto-card__specs {
+  font-size: 0.82rem;
+  color: var(--color-texto-secundario);
+}
+
+.producto-card__precio-fila {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.producto-card__precio {
+  font-weight: 700;
+  color: var(--color-primario-oscuro);
+  font-size: 1.05rem;
+}
+
+.badge-stock-critico {
+  display: inline-block;
+  background: #fbeacd;
+  color: var(--color-acento-oscuro);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+}
+
+/* ---------- 9. Formularios ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio-sm);
+  max-width: 480px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.campo label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.campo input,
+.campo select,
+.campo textarea {
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  padding: 0.6rem 0.75rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--color-texto);
+  background: var(--color-fondo);
+}
+
+.campo input:invalid:not(:placeholder-shown) {
+  border-color: var(--color-error);
+}
+
+.campo-error {
+  font-size: 0.8rem;
+  color: var(--color-error);
+  min-height: 1.1em;
+}
+
+.campo-ayuda {
+  font-size: 0.78rem;
+  color: var(--color-texto-secundario);
+}
+
+.fila-doble {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-sm);
+}
+
+/* ---------- 10. Pie de página ---------- */
+.site-footer {
+  background: var(--color-primario-oscuro);
+  color: #cfe0ee;
+  margin-top: var(--espacio-xl);
+}
+
+.site-footer__contenido {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr 1fr;
+  gap: var(--espacio-lg);
+  padding-block: var(--espacio-lg);
+}
+
+.site-footer h4 {
+  color: var(--color-texto-invertido);
+  font-size: 0.95rem;
+  margin-bottom: var(--espacio-xs);
+}
+
+.site-footer a {
+  color: #cfe0ee;
+}
+
+.site-footer a:hover {
+  color: var(--color-texto-invertido);
+}
+
+.site-footer__marca p {
+  color: #a9c3d8;
+  font-size: 0.85rem;
+}
+
+.site-footer .marca {
+  color: var(--color-texto-invertido);
+}
+
+.site-footer .marca__nucleo {
+  background: #cfe0ee;
+}
+
+.site-footer__legal {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-block: var(--espacio-sm);
+  text-align: center;
+  font-size: 0.8rem;
+  color: #a9c3d8;
+}
+
+/* ---------- 11. Responsivo ---------- */
+@media (max-width: 860px) {
+  .hero__contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .site-footer__contenido {
+    grid-template-columns: 1fr;
+  }
+
+  .fila-doble {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-header__barra {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  h1 { font-size: 1.75rem; }
+}
