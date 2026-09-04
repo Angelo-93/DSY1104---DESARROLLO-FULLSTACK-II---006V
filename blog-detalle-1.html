@@ -114,5 +114,25 @@
     </div>
   </footer>
 
+  <div class="modal-carrito" id="modalCarrito" aria-hidden="true">
+    <div class="modal-carrito__contenido" role="dialog" aria-modal="true" aria-labelledby="carritoTitulo">
+      <div class="modal-carrito__header">
+        <h2 id="carritoTitulo">Tu carrito</h2>
+        <button type="button" id="carritoCerrar" class="modal-carrito__cerrar" aria-label="Cerrar carrito">×</button>
+      </div>
+      <div class="modal-carrito__cuerpo" id="carritoCuerpo"></div>
+      <div class="modal-carrito__footer">
+        <div class="flex-entre">
+          <span>Total</span>
+          <span id="carritoTotal" class="modal-carrito__total">$0</span>
+        </div>
+        <button type="button" class="boton boton--primario boton--bloque" id="carritoFinalizar">Finalizar compra</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data/productos.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/carrito.js"></script>
 </body>
 </html>
