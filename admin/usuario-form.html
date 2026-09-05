@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuario — Admin INFORCORE</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <p class="admin-sidebar__titulo">INFORCORE Admin</p>
+      <nav aria-label="Navegación del panel administrador">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="usuarios.html" aria-current="page">Usuarios</a>
+      </nav>
+      <p class="admin-sidebar__volver"><a href="../index.html">Volver a la tienda</a></p>
+    </aside>
+
+    <main class="admin-content">
+      <h1 id="tituloFormUsuario">Nuevo usuario</h1>
+
+      <form class="formulario" id="formUsuarioAdmin" novalidate>
+        <div class="campo">
+          <label for="campoRunAdmin">RUN</label>
+          <input type="text" id="campoRunAdmin" name="run" maxlength="9" placeholder="Sin puntos ni guion, ej: 123456785">
+          <span class="campo-error" id="errorRunAdmin"></span>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="campoNombreAdmin">Nombre</label>
+            <input type="text" id="campoNombreAdmin" name="nombre" maxlength="50">
+            <span class="campo-error" id="errorNombreAdmin"></span>
+          </div>
+          <div class="campo">
+            <label for="campoApellidosAdmin">Apellidos</label>
+            <input type="text" id="campoApellidosAdmin" name="apellidos" maxlength="100">
+            <span class="campo-error" id="errorApellidosAdmin"></span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="campoCorreoAdmin">Correo electrónico</label>
+          <input type="email" id="campoCorreoAdmin" name="correo" maxlength="100" placeholder="tucorreo@duoc.cl">
+          <span class="campo-error" id="errorCorreoAdmin"></span>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="campoFechaNacimientoAdmin">Fecha de nacimiento (opcional)</label>
+            <input type="date" id="campoFechaNacimientoAdmin" name="fechaNacimiento">
+          </div>
+          <div class="campo">
+            <label for="campoTipoUsuario">Tipo de usuario</label>
+            <select id="campoTipoUsuario" name="tipoUsuario">
+              <option value="">-- Seleccione el tipo --</option>
+              <option value="Administrador">Administrador</option>
+              <option value="Vendedor">Vendedor</option>
+              <option value="Cliente">Cliente</option>
+            </select>
+            <span class="campo-error" id="errorTipoUsuario"></span>
+          </div>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="selectRegionAdmin">Región</label>
+            <select id="selectRegionAdmin" name="region">
+              <option value="">-- Seleccione la región --</option>
+            </select>
+            <span class="campo-error" id="errorRegionAdmin"></span>
+          </div>
+          <div class="campo">
+            <label for="selectComunaAdmin">Comuna</label>
+            <select id="selectComunaAdmin" name="comuna" disabled>
+              <option value="">-- Seleccione la comuna --</option>
+            </select>
+            <span class="campo-error" id="errorComunaAdmin"></span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="campoDireccionAdmin">Dirección</label>
+          <input type="text" id="campoDireccionAdmin" name="direccion" maxlength="300">
+          <span class="campo-error" id="errorDireccionAdmin"></span>
+        </div>
+
+        <button type="submit" class="boton boton--primario">Guardar usuario</button>
+        <a href="usuarios.html" class="boton boton--secundario">Cancelar</a>
+      </form>
+    </main>
+  </div>
+
+  <script src="../js/data/regiones-comunas.js"></script>
+  <script src="../js/data/usuarios.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/validaciones.js"></script>
+  <script src="../js/admin-usuario-form.js"></script>
+</body>
+</html>

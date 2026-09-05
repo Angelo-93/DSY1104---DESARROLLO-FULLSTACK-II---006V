@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Productos — Admin INFORCORE</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <p class="admin-sidebar__titulo">INFORCORE Admin</p>
+      <nav aria-label="Navegación del panel administrador">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html" aria-current="page">Productos</a>
+        <a href="usuarios.html">Usuarios</a>
+      </nav>
+      <p class="admin-sidebar__volver"><a href="../index.html">Volver a la tienda</a></p>
+    </aside>
+
+    <main class="admin-content">
+      <div class="admin-cabecera">
+        <h1>Productos</h1>
+        <a href="producto-form.html" class="boton boton--primario">+ Nuevo producto</a>
+      </div>
+
+      <table class="tabla-admin">
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="cuerpoTablaProductos">
+          <!-- Se completa dinámicamente desde js/admin-productos.js -->
+        </tbody>
+      </table>
+    </main>
+  </div>
+
+  <script src="../js/data/productos.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/admin-productos.js"></script>
+</body>
+</html>

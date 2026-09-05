@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Producto — Admin INFORCORE</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <p class="admin-sidebar__titulo">INFORCORE Admin</p>
+      <nav aria-label="Navegación del panel administrador">
+        <a href="index.html">Inicio</a>
+        <a href="productos.html" aria-current="page">Productos</a>
+        <a href="usuarios.html">Usuarios</a>
+      </nav>
+      <p class="admin-sidebar__volver"><a href="../index.html">Volver a la tienda</a></p>
+    </aside>
+
+    <main class="admin-content">
+      <h1 id="tituloFormProducto">Nuevo producto</h1>
+
+      <form class="formulario" id="formProducto" novalidate>
+        <div class="campo">
+          <label for="campoCodigo">Código del producto</label>
+          <input type="text" id="campoCodigo" name="codigo" placeholder="Ej: NB-HP250G10">
+          <span class="campo-error" id="errorCodigo"></span>
+        </div>
+
+        <div class="campo">
+          <label for="campoNombreProducto">Nombre</label>
+          <input type="text" id="campoNombreProducto" name="nombre" maxlength="100">
+          <span class="campo-error" id="errorNombreProducto"></span>
+        </div>
+
+        <div class="campo">
+          <label for="campoDescripcion">Descripción (opcional)</label>
+          <textarea id="campoDescripcion" name="descripcion" rows="3" maxlength="500"></textarea>
+          <span class="campo-ayuda">Máximo 500 caracteres.</span>
+          <span class="campo-error" id="errorDescripcion"></span>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="campoPrecio">Precio (CLP)</label>
+            <input type="number" id="campoPrecio" name="precio" min="0" step="1">
+            <span class="campo-error" id="errorPrecio"></span>
+          </div>
+          <div class="campo">
+            <label for="campoStock">Stock</label>
+            <input type="number" id="campoStock" name="stock" min="0" step="1">
+            <span class="campo-error" id="errorStock"></span>
+          </div>
+        </div>
+
+        <div class="fila-doble">
+          <div class="campo">
+            <label for="campoStockCritico">Stock crítico (opcional)</label>
+            <input type="number" id="campoStockCritico" name="stockCritico" min="0" step="1">
+            <span class="campo-ayuda">Se mostrará una alerta cuando el stock sea igual o menor.</span>
+            <span class="campo-error" id="errorStockCritico"></span>
+          </div>
+          <div class="campo">
+            <label for="campoCategoria">Categoría</label>
+            <select id="campoCategoria" name="categoria">
+              <option value="">-- Seleccione la categoría --</option>
+            </select>
+            <span class="campo-error" id="errorCategoria"></span>
+          </div>
+        </div>
+
+        <div class="campo">
+          <label for="campoImagen">Imagen (opcional, URL)</label>
+          <input type="text" id="campoImagen" name="imagen" placeholder="https://...">
+        </div>
+
+        <button type="submit" class="boton boton--primario">Guardar producto</button>
+        <a href="productos.html" class="boton boton--secundario">Cancelar</a>
+      </form>
+    </main>
+  </div>
+
+  <script src="../js/data/productos.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/validaciones.js"></script>
+  <script src="../js/admin-producto-form.js"></script>
+</body>
+</html>

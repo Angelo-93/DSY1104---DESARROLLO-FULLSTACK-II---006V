@@ -803,3 +803,153 @@ body.sin-scroll {
     text-align: right;
   }
 }
+
+
+/* ---------- 15. Panel administrador ---------- */
+.admin-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  min-height: 100vh;
+}
+
+.admin-sidebar {
+  background: var(--color-primario-oscuro);
+  color: #cfe0ee;
+  padding: var(--espacio-md) var(--espacio-sm);
+}
+
+.admin-sidebar__titulo {
+  color: #ffffff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: var(--espacio-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-sidebar nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.admin-sidebar nav a {
+  color: #cfe0ee;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radio-borde);
+  font-size: 0.9rem;
+}
+
+.admin-sidebar nav a:hover,
+.admin-sidebar nav a[aria-current="page"] {
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.admin-sidebar__volver {
+  margin-top: 2.5rem;
+  font-size: 0.85rem;
+}
+
+.admin-sidebar__volver a {
+  color: #a9c3d8;
+}
+
+.admin-content {
+  padding: var(--espacio-lg);
+  background: var(--color-superficie);
+}
+
+.admin-cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--espacio-md);
+}
+
+.tabla-admin {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-borde);
+  overflow: hidden;
+}
+
+.tabla-admin th,
+.tabla-admin td {
+  padding: 0.65rem 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--color-borde);
+  font-size: 0.9rem;
+}
+
+.tabla-admin th {
+  background: var(--color-superficie);
+  font-weight: 700;
+  color: var(--color-primario-oscuro);
+}
+
+.tabla-admin tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-admin__acciones {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.badge-rol {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.badge-rol--administrador {
+  background: #e4ecf3;
+  color: var(--color-primario-oscuro);
+}
+
+.badge-rol--vendedor {
+  background: #fbeacd;
+  color: var(--color-acento-oscuro);
+}
+
+.badge-rol--cliente {
+  background: #e3f2e9;
+  color: var(--color-exito);
+}
+
+.boton--peligro {
+  background: transparent;
+  color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+.boton--peligro:hover {
+  background: var(--color-error);
+  color: #ffffff;
+}
+
+.boton--pequeno {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 780px) {
+  .admin-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-sidebar nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .admin-sidebar__volver {
+    margin-top: var(--espacio-sm);
+  }
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel administrador — INFORCORE</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <p class="admin-sidebar__titulo">INFORCORE Admin</p>
+      <nav aria-label="Navegación del panel administrador">
+        <a href="index.html" aria-current="page">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="usuarios.html">Usuarios</a>
+      </nav>
+      <p class="admin-sidebar__volver"><a href="../index.html">Volver a la tienda</a></p>
+    </aside>
+
+    <main class="admin-content">
+      <h1>¡Hola, Administrador!</h1>
+      <p>Desde aquí puedes gestionar el catálogo de productos y los usuarios registrados en INFORCORE.</p>
+
+      <div class="grid-auto" id="resumenAdmin">
+        <!-- Se completa dinámicamente desde js/admin-inicio.js -->
+      </div>
+    </main>
+  </div>
+
+  <script src="../js/data/productos.js"></script>
+  <script src="../js/data/usuarios.js"></script>
+  <script src="../js/admin.js"></script>
+  <script src="../js/admin-inicio.js"></script>
+</body>
+</html>
