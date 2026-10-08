@@ -5,6 +5,7 @@ import Navbar from 'react-bootstrap/Navbar'
 
 import { puedeEntrarAlPanel } from '../../utils/permisos.js'
 import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
+import BuscadorProductos from '../molecules/BuscadorProductos.jsx'
 
 // Los enlaces van como datos y no como JSX repetido: sumar una vista al menú
 // es agregar una línea a este arreglo.
@@ -19,8 +20,12 @@ const ENLACES_TIENDA = [
 ]
 
 /**
- * Menú superior de la tienda. En pantallas grandes muestra todo en una fila;
- * bajo 992 px (expand="lg") los enlaces se esconden tras el botón hamburguesa.
+ * Menú superior de la tienda, en dos filas como el template del Anexo 1:
+ * - Fila 1: marca, buscador y carrito (siempre visibles, también en celular).
+ * - Fila 2: enlaces y cuenta. Bajo 992 px (expand="lg") se esconden tras el
+ *   botón hamburguesa.
+ * El orden visual lo dan las clases order-* de Bootstrap: en celular el
+ * buscador baja a una línea propia para no apretar la marca.
  *
  * El menú no lee el carrito ni la sesión por su cuenta: todo le llega por
  * props desde PlantillaTienda. Así su única responsabilidad es mostrar, y en
@@ -36,33 +41,42 @@ function BarraNavegacion({ cantidadCarrito = 0, usuario = null, onCerrarSesion }
     // collapseOnSelect cierra el menú móvil al elegir un enlace; para eso cada
     // Nav.Link necesita su eventKey.
     <Navbar expand="lg" sticky="top" collapseOnSelect className="barra-navegacion py-2">
-      <Container>
+      <Container className="flex-wrap">
         <Navbar.Brand as={Link} to="/">
           <MarcaInforcore />
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="menu-principal" />
+        <BuscadorProductos />
 
-        <Navbar.Collapse id="menu-principal">
+        <div className="d-flex align-items-center gap-2 ms-auto">
+          {/* Se usa Link con clases "btn" en vez del Button de React-Bootstrap:
+              un Button con enlace agrega role="button", y estos elementos deben
+              anunciarse como enlaces porque llevan a otra página. */}
+          <Link
+            className="btn btn-acento btn-sm"
+            to="/carrito"
+            aria-label={`Carrito, ${cantidadCarrito} productos`}
+          >
+            Carrito{' '}
+            <span className="badge text-bg-light" data-testid="contador-carrito">
+              {cantidadCarrito}
+            </span>
+          </Link>
+          <Navbar.Toggle aria-controls="menu-principal" aria-label="Abrir menú" />
+        </div>
+
+        <Navbar.Collapse id="menu-principal" className="order-last w-100 mt-lg-2">
           {/* "Inicio" no necesita la prop "end" (a diferencia de "/admin" en el
               menú del admin): React Router trata la ruta "/" como caso especial
               y solo la marca activa en la portada. */}
           <Nav className="me-auto">
             {ENLACES_TIENDA.map((enlace) => (
-              <Nav.Link
-                key={enlace.ruta}
-                as={NavLink}
-                to={enlace.ruta}
-                eventKey={enlace.ruta}
-              >
+              <Nav.Link key={enlace.ruta} as={NavLink} to={enlace.ruta} eventKey={enlace.ruta}>
                 {enlace.texto}
               </Nav.Link>
             ))}
           </Nav>
 
-          {/* Se usa Link con clases "btn" en vez del Button de React-Bootstrap:
-              un Button con enlace agrega role="button", y estos elementos deben
-              anunciarse como enlaces porque llevan a otra página. */}
           <div className="d-flex flex-wrap align-items-center gap-2 py-2 py-lg-0">
             {/* Renderizado condicional: con sesión se saluda y se ofrece salir;
                 sin sesión, entrar o registrarse. */}
@@ -88,16 +102,6 @@ function BarraNavegacion({ cantidadCarrito = 0, usuario = null, onCerrarSesion }
                 </Link>
               </>
             )}
-            <Link
-              className="btn btn-acento btn-sm"
-              to="/carrito"
-              aria-label={`Carrito, ${cantidadCarrito} productos`}
-            >
-              Carrito{' '}
-              <span className="badge text-bg-light" data-testid="contador-carrito">
-                {cantidadCarrito}
-              </span>
-            </Link>
           </div>
         </Navbar.Collapse>
       </Container>

@@ -23,7 +23,7 @@ describe('App (rutas)', () => {
     instalarLocalStorageFalso()
     renderizarAppEn('/productos/NB-HP250G10')
 
-    expect(screen.getByRole('heading', { name: 'Detalle de producto' })).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1, name: 'HP 250 G10' })).toBeTruthy()
     expect(screen.getByRole('contentinfo')).toBeTruthy() // <footer> de la tienda
   })
 
@@ -62,7 +62,7 @@ describe('App (rutas)', () => {
 
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
 
-    expect(screen.getByRole('heading', { name: 'Inicio' })).toBeTruthy()
+    expect(screen.getByRole('heading', { level: 1, name: 'Tu núcleo informático' })).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Iniciar sesión' })).toBeTruthy()
   })
 })

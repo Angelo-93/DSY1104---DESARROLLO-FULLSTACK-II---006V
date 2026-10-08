@@ -43,6 +43,16 @@ export function listarCategorias() {
 }
 
 /**
+ * Diccionario { id: nombre } para mostrar el nombre de la categoría en cada
+ * tarjeta sin buscarla una por una.
+ *
+ * @returns {Object<string, string>}
+ */
+export function obtenerNombresCategoria() {
+  return Object.fromEntries(leerCategorias().map((categoria) => [categoria.id, categoria.nombre]))
+}
+
+/**
  * @param {string} id
  * @returns {object|null}
  */

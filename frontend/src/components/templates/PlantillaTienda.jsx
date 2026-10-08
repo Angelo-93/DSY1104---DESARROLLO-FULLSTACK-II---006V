@@ -1,4 +1,5 @@
-import { Outlet } from 'react-router-dom'
+import { useEffect } from 'react'
+import { Outlet, useLocation } from 'react-router-dom'
 
 import { useCarrito } from '../../hooks/useCarrito.js'
 import { useCerrarSesion } from '../../hooks/useCerrarSesion.js'
@@ -20,6 +21,14 @@ function PlantillaTienda() {
   const { usuario } = useSesion()
   const { cantidadUnidades } = useCarrito()
   const manejarCierreSesion = useCerrarSesion()
+  const { pathname } = useLocation()
+
+  // En una SPA el navegador no vuelve arriba al cambiar de página (no hay
+  // recarga): sin esto, al abrir un producto desde el final de la grilla, el
+  // detalle aparecería ya desplazado hacia abajo.
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [pathname])
 
   return (
     // min-vh-100 + flex-column + mt-auto en el pie: el pie queda pegado abajo

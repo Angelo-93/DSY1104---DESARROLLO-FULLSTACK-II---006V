@@ -6,6 +6,7 @@ import {
   eliminarCategoria,
   listarCategorias,
   obtenerCategoria,
+  obtenerNombresCategoria,
 } from './categoriasService.js'
 
 describe('categoriasService (con localStorage simulado)', () => {
@@ -32,6 +33,10 @@ describe('categoriasService (con localStorage simulado)', () => {
   it('rechaza nombres repetidos aunque cambien mayúsculas o tildes', () => {
     expect(() => crearCategoria({ nombre: '  MONITORES ' })).toThrowError(/Ya existe/)
     expect(() => actualizarCategoria('vacia', { nombre: 'monitores' })).toThrowError(/Ya existe/)
+  })
+
+  it('entrega un diccionario id → nombre para las tarjetas', () => {
+    expect(obtenerNombresCategoria()).toEqual({ monitores: 'Monitores', vacia: 'Vacía' })
   })
 
   it('al renombrar mantiene el id, así los productos no quedan huérfanos', () => {

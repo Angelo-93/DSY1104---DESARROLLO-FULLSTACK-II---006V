@@ -1,0 +1,9 @@
+# Fin de línea LF (estilo Linux) para todo el proyecto, también en Windows.
+# Evita los avisos "LF will be replaced by CRLF" y que un mismo archivo
+# aparezca modificado solo por el tipo de salto de línea.
+* text=auto eol=lf
+
+# Archivos binarios: Git no debe tocar su contenido.
+*.png binary
+*.jpg binary
+*.ico binary

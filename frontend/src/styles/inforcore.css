@@ -142,6 +142,113 @@ button:focus-visible,
   }
 }
 
+/* Buscador del menú: en celular ocupa su propia línea bajo la marca (order: 3);
+   desde 992 px vuelve a la primera fila, entre la marca y el carrito. */
+.buscador-menu {
+  order: 3;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+@media (min-width: 992px) {
+  .buscador-menu {
+    order: 0;
+    width: auto;
+    flex: 1 1 auto;
+    max-width: 30rem;
+    margin: 0 1.5rem;
+  }
+}
+
+/* ---------- 4b. Portada y secciones de la tienda ---------- */
+.portada {
+  background: var(--inf-primario-oscuro);
+  color: #ffffff;
+  padding-block: clamp(3rem, 8vw, 5.5rem);
+}
+
+.portada__etiqueta {
+  color: #cfe0ee;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+/* El titular es el elemento con más presencia del sitio: grande, compacto y
+   con el interletrado apretado, como un rótulo técnico. */
+.portada__titulo {
+  font-size: clamp(2.4rem, 6vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  margin-bottom: 1.25rem;
+}
+
+.portada__texto {
+  color: #dbe6ef;
+  max-width: 34rem;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.portada__imagen {
+  border-radius: 0.5rem;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+
+.seccion {
+  padding-block: clamp(2.5rem, 6vw, 4rem);
+}
+
+.bg-superficie {
+  background: var(--inf-superficie);
+}
+
+/* Columna de lectura para textos largos (Nosotros, artículos del blog):
+   líneas de menos de ~75 caracteres se leen con menos esfuerzo. */
+.texto-lectura {
+  max-width: 48rem;
+}
+
+.tarjeta-texto {
+  border-top: 3px solid var(--inf-acento);
+  padding-top: 1rem;
+}
+
+/* ---------- 4c. Productos ---------- */
+.imagen-producto {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.tarjeta-producto {
+  transition: box-shadow 0.15s ease;
+}
+
+.tarjeta-producto:hover {
+  box-shadow: 0 4px 14px rgba(11, 61, 99, 0.12);
+}
+
+.text-acento-oscuro {
+  color: var(--inf-acento-oscuro);
+}
+
+.selector-cantidad {
+  max-width: 10rem;
+}
+
+/* Sin las flechitas del campo numérico: ya están los botones − y +. */
+.selector-cantidad input::-webkit-outer-spin-button,
+.selector-cantidad input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.selector-cantidad input[type='number'] {
+  -moz-appearance: textfield;
+  appearance: textfield;
+}
+
 /* ---------- 5. Pie de página ---------- */
 .pie-pagina {
   background: var(--inf-primario-oscuro);
@@ -212,5 +319,9 @@ button:focus-visible,
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .tarjeta-producto {
+    transition: none;
   }
 }

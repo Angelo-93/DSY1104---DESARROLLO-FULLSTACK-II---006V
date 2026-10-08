@@ -18,7 +18,15 @@ import PlantillaAdmin from './components/templates/PlantillaAdmin.jsx'
 import PlantillaTienda from './components/templates/PlantillaTienda.jsx'
 import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion.jsx'
 import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada.jsx'
+import PaginaBlogs from './pages/tienda/PaginaBlogs.jsx'
+import PaginaContacto from './pages/tienda/PaginaContacto.jsx'
+import PaginaDetalleBlog from './pages/tienda/PaginaDetalleBlog.jsx'
+import PaginaDetalleProducto from './pages/tienda/PaginaDetalleProducto.jsx'
+import PaginaInicio from './pages/tienda/PaginaInicio.jsx'
 import PaginaLogin from './pages/tienda/PaginaLogin.jsx'
+import PaginaNosotros from './pages/tienda/PaginaNosotros.jsx'
+import PaginaProductos from './pages/tienda/PaginaProductos.jsx'
+import PaginaRegistro from './pages/tienda/PaginaRegistro.jsx'
 import RutaProtegida from './routing/RutaProtegida.jsx'
 import { esAdministrador, puedeEntrarAlPanel } from './utils/permisos.js'
 
@@ -27,20 +35,20 @@ function App() {
     <Routes>
       {/* ---------- Tienda (pública) ---------- */}
       <Route element={<PlantillaTienda />}>
-        <Route index element={<PaginaEnConstruccion titulo="Inicio" />} />
-        <Route path="productos" element={<PaginaEnConstruccion titulo="Productos" />} />
+        <Route index element={<PaginaInicio />} />
+        <Route path="productos" element={<PaginaProductos />} />
         {/* ":codigo" es un parámetro: /productos/NB-HP250G10 entrega
             codigo = "NB-HP250G10" a la página mediante useParams(). */}
-        <Route path="productos/:codigo" element={<PaginaEnConstruccion titulo="Detalle de producto" />} />
+        <Route path="productos/:codigo" element={<PaginaDetalleProducto />} />
         <Route path="categorias" element={<PaginaEnConstruccion titulo="Categorías" />} />
         <Route path="categorias/:idCategoria" element={<PaginaEnConstruccion titulo="Detalle de categoría" />} />
         <Route path="ofertas" element={<PaginaEnConstruccion titulo="Ofertas" />} />
-        <Route path="nosotros" element={<PaginaEnConstruccion titulo="Nosotros" />} />
-        <Route path="blogs" element={<PaginaEnConstruccion titulo="Blogs" />} />
-        <Route path="blogs/:idBlog" element={<PaginaEnConstruccion titulo="Detalle de blog" />} />
-        <Route path="contacto" element={<PaginaEnConstruccion titulo="Contacto" />} />
+        <Route path="nosotros" element={<PaginaNosotros />} />
+        <Route path="blogs" element={<PaginaBlogs />} />
+        <Route path="blogs/:idBlog" element={<PaginaDetalleBlog />} />
+        <Route path="contacto" element={<PaginaContacto />} />
         <Route path="login" element={<PaginaLogin />} />
-        <Route path="registro" element={<PaginaEnConstruccion titulo="Crear cuenta" />} />
+        <Route path="registro" element={<PaginaRegistro />} />
         <Route path="carrito" element={<PaginaEnConstruccion titulo="Carrito de compras" />} />
         <Route path="checkout" element={<PaginaEnConstruccion titulo="Checkout" />} />
         <Route path="compra/exitosa/:numeroOrden" element={<PaginaEnConstruccion titulo="Compra exitosa" />} />
