@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import MenuLateralAdmin from './MenuLateralAdmin'
+import MenuLateralAdmin from './MenuLateralAdmin.jsx'
 
 describe('MenuLateralAdmin', () => {
   it('en una subpágina marca su sección y no el Dashboard', () => {

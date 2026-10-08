@@ -52,10 +52,11 @@ module.exports = function (config) {
                 // runtime 'automatic': no hace falta importar React en cada archivo.
                 presets: [['@babel/preset-react', { runtime: 'automatic' }]],
                 // istanbul marca cada línea para saber cuáles ejecutaron las pruebas.
-                // Se excluyen los *.spec a mano: istanbul solo ignora por defecto los
-                // *.test.*, y medir las pruebas inflaría la cobertura con código que
-                // siempre se ejecuta.
-                plugins: [['istanbul', { exclude: ['**/*.spec.js', '**/*.spec.jsx'] }]],
+                // Se excluyen los *.spec y la carpeta testing/ (mocks y ayudantes de
+                // prueba) a mano: istanbul solo ignora por defecto los *.test.*, y
+                // medir el código de las pruebas inflaría la cobertura con líneas
+                // que siempre se ejecutan.
+                plugins: [['istanbul', { exclude: ['**/*.spec.js', '**/*.spec.jsx', '**/testing/**'] }]],
               },
             },
           },

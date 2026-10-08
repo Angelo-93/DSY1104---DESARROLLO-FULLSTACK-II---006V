@@ -3,8 +3,8 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 
-import MarcaInforcore from '../atoms/MarcaInforcore'
-import MenuLateralAdmin from '../organisms/MenuLateralAdmin'
+import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
+import MenuLateralAdmin from '../organisms/MenuLateralAdmin.jsx'
 
 /**
  * Esqueleto del panel administrador: cabecera, menú lateral y, a la derecha,

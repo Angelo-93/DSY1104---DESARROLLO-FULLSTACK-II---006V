@@ -3,7 +3,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 
-import MarcaInforcore from '../atoms/MarcaInforcore'
+import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
 
 // Los enlaces van como datos y no como JSX repetido: sumar una vista al menú
 // es agregar una línea a este arreglo.

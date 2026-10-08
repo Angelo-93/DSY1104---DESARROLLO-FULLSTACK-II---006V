@@ -10,10 +10,10 @@
  */
 import { Route, Routes } from 'react-router-dom'
 
-import PlantillaAdmin from './components/templates/PlantillaAdmin'
-import PlantillaTienda from './components/templates/PlantillaTienda'
-import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion'
-import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada'
+import PlantillaAdmin from './components/templates/PlantillaAdmin.jsx'
+import PlantillaTienda from './components/templates/PlantillaTienda.jsx'
+import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion.jsx'
+import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada.jsx'
 
 function App() {
   return (

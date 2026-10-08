@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
-import BarraNavegacion from './BarraNavegacion'
+import BarraNavegacion from './BarraNavegacion.jsx'
 
 // La barra usa Link y NavLink, que solo funcionan dentro de un router.
 // MemoryRouter simula la URL en memoria, sin tocar la barra del navegador.

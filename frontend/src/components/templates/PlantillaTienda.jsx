@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 
-import BarraNavegacion from '../organisms/BarraNavegacion'
-import PiePagina from '../organisms/PiePagina'
+import BarraNavegacion from '../organisms/BarraNavegacion.jsx'
+import PiePagina from '../organisms/PiePagina.jsx'
 
 /**
  * Esqueleto de todas las páginas públicas: menú arriba, pie abajo, y en medio

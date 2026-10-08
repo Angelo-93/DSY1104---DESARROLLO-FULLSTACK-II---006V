@@ -1,6 +1,6 @@
 import { render } from '@testing-library/react'
 
-import MarcaInforcore from './MarcaInforcore'
+import MarcaInforcore from './MarcaInforcore.jsx'
 
 describe('MarcaInforcore', () => {
   it('muestra el nombre INFORCORE con la variante normal por defecto', () => {

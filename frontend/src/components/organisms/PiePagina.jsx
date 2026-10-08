@@ -3,7 +3,7 @@ import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 
-import MarcaInforcore from '../atoms/MarcaInforcore'
+import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
 
 // El año se calcula una vez, al cargar el archivo, y no dentro del componente:
 // React espera que un componente sea "puro" (mismos datos, mismo resultado), y
