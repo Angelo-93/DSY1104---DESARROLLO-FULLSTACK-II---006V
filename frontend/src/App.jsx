@@ -7,6 +7,10 @@
  *
  * Mientras una vista no existe, su ruta muestra PaginaEnConstruccion. Cada
  * bloque siguiente reemplaza el "element" de su ruta por la página real.
+ *
+ * El panel tiene dos niveles de acceso (RutaProtegida):
+ * - puedeEntrarAlPanel: Administrador y Vendedor (consultar productos y órdenes).
+ * - esAdministrador: solo Administrador (crear, editar, categorías, usuarios, reportes).
  */
 import { Route, Routes } from 'react-router-dom'
 
@@ -14,6 +18,9 @@ import PlantillaAdmin from './components/templates/PlantillaAdmin.jsx'
 import PlantillaTienda from './components/templates/PlantillaTienda.jsx'
 import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion.jsx'
 import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada.jsx'
+import PaginaLogin from './pages/tienda/PaginaLogin.jsx'
+import RutaProtegida from './routing/RutaProtegida.jsx'
+import { esAdministrador, puedeEntrarAlPanel } from './utils/permisos.js'
 
 function App() {
   return (
@@ -32,7 +39,7 @@ function App() {
         <Route path="blogs" element={<PaginaEnConstruccion titulo="Blogs" />} />
         <Route path="blogs/:idBlog" element={<PaginaEnConstruccion titulo="Detalle de blog" />} />
         <Route path="contacto" element={<PaginaEnConstruccion titulo="Contacto" />} />
-        <Route path="login" element={<PaginaEnConstruccion titulo="Iniciar sesión" />} />
+        <Route path="login" element={<PaginaLogin />} />
         <Route path="registro" element={<PaginaEnConstruccion titulo="Crear cuenta" />} />
         <Route path="carrito" element={<PaginaEnConstruccion titulo="Carrito de compras" />} />
         <Route path="checkout" element={<PaginaEnConstruccion titulo="Checkout" />} />
@@ -44,23 +51,36 @@ function App() {
       </Route>
 
       {/* ---------- Panel administrador ---------- */}
-      <Route path="admin" element={<PlantillaAdmin />}>
+      <Route
+        path="admin"
+        element={
+          <RutaProtegida permiso={puedeEntrarAlPanel}>
+            <PlantillaAdmin />
+          </RutaProtegida>
+        }
+      >
+        {/* Consulta: Administrador y Vendedor */}
         <Route index element={<PaginaEnConstruccion titulo="Dashboard" />} />
         <Route path="ordenes" element={<PaginaEnConstruccion titulo="Órdenes y boletas" />} />
         <Route path="ordenes/:numeroOrden" element={<PaginaEnConstruccion titulo="Boleta" />} />
         <Route path="productos" element={<PaginaEnConstruccion titulo="Productos" />} />
-        <Route path="productos/nuevo" element={<PaginaEnConstruccion titulo="Nuevo producto" />} />
         <Route path="productos/criticos" element={<PaginaEnConstruccion titulo="Productos críticos" />} />
-        <Route path="productos/:codigo/editar" element={<PaginaEnConstruccion titulo="Editar producto" />} />
-        <Route path="categorias" element={<PaginaEnConstruccion titulo="Categorías" />} />
-        <Route path="categorias/nueva" element={<PaginaEnConstruccion titulo="Nueva categoría" />} />
-        <Route path="categorias/:idCategoria/editar" element={<PaginaEnConstruccion titulo="Editar categoría" />} />
-        <Route path="usuarios" element={<PaginaEnConstruccion titulo="Usuarios" />} />
-        <Route path="usuarios/nuevo" element={<PaginaEnConstruccion titulo="Nuevo usuario" />} />
-        <Route path="usuarios/:run/editar" element={<PaginaEnConstruccion titulo="Editar usuario" />} />
-        <Route path="usuarios/:run/historial" element={<PaginaEnConstruccion titulo="Historial de compras" />} />
-        <Route path="reportes" element={<PaginaEnConstruccion titulo="Reportes" />} />
         <Route path="perfil" element={<PaginaEnConstruccion titulo="Perfil" />} />
+
+        {/* Administración: solo Administrador. Esta ruta no tiene "path": solo
+            agrupa a sus hijas detrás de una segunda guardia (layout route). */}
+        <Route element={<RutaProtegida permiso={esAdministrador} />}>
+          <Route path="productos/nuevo" element={<PaginaEnConstruccion titulo="Nuevo producto" />} />
+          <Route path="productos/:codigo/editar" element={<PaginaEnConstruccion titulo="Editar producto" />} />
+          <Route path="categorias" element={<PaginaEnConstruccion titulo="Categorías" />} />
+          <Route path="categorias/nueva" element={<PaginaEnConstruccion titulo="Nueva categoría" />} />
+          <Route path="categorias/:idCategoria/editar" element={<PaginaEnConstruccion titulo="Editar categoría" />} />
+          <Route path="usuarios" element={<PaginaEnConstruccion titulo="Usuarios" />} />
+          <Route path="usuarios/nuevo" element={<PaginaEnConstruccion titulo="Nuevo usuario" />} />
+          <Route path="usuarios/:run/editar" element={<PaginaEnConstruccion titulo="Editar usuario" />} />
+          <Route path="usuarios/:run/historial" element={<PaginaEnConstruccion titulo="Historial de compras" />} />
+          <Route path="reportes" element={<PaginaEnConstruccion titulo="Reportes" />} />
+        </Route>
       </Route>
     </Routes>
   )

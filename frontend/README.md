@@ -23,6 +23,9 @@ src/
 │   ├── organisms/   bloques completos (menú, pie de página, menú del admin)
 │   └── templates/   esqueletos de página (tienda y panel admin)
 ├── pages/           vistas completas, una por ruta
+├── context/         estado compartido (sesión y carrito) con Context de React
+├── hooks/           useSesion, useCarrito y useCerrarSesion para leer ese estado
+├── routing/         RutaProtegida: acceso al panel según el rol
 ├── data/            datos semilla: productos, categorías, usuarios, órdenes, regiones
 ├── services/        CRUD sobre localStorage (la "base de datos simulada")
 ├── utils/           funciones puras: validaciones, cálculos, formato de precios y fechas
@@ -56,6 +59,9 @@ en el navegador. Para volver a los datos iniciales, borra las claves desde DevTo
 
 Datos ficticios. Las contraseñas están en texto plano porque es una simulación sin backend;
 la autenticación segura corresponde a la EP3.
+
+Administrador: acceso total al panel. Vendedor: solo consulta productos y órdenes.
+Cliente: solo la tienda.
 
 | Rol | Correo | Contraseña |
 | --- | --- | --- |

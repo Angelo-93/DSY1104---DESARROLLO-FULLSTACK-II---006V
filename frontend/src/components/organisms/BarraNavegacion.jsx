@@ -3,6 +3,7 @@ import Container from 'react-bootstrap/Container'
 import Nav from 'react-bootstrap/Nav'
 import Navbar from 'react-bootstrap/Navbar'
 
+import { puedeEntrarAlPanel } from '../../utils/permisos.js'
 import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
 
 // Los enlaces van como datos y no como JSX repetido: sumar una vista al menú
@@ -21,11 +22,16 @@ const ENLACES_TIENDA = [
  * Menú superior de la tienda. En pantallas grandes muestra todo en una fila;
  * bajo 992 px (expand="lg") los enlaces se esconden tras el botón hamburguesa.
  *
+ * El menú no lee el carrito ni la sesión por su cuenta: todo le llega por
+ * props desde PlantillaTienda. Así su única responsabilidad es mostrar, y en
+ * las pruebas basta con pasarle datos distintos para ver cada caso.
+ *
  * @param {object} props
- * @param {number} [props.cantidadCarrito=0] - Unidades en el carrito. Llega por
- *   props porque el carrito no es responsabilidad del menú: el menú solo lo muestra.
+ * @param {number} [props.cantidadCarrito=0] - Unidades en el carrito.
+ * @param {object|null} [props.usuario=null] - Usuario con sesión, o null.
+ * @param {() => void} [props.onCerrarSesion] - Qué hacer al pulsar "Cerrar sesión".
  */
-function BarraNavegacion({ cantidadCarrito = 0 }) {
+function BarraNavegacion({ cantidadCarrito = 0, usuario = null, onCerrarSesion }) {
   return (
     // collapseOnSelect cierra el menú móvil al elegir un enlace; para eso cada
     // Nav.Link necesita su eventKey.
@@ -57,13 +63,31 @@ function BarraNavegacion({ cantidadCarrito = 0 }) {
           {/* Se usa Link con clases "btn" en vez del Button de React-Bootstrap:
               un Button con enlace agrega role="button", y estos elementos deben
               anunciarse como enlaces porque llevan a otra página. */}
-          <div className="d-flex flex-wrap gap-2 py-2 py-lg-0">
-            <Link className="btn btn-outline-primary btn-sm" to="/login">
-              Iniciar sesión
-            </Link>
-            <Link className="btn btn-primary btn-sm" to="/registro">
-              Crear cuenta
-            </Link>
+          <div className="d-flex flex-wrap align-items-center gap-2 py-2 py-lg-0">
+            {/* Renderizado condicional: con sesión se saluda y se ofrece salir;
+                sin sesión, entrar o registrarse. */}
+            {usuario ? (
+              <>
+                <span className="small text-secondary me-1">Hola, {usuario.nombre}</span>
+                {puedeEntrarAlPanel(usuario) && (
+                  <Link className="btn btn-outline-primary btn-sm" to="/admin">
+                    Panel
+                  </Link>
+                )}
+                <button type="button" className="btn btn-outline-secondary btn-sm" onClick={onCerrarSesion}>
+                  Cerrar sesión
+                </button>
+              </>
+            ) : (
+              <>
+                <Link className="btn btn-outline-primary btn-sm" to="/login">
+                  Iniciar sesión
+                </Link>
+                <Link className="btn btn-primary btn-sm" to="/registro">
+                  Crear cuenta
+                </Link>
+              </>
+            )}
             <Link
               className="btn btn-acento btn-sm"
               to="/carrito"

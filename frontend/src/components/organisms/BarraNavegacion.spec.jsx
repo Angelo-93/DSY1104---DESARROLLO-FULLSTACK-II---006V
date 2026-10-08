@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 
+import { ADMIN_PRUEBA, CLIENTE_PRUEBA } from '../../testing/datosPrueba.js'
 import BarraNavegacion from './BarraNavegacion.jsx'
 
 // La barra usa Link y NavLink, que solo funcionan dentro de un router.
@@ -28,6 +29,32 @@ describe('BarraNavegacion', () => {
 
     expect(screen.getByTestId('contador-carrito').textContent).toBe('3')
     expect(screen.getByRole('link', { name: 'Carrito, 3 productos' })).toBeTruthy()
+  })
+
+  it('sin sesión ofrece iniciar sesión y crear cuenta', () => {
+    renderizarEn('/')
+
+    expect(screen.getByRole('link', { name: 'Iniciar sesión' })).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Crear cuenta' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: 'Cerrar sesión' })).toBeNull()
+  })
+
+  it('con sesión de cliente saluda, oculta el panel y avisa al cerrar sesión', () => {
+    const onCerrarSesion = jasmine.createSpy('onCerrarSesion')
+    renderizarEn('/', { usuario: CLIENTE_PRUEBA, onCerrarSesion })
+
+    expect(screen.getByText('Hola, Francisca')).toBeTruthy()
+    expect(screen.queryByRole('link', { name: 'Panel' })).toBeNull()
+    expect(screen.queryByRole('link', { name: 'Iniciar sesión' })).toBeNull()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
+    expect(onCerrarSesion).toHaveBeenCalledTimes(1)
+  })
+
+  it('con sesión de administrador muestra el acceso al panel', () => {
+    renderizarEn('/', { usuario: ADMIN_PRUEBA })
+
+    expect(screen.getByRole('link', { name: 'Panel' }).getAttribute('href')).toBe('/admin')
   })
 
   it('marca como activo solo el enlace de la página actual', () => {
