@@ -4,7 +4,7 @@ import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 
 import { formatearPrecio } from '../../utils/formato.js'
-import { tieneErrores, validarDatosEntrega } from '../../utils/validaciones.js'
+import { quitarError, tieneErrores, validarDatosEntrega } from '../../utils/validaciones.js'
 import CampoFormulario from '../molecules/CampoFormulario.jsx'
 import SelectorRegionComuna from '../molecules/SelectorRegionComuna.jsx'
 
@@ -41,6 +41,7 @@ function FormularioEntrega({ datosIniciales = {}, total, onPagar }) {
 
   function cambiarCampo(campo, valor) {
     setDatos((anterior) => ({ ...anterior, [campo]: valor }))
+    setErrores((anteriores) => quitarError(anteriores, campo))
   }
 
   function propsCampo(nombre) {

@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
-import { tieneErrores, validarCampoContrasena, validarCampoCorreo } from '../../utils/validaciones.js'
+import { quitarError, tieneErrores, validarCampoContrasena, validarCampoCorreo } from '../../utils/validaciones.js'
 import CampoFormulario from '../molecules/CampoFormulario.jsx'
 
 /**
@@ -56,7 +56,10 @@ function FormularioLogin({ onIngresar, errorCredenciales }) {
         autoComplete="email"
         maxLength={100}
         value={correo}
-        onChange={(evento) => setCorreo(evento.target.value)}
+        onChange={(evento) => {
+          setCorreo(evento.target.value)
+          setErrores((anteriores) => quitarError(anteriores, 'correo'))
+        }}
         error={errores.correo}
       />
       <CampoFormulario
@@ -66,7 +69,10 @@ function FormularioLogin({ onIngresar, errorCredenciales }) {
         autoComplete="current-password"
         maxLength={10}
         value={contrasena}
-        onChange={(evento) => setContrasena(evento.target.value)}
+        onChange={(evento) => {
+          setContrasena(evento.target.value)
+          setErrores((anteriores) => quitarError(anteriores, 'contrasena'))
+        }}
         error={errores.contrasena}
       />
 

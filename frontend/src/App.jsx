@@ -5,24 +5,27 @@
  * Las rutas se anidan dentro de una plantilla: la plantilla dibuja lo que se
  * repite (menú, pie, menú lateral) y la ruta hija se dibuja en su <Outlet />.
  *
- * Mientras una vista no existe, su ruta muestra PaginaEnConstruccion. Cada
- * bloque siguiente reemplaza el "element" de su ruta por la página real.
- *
  * El panel tiene dos niveles de acceso (RutaProtegida):
  * - puedeEntrarAlPanel: Administrador y Vendedor (consultar productos y órdenes).
  * - esAdministrador: solo Administrador (crear, editar, categorías, usuarios, reportes).
  */
+import { lazy, Suspense } from 'react'
 import { Route, Routes } from 'react-router-dom'
 
 import PlantillaAdmin from './components/templates/PlantillaAdmin.jsx'
 import PlantillaTienda from './components/templates/PlantillaTienda.jsx'
 import PaginaBoleta from './pages/admin/PaginaBoleta.jsx'
+import PaginaCategoriasAdmin from './pages/admin/PaginaCategoriasAdmin.jsx'
 import PaginaDashboard from './pages/admin/PaginaDashboard.jsx'
+import PaginaFormularioCategoria from './pages/admin/PaginaFormularioCategoria.jsx'
 import PaginaFormularioProducto from './pages/admin/PaginaFormularioProducto.jsx'
+import PaginaFormularioUsuario from './pages/admin/PaginaFormularioUsuario.jsx'
+import PaginaHistorialCompras from './pages/admin/PaginaHistorialCompras.jsx'
 import PaginaOrdenes from './pages/admin/PaginaOrdenes.jsx'
+import PaginaPerfil from './pages/admin/PaginaPerfil.jsx'
 import PaginaProductosAdmin from './pages/admin/PaginaProductosAdmin.jsx'
 import PaginaProductosCriticos from './pages/admin/PaginaProductosCriticos.jsx'
-import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion.jsx'
+import PaginaUsuariosAdmin from './pages/admin/PaginaUsuariosAdmin.jsx'
 import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada.jsx'
 import PaginaBlogs from './pages/tienda/PaginaBlogs.jsx'
 import PaginaCarrito from './pages/tienda/PaginaCarrito.jsx'
@@ -42,6 +45,11 @@ import PaginaProductos from './pages/tienda/PaginaProductos.jsx'
 import PaginaRegistro from './pages/tienda/PaginaRegistro.jsx'
 import RutaProtegida from './routing/RutaProtegida.jsx'
 import { esAdministrador, puedeEntrarAlPanel } from './utils/permisos.js'
+
+// Reportes se carga "bajo demanda" (lazy): es la única vista que usa Chart.js,
+// una librería grande. Así los clientes de la tienda no la descargan; el
+// navegador la pide recién cuando un Administrador abre Reportes.
+const PaginaReportes = lazy(() => import('./pages/admin/PaginaReportes.jsx'))
 
 function App() {
   return (
@@ -86,21 +94,29 @@ function App() {
         <Route path="ordenes/:numeroOrden" element={<PaginaBoleta />} />
         <Route path="productos" element={<PaginaProductosAdmin />} />
         <Route path="productos/criticos" element={<PaginaProductosCriticos />} />
-        <Route path="perfil" element={<PaginaEnConstruccion titulo="Perfil" />} />
+        <Route path="perfil" element={<PaginaPerfil />} />
 
         {/* Administración: solo Administrador. Esta ruta no tiene "path": solo
             agrupa a sus hijas detrás de una segunda guardia (layout route). */}
         <Route element={<RutaProtegida permiso={esAdministrador} />}>
           <Route path="productos/nuevo" element={<PaginaFormularioProducto />} />
           <Route path="productos/:codigo/editar" element={<PaginaFormularioProducto />} />
-          <Route path="categorias" element={<PaginaEnConstruccion titulo="Categorías" />} />
-          <Route path="categorias/nueva" element={<PaginaEnConstruccion titulo="Nueva categoría" />} />
-          <Route path="categorias/:idCategoria/editar" element={<PaginaEnConstruccion titulo="Editar categoría" />} />
-          <Route path="usuarios" element={<PaginaEnConstruccion titulo="Usuarios" />} />
-          <Route path="usuarios/nuevo" element={<PaginaEnConstruccion titulo="Nuevo usuario" />} />
-          <Route path="usuarios/:run/editar" element={<PaginaEnConstruccion titulo="Editar usuario" />} />
-          <Route path="usuarios/:run/historial" element={<PaginaEnConstruccion titulo="Historial de compras" />} />
-          <Route path="reportes" element={<PaginaEnConstruccion titulo="Reportes" />} />
+          <Route path="categorias" element={<PaginaCategoriasAdmin />} />
+          <Route path="categorias/nueva" element={<PaginaFormularioCategoria />} />
+          <Route path="categorias/:idCategoria/editar" element={<PaginaFormularioCategoria />} />
+          <Route path="usuarios" element={<PaginaUsuariosAdmin />} />
+          <Route path="usuarios/nuevo" element={<PaginaFormularioUsuario />} />
+          <Route path="usuarios/:run/editar" element={<PaginaFormularioUsuario />} />
+          <Route path="usuarios/:run/historial" element={<PaginaHistorialCompras />} />
+          <Route
+            path="reportes"
+            element={
+              // Suspense muestra este aviso mientras llega el código de Reportes.
+              <Suspense fallback={<p className="text-secondary">Cargando reportes...</p>}>
+                <PaginaReportes />
+              </Suspense>
+            }
+          />
         </Route>
       </Route>
     </Routes>

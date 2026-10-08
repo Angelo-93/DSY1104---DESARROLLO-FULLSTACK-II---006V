@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 
-import { tieneErrores, validarProducto } from '../../utils/validaciones.js'
+import { quitarError, tieneErrores, validarProducto } from '../../utils/validaciones.js'
 import CampoFormulario from '../molecules/CampoFormulario.jsx'
 
 const VACIO = {
@@ -46,11 +46,16 @@ function FormularioProducto({ producto, categorias, onGuardar, onCancelar, error
   const [datos, setDatos] = useState(() => (producto ? aCamposDeTexto(producto) : VACIO))
   const [errores, setErrores] = useState({})
 
+  function cambiarCampo(campo, valor) {
+    setDatos((anterior) => ({ ...anterior, [campo]: valor }))
+    setErrores((anteriores) => quitarError(anteriores, campo))
+  }
+
   function propsCampo(nombre) {
     return {
       name: nombre,
       value: datos[nombre],
-      onChange: (evento) => setDatos({ ...datos, [nombre]: evento.target.value }),
+      onChange: (evento) => cambiarCampo(nombre, evento.target.value),
       error: errores[nombre],
     }
   }
@@ -89,7 +94,7 @@ function FormularioProducto({ producto, categorias, onGuardar, onCancelar, error
         <Form.Select
           name="idCategoria"
           value={datos.idCategoria}
-          onChange={(evento) => setDatos({ ...datos, idCategoria: evento.target.value })}
+          onChange={(evento) => cambiarCampo('idCategoria', evento.target.value)}
           isInvalid={Boolean(errores.idCategoria)}
         >
           <option value="">Selecciona una categoría</option>

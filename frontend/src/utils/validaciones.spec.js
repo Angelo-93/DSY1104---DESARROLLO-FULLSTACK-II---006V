@@ -1,5 +1,6 @@
 import {
   correoTieneDominioPermitido,
+  quitarError,
   tieneErrores,
   validarCampoContrasena,
   validarCampoRun,
@@ -125,6 +126,17 @@ describe('validaciones', () => {
 
       const errores = validarDatosEntrega({ nombre: 'Ana', apellidos: 'Pérez', correo: 'ana@duoc.cl' })
       expect(Object.keys(errores).sort()).toEqual(['calle', 'comuna', 'region'])
+    })
+  })
+
+  describe('quitarError', () => {
+    it('quita solo el error del campo indicado', () => {
+      expect(quitarError({ nombre: 'x', correo: 'y' }, 'nombre')).toEqual({ correo: 'y' })
+    })
+
+    it('devuelve el mismo objeto si el campo no tenía error', () => {
+      const errores = { correo: 'y' }
+      expect(quitarError(errores, 'nombre')).toBe(errores)
     })
   })
 })

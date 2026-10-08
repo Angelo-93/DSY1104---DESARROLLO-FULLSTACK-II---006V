@@ -1,4 +1,11 @@
-import { resumirInventario, resumirUsuarios, resumirVentas } from './estadisticas.js'
+import {
+  productosMasVendidos,
+  resumirInventario,
+  resumirUsuarios,
+  resumirVentas,
+  ventasPorCategoria,
+  ventasPorMes,
+} from './estadisticas.js'
 
 describe('estadisticas', () => {
   it('cuenta como venta solo las órdenes pagadas', () => {
@@ -31,5 +38,37 @@ describe('estadisticas', () => {
   it('con listas vacías devuelve ceros', () => {
     expect(resumirVentas([]).montoVendido).toBe(0)
     expect(resumirInventario([]).unidades).toBe(0)
+  })
+
+  describe('reportes', () => {
+    const linea = (codigo, idCategoria, precioUnitario, cantidad) => ({ codigo, nombre: codigo, idCategoria, precioUnitario, cantidad })
+    const ORDENES = [
+      { estado: 'pagada', fecha: '2026-08-10T15:00:00-04:00', total: 300, items: [linea('A', 'notebooks', 100, 3)] },
+      // 31 de agosto a las 23:30 en Chile = 1 de septiembre en UTC: debe contar en agosto.
+      { estado: 'pagada', fecha: '2026-09-01T03:30:00Z', total: 50, items: [linea('B', 'monitores', 50, 1)] },
+      { estado: 'pagada', fecha: '2026-10-05T12:00:00-03:00', total: 200, items: [linea('B', 'monitores', 50, 4)] },
+      { estado: 'rechazada', fecha: '2026-10-06T12:00:00-03:00', total: 9999, items: [linea('C', 'notebooks', 9999, 1)] },
+    ]
+
+    it('agrupa por mes en hora de Chile y completa los meses sin ventas con 0', () => {
+      expect(ventasPorMes(ORDENES)).toEqual([
+        { etiqueta: 'Ago 2026', total: 350, ordenes: 2 },
+        { etiqueta: 'Sep 2026', total: 0, ordenes: 0 },
+        { etiqueta: 'Oct 2026', total: 200, ordenes: 1 },
+      ])
+      expect(ventasPorMes([])).toEqual([])
+    })
+
+    it('suma por categoría desde las líneas, sin contar las órdenes rechazadas', () => {
+      expect(ventasPorCategoria(ORDENES, { notebooks: 'Notebooks' })).toEqual([
+        { nombre: 'Notebooks', total: 300, unidades: 3 },
+        { nombre: 'Sin categoría', total: 250, unidades: 5 }, // "monitores" no está en el diccionario
+      ])
+    })
+
+    it('ordena los productos por unidades vendidas y respeta el límite', () => {
+      expect(productosMasVendidos(ORDENES).map((p) => [p.codigo, p.unidades])).toEqual([['B', 5], ['A', 3]])
+      expect(productosMasVendidos(ORDENES, 1).length).toBe(1)
+    })
   })
 })

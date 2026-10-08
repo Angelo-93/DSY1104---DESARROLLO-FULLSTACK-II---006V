@@ -59,4 +59,15 @@ describe('FormularioLogin', () => {
 
     expect(screen.getByRole('alert').textContent).toBe('Correo o contraseña incorrectos.')
   })
+
+  it('borra el error de un campo en cuanto el usuario lo corrige', () => {
+    render(<FormularioLogin onIngresar={onIngresar} />)
+    fireEvent.click(screen.getByRole('button', { name: 'Iniciar sesión' }))
+    expect(screen.getByText('El correo es obligatorio.')).toBeTruthy()
+
+    escribir('Correo', 'a')
+
+    expect(screen.queryByText('El correo es obligatorio.')).toBeNull()
+    expect(screen.getByText('La contraseña es obligatoria.')).toBeTruthy() // el otro sigue
+  })
 })

@@ -71,6 +71,22 @@ export function tieneErrores(errores) {
   return Object.keys(errores).length > 0
 }
 
+/**
+ * Quita el error de un campo cuando el usuario lo vuelve a escribir: si no,
+ * el mensaje rojo seguiría ahí aunque el campo ya esté corregido, hasta el
+ * próximo envío. Se usa en los formularios como setErrores((e) => quitarError(e, campo)).
+ *
+ * @param {object} errores
+ * @param {string} campo
+ * @returns {object} Los errores sin ese campo (el mismo objeto si no tenía error,
+ *   así React no vuelve a dibujar el formulario sin necesidad).
+ */
+export function quitarError(errores, campo) {
+  if (!(campo in errores)) return errores
+  const { [campo]: _quitado, ...resto } = errores
+  return resto
+}
+
 /* ---------- Validadores de un campo (devuelven '' si el valor es válido) ---------- */
 
 /**

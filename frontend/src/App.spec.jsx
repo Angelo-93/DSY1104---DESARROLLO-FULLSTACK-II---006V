@@ -34,11 +34,12 @@ describe('App (rutas)', () => {
     expect(screen.getByRole('heading', { name: 'Iniciar sesión' })).toBeTruthy()
   })
 
-  it('con sesión de Administrador dibuja el panel con su plantilla', () => {
+  it('con sesión de Administrador dibuja el panel con su plantilla', async () => {
     instalarLocalStorageFalso({ [CLAVES.sesion]: ADMIN_PRUEBA })
     renderizarAppEn('/admin/reportes')
 
-    expect(screen.getByRole('heading', { name: 'Reportes' })).toBeTruthy()
+    // Reportes se carga bajo demanda (React.lazy): findBy espera a que llegue.
+    expect(await screen.findByRole('heading', { level: 1, name: 'Reportes' })).toBeTruthy()
     expect(screen.getByRole('navigation', { name: 'Menú del administrador' })).toBeTruthy()
     expect(screen.queryByRole('contentinfo')).toBeNull() // el admin no lleva el pie de la tienda
   })
@@ -58,7 +59,7 @@ describe('App (rutas)', () => {
     // Prueba de regresión: antes de useCerrarSesion, la guardia del panel
     // alcanzaba a redirigir al login antes de que llegara la navegación.
     instalarLocalStorageFalso({ [CLAVES.sesion]: ADMIN_PRUEBA })
-    renderizarAppEn('/admin/reportes')
+    renderizarAppEn('/admin/ordenes')
 
     fireEvent.click(screen.getByRole('button', { name: 'Cerrar sesión' }))
 

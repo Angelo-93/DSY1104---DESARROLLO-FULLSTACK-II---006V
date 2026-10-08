@@ -13,6 +13,7 @@ Aplicación de una sola página (SPA) en React para la tienda INFORCORE.
 | Karma + Jasmine | Ejecución y escritura de pruebas unitarias |
 | React Testing Library | Renderizar componentes y simular acciones del usuario en las pruebas |
 | react-confetti | Animación de celebración al confirmar una compra (vista en la clase del 15-09) |
+| Chart.js + react-chartjs-2 | Gráficos de la vista Reportes del panel (vista en la clase del 15-09) |
 
 ## Estructura de `src/` (Atomic Design)
 
@@ -55,6 +56,18 @@ en el navegador. Para volver a los datos iniciales, borra las claves desde DevTo
 | `inforcore_ordenes` | Órdenes de compra (boletas) |
 | `inforcore_carrito` | Carrito del visitante |
 | `inforcore_sesion` | Usuario con sesión iniciada |
+
+## Panel administrador
+
+| Sección | Administrador | Vendedor |
+| --- | --- | --- |
+| Dashboard, Órdenes y Boleta | Sí | Sí (solo lectura) |
+| Productos y Productos críticos | Crear, editar, eliminar | Solo lectura |
+| Categorías, Usuarios (con historial) y Reportes | Sí | No |
+| Perfil | Sí | Sí |
+
+La vista Reportes se carga bajo demanda (`React.lazy`): Chart.js solo se descarga cuando un
+Administrador abre esa vista, no cuando un cliente visita la tienda.
 
 ## Simulación del pago
 

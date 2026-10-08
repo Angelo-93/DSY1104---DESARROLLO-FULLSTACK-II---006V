@@ -5,7 +5,7 @@ import Col from 'react-bootstrap/Col'
 import Form from 'react-bootstrap/Form'
 import Row from 'react-bootstrap/Row'
 
-import { tieneErrores, validarUsuario } from '../../utils/validaciones.js'
+import { quitarError, tieneErrores, validarUsuario } from '../../utils/validaciones.js'
 import CampoFormulario from '../molecules/CampoFormulario.jsx'
 import SelectorRegionComuna from '../molecules/SelectorRegionComuna.jsx'
 
@@ -38,6 +38,7 @@ function FormularioRegistro({ onRegistrar, errorGeneral }) {
     // Forma funcional de set: toma el estado más reciente. Necesaria aquí porque
     // el selector de región llama dos veces seguidas (región y comuna).
     setDatos((anterior) => ({ ...anterior, [campo]: valor }))
+    setErrores((anteriores) => quitarError(anteriores, campo))
   }
 
   function manejarCambio(evento) {

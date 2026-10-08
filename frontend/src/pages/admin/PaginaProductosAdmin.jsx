@@ -39,6 +39,9 @@ function PaginaProductosAdmin() {
     // realmente quedó guardado, no una copia que podría desincronizarse.
     setProductos(listarProductos())
     setMensajeEliminado(`Se eliminó ${porEliminar.nombre}.`)
+    // Solo se muestra el aviso más reciente: el que llegó desde el formulario
+    // (ej: "Producto creado") se cierra para que no queden dos avisos apilados.
+    cerrarMensaje()
     setPorEliminar(null)
   }
 

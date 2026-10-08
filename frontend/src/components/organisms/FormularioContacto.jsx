@@ -3,7 +3,7 @@ import Alert from 'react-bootstrap/Alert'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 
-import { tieneErrores, validarContacto } from '../../utils/validaciones.js'
+import { quitarError, tieneErrores, validarContacto } from '../../utils/validaciones.js'
 import CampoFormulario from '../molecules/CampoFormulario.jsx'
 
 const VACIO = { nombre: '', correo: '', comentario: '' }
@@ -25,6 +25,7 @@ function FormularioContacto() {
   function manejarCambio(evento) {
     const { name, value } = evento.target
     setDatos({ ...datos, [name]: value })
+    setErrores((anteriores) => quitarError(anteriores, name))
   }
 
   function manejarEnvio(evento) {
