@@ -9,9 +9,13 @@ function filas() {
 }
 
 describe('TablaCarrito', () => {
-  it('renderiza una fila por línea con precio, cantidad y subtotal formateados', () => {
+  // RÚBRICA 2/10 · Renderizado. Además de contar las filas, revisa que los datos
+  // salgan con formato chileno ($500.000) y que el subtotal esté bien calculado.
+  it('[Rúbrica 2/10 · Renderizado] renderiza una fila por línea con precio, cantidad y subtotal formateados', () => {
+    // Preparar y actuar: ITEMS_PRUEBA trae 2 líneas (2 notebooks y 1 mouse).
     render(<TablaCarrito items={ITEMS_PRUEBA} />)
 
+    // Verificar
     expect(filas().length).toBe(2)
     const primera = within(filas()[0])
     expect(primera.getByText('Notebook Uno')).toBeTruthy()

@@ -101,9 +101,47 @@ npm install              # instala dependencias
 npm run dev              # servidor de desarrollo (http://localhost:5173)
 npm run build            # compila para producción en dist/
 npm test                 # pruebas en Chrome sin ventana + informe en coverage/index.html
+npm run test:rubrica     # solo las 10 pruebas marcadas para la rúbrica, con su nombre
 npm run test:watch       # pruebas en Chrome visible, se repiten al guardar
 npm run test:navegadores # pruebas en Chrome, Firefox y Edge
 npm run lint             # revisión estática del código con oxlint
 ```
 
 La cobertura mínima exigida es 60% (umbral indicado por el docente); bajo ese valor `npm test` falla.
+
+## Pruebas
+
+Hay pruebas para componentes, páginas, hooks, servicios y funciones de `utils`. Cada una está
+junto al archivo que prueba. Las herramientas son Karma (ejecuta las pruebas en Chrome),
+Jasmine (`describe`, `it`, `expect`, mocks) y React Testing Library (dibuja el componente y
+simula al usuario).
+
+Diez pruebas de componentes están marcadas con `[Rúbrica N/10 · Tipo]` en su nombre y con un
+comentario que explica qué verifican. Cubren los cinco tipos que propone el docente en el
+Anexo 1, dos por tipo. `npm run test:rubrica` ejecuta solo esas diez y muestra su nombre.
+
+| N° | Tipo | Componente | Qué verifica | Mock |
+| --- | --- | --- | --- | --- |
+| 1 | Renderizado | `GrillaProductos` | Una tarjeta por cada producto del conjunto de datos | — |
+| 2 | Renderizado | `TablaCarrito` | Una fila por línea, con precios y subtotal formateados | — |
+| 3 | Renderizado condicional | `CampoFormulario` | El error aparece solo cuando existe | — |
+| 4 | Renderizado condicional | `CelebracionCompra` | Sin confeti si el sistema pide reducir animaciones | `spyOn(window, 'matchMedia')` |
+| 5 | Props | `ModalConfirmacion` | Usa el título y la etiqueta recibidos y llama a la función de cada botón | `jasmine.createSpy` |
+| 6 | Props | `TarjetaProducto` | Muestra los datos del producto recibido y enlaza a su detalle | — |
+| 7 | Estado | `FormularioLogin` | El estado de cada campo cambia al escribir | — |
+| 8 | Estado | `FormularioContacto` | El contador de caracteres sigue al estado del mensaje | — |
+| 9 | Eventos | `SelectorCantidad` | Los clics en + y − avisan la cantidad nueva | `jasmine.createSpy` |
+| 10 | Eventos | `PaginaDetalleProducto` | Dos clics agregan la cantidad elegida al carrito y lo guardan | localStorage falso |
+
+Mocks usados en el proyecto (carpeta `src/testing/` y Jasmine):
+
+- **localStorage falso** (`instalarLocalStorageFalso`): reemplaza el almacenamiento del navegador
+  por un objeto en memoria. Cada prueba parte con los datos que necesita y no toca los datos
+  reales. Es el equivalente al mock de una API, porque localStorage es la base de datos simulada.
+- **`jasmine.createSpy`**: función falsa que registra si la llamaron y con qué datos. Prueba que un
+  componente avisa a su padre (props `onAgregar`, `onConfirmar`...).
+- **`spyOn`**: reemplaza por un rato una función existente (`window.matchMedia`, `window.print`).
+  Jasmine restaura la original al terminar cada prueba.
+- **`jasmine.clock().mockDate`**: fija la fecha actual para que las órdenes creadas en las pruebas
+  tengan siempre la misma fecha.
+

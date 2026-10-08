@@ -15,10 +15,18 @@ describe('CelebracionCompra', () => {
     expect(screen.getByTestId('confeti').tagName).toBe('CANVAS')
   })
 
-  it('no dibuja nada si el sistema pide reducir animaciones', () => {
+  // RÚBRICA 4/10 · Renderizado condicional con mock. La condición viene del
+  // sistema operativo (preferencia "reducir movimiento"); spyOn reemplaza
+  // window.matchMedia por una respuesta fija, así la prueba no depende del
+  // computador donde se ejecuta. Jasmine restaura el original al terminar.
+  it('[Rúbrica 4/10 · Renderizado condicional] no dibuja nada si el sistema pide reducir animaciones', () => {
+    // Preparar: el mock responde "sí, reducir movimiento".
     simularReducirMovimiento(true)
+
+    // Actuar
     const { container } = render(<CelebracionCompra />)
 
+    // Verificar: no se dibujó nada y el componente consultó la preferencia correcta.
     expect(container.innerHTML).toBe('')
     expect(window.matchMedia).toHaveBeenCalledWith('(prefers-reduced-motion: reduce)')
   })

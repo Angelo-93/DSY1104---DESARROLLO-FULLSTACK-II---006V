@@ -9,6 +9,7 @@
     "lint": "oxlint",
     "preview": "vite preview",
     "test": "karma start karma.conf.cjs",
+    "test:rubrica": "karma start karma.conf.cjs --rubrica",
     "test:watch": "karma start karma.conf.cjs --no-single-run --browsers Chrome",
     "test:navegadores": "karma start karma.conf.cjs --browsers ChromeHeadless,FirefoxHeadless,EdgeHeadless"
   },

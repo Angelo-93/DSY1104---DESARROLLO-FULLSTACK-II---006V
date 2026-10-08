@@ -18,13 +18,26 @@
 const ARCHIVOS_JSX = 'src/**/*.jsx'
 const ARCHIVOS_JS = 'src/**/*.js'
 
+// `npm run test:rubrica` agrega la opción --rubrica: se ejecutan solo las 10
+// pruebas cuyo nombre empieza con "[Rúbrica" y se muestra cada nombre en la
+// terminal. Sin la opción, `npm test` ejecuta todas y mide la cobertura.
+const SOLO_RUBRICA = process.argv.includes('--rubrica')
+
 module.exports = function (config) {
   config.set({
     frameworks: ['jasmine', 'webpack'],
     // 'karma-*' carga automáticamente los plugins cuyo nombre empieza con karma-
     // (jasmine, webpack, coverage, chrome, firefox). El de Edge se publica con
     // otro nombre (@chiragrupani/...), así que se agrega a mano.
-    plugins: ['karma-*', require('@chiragrupani/karma-chromium-edge-launcher')],
+    plugins: [
+      'karma-*',
+      require('@chiragrupani/karma-chromium-edge-launcher'),
+      require('./karma.reporte-lista.cjs'), // reporter propio para test:rubrica
+    ],
+
+    // --grep es una opción de karma-jasmine: ejecuta solo las pruebas cuyo nombre
+    // contiene ese texto (literal); las demás se cuentan como "skipped" (omitidas).
+    client: SOLO_RUBRICA ? { args: ['--grep', '[Rúbrica'] } : {},
 
     files: [
       { pattern: ARCHIVOS_JSX, watched: false },
@@ -70,7 +83,9 @@ module.exports = function (config) {
       resolve: { extensions: ['.js', '.jsx'] },
     },
 
-    reporters: ['progress', 'coverage'],
+    // Con solo 10 pruebas la cobertura saldría baja y haría fallar el umbral del
+    // 60%, por eso en modo rúbrica no se mide (el informe real es el de npm test).
+    reporters: SOLO_RUBRICA ? ['lista'] : ['progress', 'coverage'],
     coverageReporter: {
       dir: 'coverage',
       subdir: '.',

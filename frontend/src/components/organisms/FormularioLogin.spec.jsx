@@ -14,12 +14,23 @@ describe('FormularioLogin', () => {
     fireEvent.change(screen.getByLabelText(etiqueta), { target: { value: valor } })
   }
 
-  it('actualiza el estado de cada campo mientras el usuario escribe', () => {
+  // RÚBRICA 7/10 · Estado. Tarea del Anexo: "el estado de un formulario cambia
+  // correctamente cuando el usuario introduce texto". Los campos son controlados:
+  // lo que muestran sale del useState del formulario, así que si el estado no se
+  // actualizara, el valor seguiría vacío.
+  it('[Rúbrica 7/10 · Estado] actualiza el estado de cada campo mientras el usuario escribe', () => {
+    // Preparar: el formulario parte con el estado vacío.
     render(<FormularioLogin onIngresar={onIngresar} />)
+    expect(screen.getByLabelText('Correo').value).toBe('')
+    expect(screen.getByLabelText('Contraseña').value).toBe('')
 
+    // Actuar: fireEvent.change simula lo que el usuario escribe en cada campo.
     escribir('Correo', 'ana@duoc.cl')
+    escribir('Contraseña', 'clave1')
 
+    // Verificar: cada campo guardó su propio valor, sin pisar al otro.
     expect(screen.getByLabelText('Correo').value).toBe('ana@duoc.cl')
+    expect(screen.getByLabelText('Contraseña').value).toBe('clave1')
   })
 
   it('al enviar vacío muestra los errores y no avisa al padre', () => {

@@ -15,15 +15,25 @@ describe('ModalConfirmacion', () => {
     expect(screen.queryByRole('dialog')).toBeNull()
   })
 
-  it('al confirmar o cancelar llama a la función que corresponde', () => {
+  // RÚBRICA 5/10 · Props. Tarea del Anexo: "un botón recibe correctamente la
+  // etiqueta y la función de evento onClick". El texto del botón llega por la prop
+  // textoConfirmar ("Vaciar") y las funciones son mocks (jasmine.createSpy), que
+  // registran si las llamaron y cuántas veces.
+  it('[Rúbrica 5/10 · Props] usa el título y la etiqueta recibidos y llama a la función de cada botón', () => {
+    // Preparar
     const onConfirmar = jasmine.createSpy('onConfirmar')
     const onCancelar = jasmine.createSpy('onCancelar')
     renderizarModal({ mostrar: true, onConfirmar, onCancelar })
 
+    // Verificar que usa las props de texto
     expect(screen.getByRole('dialog')).toBeTruthy()
+    expect(screen.getByText('Vaciar carrito')).toBeTruthy()
+
+    // Actuar: si la etiqueta no fuera "Vaciar", este botón no se encontraría.
     fireEvent.click(screen.getByRole('button', { name: 'Vaciar' }))
     fireEvent.click(screen.getByRole('button', { name: 'Cancelar' }))
 
+    // Verificar: cada botón llamó a su propia función, una sola vez.
     expect(onConfirmar).toHaveBeenCalledTimes(1)
     expect(onCancelar).toHaveBeenCalledTimes(1)
   })

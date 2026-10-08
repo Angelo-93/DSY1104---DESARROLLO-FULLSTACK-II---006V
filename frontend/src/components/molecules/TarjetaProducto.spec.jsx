@@ -15,9 +15,14 @@ function renderizarTarjeta(producto, onAgregar = () => {}) {
 }
 
 describe('TarjetaProducto', () => {
-  it('muestra los datos que recibe por props y enlaza al detalle', () => {
+  // RÚBRICA 6/10 · Props. La tarjeta no busca datos por su cuenta: todo lo que
+  // muestra (categoría, nombre, enlace y precio) sale de las props producto y
+  // nombreCategoria.
+  it('[Rúbrica 6/10 · Props] muestra los datos que recibe por props y enlaza al detalle', () => {
+    // Preparar y actuar
     renderizarTarjeta(NOTEBOOK)
 
+    // Verificar: el enlace usa el código del producto y el precio sale formateado.
     expect(screen.getByText('Notebooks')).toBeTruthy()
     expect(screen.getByRole('link', { name: 'Notebook Uno' }).getAttribute('href')).toBe('/productos/NB-1')
     expect(screen.getByText('$500.000')).toBeTruthy()

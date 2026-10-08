@@ -71,6 +71,26 @@ describe('Panel: Órdenes y Boleta', () => {
     expect(screen.getByText(/rechazo simulado/)).toBeTruthy()
     expect(screen.getByText('Total (no cobrado): $500')).toBeTruthy()
   })
+
+  it('el botón Imprimir abre el diálogo de impresión del navegador', () => {
+    // Mock de window.print: sin él, la prueba abriría el diálogo real de
+    // impresión. spyOn lo reemplaza por una función que solo registra la llamada.
+    spyOn(window, 'print')
+    abrir('/admin/ordenes/1010')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Imprimir' }))
+
+    expect(window.print).toHaveBeenCalledTimes(1)
+    expect(screen.getByText('Compra como invitado')).toBeTruthy()
+    expect(screen.getByText('Total pagado: $1.015.000')).toBeTruthy()
+  })
+
+  it('avisa cuando el número de orden no existe', () => {
+    abrir('/admin/ordenes/9999')
+
+    expect(screen.getByRole('heading', { name: 'Orden no encontrada' })).toBeTruthy()
+    expect(screen.getByText('No existe la orden N° 9999.')).toBeTruthy()
+  })
 })
 
 describe('Panel: Productos', () => {
