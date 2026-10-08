@@ -38,4 +38,14 @@ describe('ordenesService (con localStorage simulado)', () => {
     expect(orden.total).toBe(3000)
     expect(listarOrdenesPorCorreo('ANA@gmail.com').map((o) => o.numero)).toEqual([1003, 1001])
   })
+
+  it('guarda el motivo solo en las órdenes rechazadas', () => {
+    const items = [{ codigo: 'A', nombre: 'A', precioUnitario: 1000, cantidad: 1 }]
+
+    const pagada = crearOrden({ cliente: CLIENTE, direccion: {}, estado: 'pagada', items })
+    const rechazada = crearOrden({ cliente: CLIENTE, direccion: {}, estado: 'rechazada', items, motivoRechazo: { tipo: 'simulado' } })
+
+    expect('motivoRechazo' in pagada).toBeFalse()
+    expect(obtenerOrden(rechazada.numero).motivoRechazo).toEqual({ tipo: 'simulado' })
+  })
 })

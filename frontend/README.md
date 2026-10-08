@@ -12,6 +12,7 @@ Aplicación de una sola página (SPA) en React para la tienda INFORCORE.
 | React Router (`react-router-dom` 7) | Navegación entre vistas sin recargar la página |
 | Karma + Jasmine | Ejecución y escritura de pruebas unitarias |
 | React Testing Library | Renderizar componentes y simular acciones del usuario en las pruebas |
+| react-confetti | Animación de celebración al confirmar una compra (vista en la clase del 15-09) |
 
 ## Estructura de `src/` (Atomic Design)
 
@@ -54,6 +55,16 @@ en el navegador. Para volver a los datos iniciales, borra las claves desde DevTo
 | `inforcore_ordenes` | Órdenes de compra (boletas) |
 | `inforcore_carrito` | Carrito del visitante |
 | `inforcore_sesion` | Usuario con sesión iniciada |
+
+## Simulación del pago
+
+La EP2 no tiene pasarela de pago. El checkout rechaza el pago en dos casos:
+
+- **Real:** algún producto ya no tiene stock suficiente al momento de pagar.
+- **Simulado:** el selector "Simulación del medio de pago" del checkout permite elegir
+  aprobar o rechazar, para mostrar ambos resultados en la presentación.
+
+Las órdenes rechazadas también se guardan (con su motivo) y no descuentan stock.
 
 ## Usuarios de prueba
 

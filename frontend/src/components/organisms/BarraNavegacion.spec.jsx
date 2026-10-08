@@ -15,13 +15,23 @@ function renderizarEn(ruta, props = {}) {
 }
 
 describe('BarraNavegacion', () => {
-  it('renderiza los siete enlaces de la tienda', () => {
+  it('renderiza los enlaces de la tienda y el desplegable de categorías', () => {
     renderizarEn('/')
 
-    const textos = ['Inicio', 'Productos', 'Categorías', 'Ofertas', 'Nosotros', 'Blogs', 'Contacto']
+    const textos = ['Inicio', 'Productos', 'Ofertas', 'Nosotros', 'Blogs', 'Contacto']
     textos.forEach((texto) => {
       expect(screen.getByRole('link', { name: texto })).toBeTruthy()
     })
+    expect(screen.getByRole('button', { name: 'Categorías' })).toBeTruthy()
+  })
+
+  it('al abrir "Categorías" lista las categorías que recibe por props', () => {
+    renderizarEn('/', { categorias: [{ id: 'monitores', nombre: 'Monitores' }] })
+
+    fireEvent.click(screen.getByRole('button', { name: 'Categorías' }))
+
+    expect(screen.getByRole('link', { name: 'Todas las categorías' }).getAttribute('href')).toBe('/categorias')
+    expect(screen.getByRole('link', { name: 'Monitores' }).getAttribute('href')).toBe('/categorias/monitores')
   })
 
   it('muestra en el botón del carrito la cantidad recibida por props', () => {

@@ -69,6 +69,9 @@ export function CarritoProvider({ children }) {
         {
           codigo: producto.codigo,
           nombre: producto.nombre,
+          // La categoría solo sirve para dibujar la ilustración en el carrito,
+          // el checkout y la boleta.
+          idCategoria: producto.idCategoria,
           precioUnitario: precioVigente(producto),
           cantidad: nuevaCantidad,
         },

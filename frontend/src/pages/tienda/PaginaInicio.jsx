@@ -1,5 +1,6 @@
-import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -35,8 +36,27 @@ function PaginaInicio() {
   const [nombresCategoria] = useState(obtenerNombresCategoria)
   const { agregar, aviso, cerrarAviso } = useAgregarAlCarrito()
 
+  // Bienvenida tras crear una cuenta: el registro envía el nombre en el
+  // "state" de la navegación. Se copia a un estado propio y se borra del
+  // historial; si no, el aviso volvería a salir al recargar la página.
+  const ubicacion = useLocation()
+  const navegar = useNavigate()
+  const [bienvenida, setBienvenida] = useState(ubicacion.state?.bienvenida ?? null)
+
+  useEffect(() => {
+    if (ubicacion.state?.bienvenida) navegar(ubicacion.pathname, { replace: true, state: null })
+  }, [ubicacion, navegar])
+
   return (
     <>
+      {bienvenida && (
+        <Container className="pt-3">
+          <Alert variant="success" onClose={() => setBienvenida(null)} dismissible className="mb-0">
+            <strong>¡Bienvenido/a, {bienvenida}!</strong> Tu cuenta quedó creada y ya iniciaste sesión.
+          </Alert>
+        </Container>
+      )}
+
       <section className="portada">
         <Container>
           <Row className="align-items-center g-5">

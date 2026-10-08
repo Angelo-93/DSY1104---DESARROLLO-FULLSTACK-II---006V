@@ -49,9 +49,11 @@ export function listarOrdenesPorCorreo(correo) {
  * @param {object} datos.direccion - calle, departamento, region, comuna, indicaciones.
  * @param {Array<{codigo: string, nombre: string, precioUnitario: number, cantidad: number}>} datos.items
  * @param {'pagada'|'rechazada'} datos.estado
+ * @param {{tipo: 'stock'|'simulado', faltantes?: object[]}} [datos.motivoRechazo]
+ *   Solo en órdenes rechazadas: por qué falló el pago (lo muestra la vista de error).
  * @returns {object} La orden guardada.
  */
-export function crearOrden({ cliente, direccion, items, estado }) {
+export function crearOrden({ cliente, direccion, items, estado, motivoRechazo }) {
   const ordenes = leerOrdenes()
   const ultimoNumero = ordenes.reduce((mayor, orden) => Math.max(mayor, orden.numero), PRIMER_NUMERO - 1)
 
@@ -64,6 +66,8 @@ export function crearOrden({ cliente, direccion, items, estado }) {
     items,
     total: calcularTotal(items),
   }
+  // Se agrega solo si existe, para que las órdenes pagadas no lleven un campo vacío.
+  if (motivoRechazo) nueva.motivoRechazo = motivoRechazo
 
   ordenes.push(nueva)
   guardarDato(CLAVES.ordenes, ordenes)

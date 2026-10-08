@@ -20,3 +20,25 @@ export const VENDEDOR_PRUEBA = {
 export const CLIENTE_PRUEBA = {
   run: '201112222', nombre: 'Francisca', apellidos: 'Muñoz', correo: 'fran@gmail.com', tipoUsuario: 'Cliente',
 }
+
+// Línea de carrito y orden de ejemplo para las vistas de compra.
+export const ITEMS_PRUEBA = [
+  { codigo: 'NB-1', idCategoria: 'notebooks', nombre: 'Notebook Uno', precioUnitario: 500000, cantidad: 2 },
+  { codigo: 'AC-1', idCategoria: 'accesorios', nombre: 'Mouse Oferta', precioUnitario: 15000, cantidad: 1 },
+]
+
+export const ORDEN_PRUEBA = {
+  numero: 1010,
+  fecha: '2026-10-07T15:00:00Z',
+  estado: 'pagada',
+  cliente: { run: null, nombre: 'Ana', apellidos: 'Pérez Soto', correo: 'ana@gmail.com' },
+  direccion: {
+    calle: 'Av. Pajaritos 123',
+    departamento: '',
+    region: 'Región Metropolitana de Santiago',
+    comuna: 'Maipú',
+    indicaciones: 'Dejar en conserjería.',
+  },
+  items: ITEMS_PRUEBA,
+  total: 1015000,
+}

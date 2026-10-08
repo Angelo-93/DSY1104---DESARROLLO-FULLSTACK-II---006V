@@ -46,8 +46,8 @@ export const ORDENES_INICIALES = [
     cliente: { run: '201112222', nombre: 'Francisca', apellidos: 'Muñoz Díaz', correo: 'francisca.munoz@gmail.com' },
     direccion: DIRECCION_FRANCISCA,
     items: [
-      { codigo: 'NB-HP250G10', nombre: 'HP 250 G10', precioUnitario: 549990, cantidad: 1 },
-      { codigo: 'AC-HP235COMBO', nombre: 'HP 235 Wireless Combo', precioUnitario: 24990, cantidad: 1 },
+      { codigo: 'NB-HP250G10', idCategoria: 'notebooks', nombre: 'HP 250 G10', precioUnitario: 549990, cantidad: 1 },
+      { codigo: 'AC-HP235COMBO', idCategoria: 'accesorios', nombre: 'HP 235 Wireless Combo', precioUnitario: 24990, cantidad: 1 },
     ],
   }),
   crearOrden({
@@ -57,7 +57,7 @@ export const ORDENES_INICIALES = [
     cliente: { run: '156789011', nombre: 'Tomás', apellidos: 'Herrera Vidal', correo: 'tomas.herrera@duoc.cl' },
     direccion: DIRECCION_TOMAS,
     items: [
-      { codigo: 'MN-HPP24G5', nombre: 'Monitor HP P24 G5', precioUnitario: 99990, cantidad: 2 },
+      { codigo: 'MN-HPP24G5', idCategoria: 'monitores', nombre: 'Monitor HP P24 G5', precioUnitario: 99990, cantidad: 2 },
     ],
   }),
   crearOrden({
@@ -73,7 +73,7 @@ export const ORDENES_INICIALES = [
       indicaciones: '',
     },
     items: [
-      { codigo: 'IM-HPLJM404DN', nombre: 'HP LaserJet Pro M404dn', precioUnitario: 259990, cantidad: 1 },
+      { codigo: 'IM-HPLJM404DN', idCategoria: 'impresion', nombre: 'HP LaserJet Pro M404dn', precioUnitario: 259990, cantidad: 1 },
     ],
   }),
   crearOrden({
@@ -83,7 +83,7 @@ export const ORDENES_INICIALES = [
     cliente: { run: '201112222', nombre: 'Francisca', apellidos: 'Muñoz Díaz', correo: 'francisca.munoz@gmail.com' },
     direccion: DIRECCION_FRANCISCA,
     items: [
-      { codigo: 'AU-POLYSYNC20', nombre: 'Poly Sync 20', precioUnitario: 74990, cantidad: 1 },
+      { codigo: 'AU-POLYSYNC20', idCategoria: 'audio-y-videoconferencia', nombre: 'Poly Sync 20', precioUnitario: 74990, cantidad: 1 },
     ],
   }),
   crearOrden({
@@ -93,7 +93,7 @@ export const ORDENES_INICIALES = [
     cliente: { run: '156789011', nombre: 'Tomás', apellidos: 'Herrera Vidal', correo: 'tomas.herrera@duoc.cl' },
     direccion: DIRECCION_TOMAS,
     items: [
-      { codigo: 'NB-HPEB640G11', nombre: 'HP EliteBook 640 G11', precioUnitario: 1190000, cantidad: 1 },
+      { codigo: 'NB-HPEB640G11', idCategoria: 'notebooks', nombre: 'HP EliteBook 640 G11', precioUnitario: 1190000, cantidad: 1 },
     ],
   }),
   crearOrden({
@@ -109,8 +109,8 @@ export const ORDENES_INICIALES = [
       indicaciones: 'Entregar en recepción del laboratorio.',
     },
     items: [
-      { codigo: 'DT-HPPD400G9', nombre: 'HP ProDesk 400 G9', precioUnitario: 479990, cantidad: 3 },
-      { codigo: 'MN-HPE27G5', nombre: 'Monitor HP E27 G5', precioUnitario: 189990, cantidad: 3 },
+      { codigo: 'DT-HPPD400G9', idCategoria: 'desktops-y-aio', nombre: 'HP ProDesk 400 G9', precioUnitario: 479990, cantidad: 3 },
+      { codigo: 'MN-HPE27G5', idCategoria: 'monitores', nombre: 'Monitor HP E27 G5', precioUnitario: 189990, cantidad: 3 },
     ],
   }),
 ]

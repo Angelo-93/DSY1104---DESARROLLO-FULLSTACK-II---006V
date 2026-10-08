@@ -249,6 +249,138 @@ button:focus-visible,
   appearance: textfield;
 }
 
+/* ---------- 4d. Carrito, checkout y boleta ---------- */
+.tabla-carrito__imagen {
+  width: 72px;
+}
+
+.tabla-carrito .selector-cantidad {
+  min-width: 8.5rem;
+  margin-inline: auto;
+}
+
+/* Celular: cada fila de la tabla se vuelve un bloque de 3 columnas con
+   CSS Grid. grid-template-areas dibuja dónde va cada celda:
+     [imagen] [nombre    nombre  ]
+     [imagen] [cantidad  subtotal]
+     [imagen] [precio    acciones]
+   Los encabezados se ocultan a la vista pero siguen para lectores de pantalla.
+   "screen and": solo en pantalla. Una hoja impresa también mide menos de
+   768 px, y sin esto la boleta impresa saldría con el diseño de celular. */
+@media screen and (max-width: 767.98px) {
+  .tabla-carrito,
+  .tabla-carrito tbody {
+    display: block;
+  }
+
+  .tabla-carrito thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+  }
+
+  .tabla-carrito tr {
+    display: grid;
+    /* La 3.ª columna tiene ancho fijo: cada fila es una grilla aparte, y con
+       "auto" los botones Eliminar quedarían desalineados entre filas. */
+    grid-template-columns: 56px 1fr 6.5rem;
+    grid-template-areas:
+      'imagen nombre nombre'
+      'imagen cantidad subtotal'
+      'imagen precio acciones';
+    column-gap: 0.75rem;
+    row-gap: 0.35rem;
+    align-items: center;
+    padding-block: 0.75rem;
+    border-bottom: 1px solid var(--inf-borde);
+  }
+
+  .tabla-carrito td {
+    display: block;
+    border: 0;
+    padding: 0;
+    text-align: left !important;
+  }
+
+  .tabla-carrito__imagen {
+    grid-area: imagen;
+    align-self: start;
+    width: auto;
+  }
+
+  .tabla-carrito__nombre {
+    grid-area: nombre;
+    font-weight: 600;
+  }
+
+  .tabla-carrito__cantidad {
+    grid-area: cantidad;
+  }
+
+  .tabla-carrito__subtotal {
+    grid-area: subtotal;
+    font-weight: 600;
+    text-align: right !important;
+  }
+
+  .tabla-carrito__precio {
+    grid-area: precio;
+    font-size: 0.875rem;
+    color: var(--inf-texto-secundario);
+  }
+
+  .tabla-carrito__acciones {
+    grid-area: acciones;
+    text-align: right !important;
+  }
+
+  .tabla-carrito td[data-etiqueta]::before {
+    content: attr(data-etiqueta);
+    color: var(--inf-texto-secundario);
+  }
+
+  .tabla-carrito .selector-cantidad {
+    min-width: 0;
+    max-width: 8rem;
+    margin-inline: 0;
+  }
+}
+
+.simulacion-pago {
+  border: 1px dashed var(--inf-acento);
+  border-radius: 0.5rem;
+  background: #fffaf2;
+}
+
+.total-orden {
+  border-top: 2px solid var(--inf-borde);
+  padding-top: 0.75rem;
+}
+
+/* Al imprimir la boleta: sin sombras ni bordes de tarjeta, para que el papel
+   se vea limpio (el menú y el pie ya se ocultan con d-print-none). */
+@media print {
+  .card {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* La hoja es más angosta que el punto de quiebre "md" de Bootstrap (768 px),
+     así que las columnas col-md-* se apilarían una bajo otra. Aquí se fuerza
+     su ancho de escritorio para que los datos del cliente queden en fila. */
+  .col-md-4 {
+    flex: 0 0 auto;
+    width: 33.333%;
+  }
+
+  .col-md-8 {
+    flex: 0 0 auto;
+    width: 66.667%;
+  }
+}
+
 /* ---------- 5. Pie de página ---------- */
 .pie-pagina {
   background: var(--inf-primario-oscuro);

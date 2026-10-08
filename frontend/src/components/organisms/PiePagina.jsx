@@ -17,7 +17,7 @@ const ANIO_ACTUAL = new Date().getFullYear()
  */
 function PiePagina() {
   return (
-    <footer className="pie-pagina mt-auto">
+    <footer className="pie-pagina mt-auto d-print-none">
       <Container className="py-4">
         {/* xs=12 apila las columnas en el celular; md=4 las pone en fila desde tablet. */}
         <Row className="gy-4">

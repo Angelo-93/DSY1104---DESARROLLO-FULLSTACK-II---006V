@@ -1,9 +1,10 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Outlet, useLocation } from 'react-router-dom'
 
 import { useCarrito } from '../../hooks/useCarrito.js'
 import { useCerrarSesion } from '../../hooks/useCerrarSesion.js'
 import { useSesion } from '../../hooks/useSesion.js'
+import { listarCategorias } from '../../services/categoriasService.js'
 import BarraNavegacion from '../organisms/BarraNavegacion.jsx'
 import PiePagina from '../organisms/PiePagina.jsx'
 
@@ -22,6 +23,9 @@ function PlantillaTienda() {
   const { cantidadUnidades } = useCarrito()
   const manejarCierreSesion = useCerrarSesion()
   const { pathname } = useLocation()
+  // Se leen al montar la tienda: si el admin crea una categoría, aparece en el
+  // menú la próxima vez que se entra a la tienda (al salir del panel).
+  const [categorias] = useState(listarCategorias)
 
   // En una SPA el navegador no vuelve arriba al cambiar de página (no hay
   // recarga): sin esto, al abrir un producto desde el final de la grilla, el
@@ -38,6 +42,7 @@ function PlantillaTienda() {
         cantidadCarrito={cantidadUnidades}
         usuario={usuario}
         onCerrarSesion={manejarCierreSesion}
+        categorias={categorias}
       />
       <main className="flex-grow-1">
         <Outlet />

@@ -30,7 +30,9 @@ function PaginaRegistro() {
       return
     }
     iniciarSesion(nuevoUsuario.correo, nuevoUsuario.contrasena)
-    navegar('/')
+    // El nombre viaja en el "state" de la navegación para que la portada
+    // confirme que la cuenta se creó.
+    navegar('/', { state: { bienvenida: nuevoUsuario.nombre.trim() } })
   }
 
   return (

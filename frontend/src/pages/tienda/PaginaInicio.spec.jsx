@@ -1,4 +1,5 @@
 import { fireEvent, screen } from '@testing-library/react'
+import { Navigate, Route, Routes } from 'react-router-dom'
 
 import { CLAVES } from '../../services/almacenamiento.js'
 import { PRODUCTOS_PRUEBA } from '../../testing/datosPrueba.js'
@@ -31,5 +32,27 @@ describe('PaginaInicio', () => {
     fireEvent.click(screen.getAllByRole('button', { name: 'Agregar Mouse Oferta al carrito' })[0])
 
     expect(JSON.parse(memoria[CLAVES.carrito])[0].codigo).toBe('AC-1')
+  })
+
+  it('sin bienvenida no muestra el aviso de cuenta creada', () => {
+    expect(screen.queryByText(/Tu cuenta quedó creada/)).toBeNull()
+  })
+})
+
+describe('PaginaInicio (bienvenida tras el registro)', () => {
+  it('saluda con el nombre que llega en el state de la navegación', () => {
+    instalarLocalStorageFalso({ [CLAVES.productos]: PRODUCTOS_PRUEBA })
+    renderizarConProveedores(
+      <Routes>
+        <Route path="/registro" element={<Navigate to="/" state={{ bienvenida: 'Pedro' }} />} />
+        <Route path="/" element={<PaginaInicio />} />
+      </Routes>,
+      { ruta: '/registro' },
+    )
+
+    expect(screen.getByText('¡Bienvenido/a, Pedro!')).toBeTruthy()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Close alert' }))
+    expect(screen.queryByText('¡Bienvenido/a, Pedro!')).toBeNull()
   })
 })
