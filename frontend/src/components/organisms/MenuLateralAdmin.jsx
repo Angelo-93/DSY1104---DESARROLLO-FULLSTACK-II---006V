@@ -1,17 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import Nav from 'react-bootstrap/Nav'
 
-// Mismo orden que el diagrama de flujo del administrador (Anexo 1, Figura 10).
-// soloAdmin: secciones que el Vendedor no ve (él solo consulta productos y órdenes).
-const ENLACES_ADMIN = [
-  { ruta: '/admin', texto: 'Dashboard' },
-  { ruta: '/admin/ordenes', texto: 'Órdenes' },
-  { ruta: '/admin/productos', texto: 'Productos' },
-  { ruta: '/admin/categorias', texto: 'Categorías', soloAdmin: true },
-  { ruta: '/admin/usuarios', texto: 'Usuarios', soloAdmin: true },
-  { ruta: '/admin/reportes', texto: 'Reportes', soloAdmin: true },
-  { ruta: '/admin/perfil', texto: 'Perfil' },
-]
+import { seccionesVisibles } from '../../data/seccionesAdmin.js'
 
 /**
  * Menú del panel administrador. Desde tablet es una columna lateral;
@@ -25,7 +15,7 @@ const ENLACES_ADMIN = [
  * @param {() => void} [props.onCerrarSesion]
  */
 function MenuLateralAdmin({ esAdministrador = false, onCerrarSesion }) {
-  const enlacesVisibles = ENLACES_ADMIN.filter((enlace) => esAdministrador || !enlace.soloAdmin)
+  const enlacesVisibles = seccionesVisibles(esAdministrador)
 
   return (
     <nav aria-label="Menú del administrador" className="admin-menu h-100 p-2 p-md-3">

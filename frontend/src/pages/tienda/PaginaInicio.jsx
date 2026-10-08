@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Alert from 'react-bootstrap/Alert'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -10,6 +10,7 @@ import AvisoFlotante from '../../components/molecules/AvisoFlotante.jsx'
 import GrillaProductos from '../../components/organisms/GrillaProductos.jsx'
 import SeccionTarjetas from '../../components/organisms/SeccionTarjetas.jsx'
 import { useAgregarAlCarrito } from '../../hooks/useAgregarAlCarrito.js'
+import { useMensajeDeRuta } from '../../hooks/useMensajeDeRuta.js'
 import { obtenerNombresCategoria } from '../../services/categoriasService.js'
 import { listarOfertas, listarProductos } from '../../services/productosService.js'
 
@@ -37,21 +38,14 @@ function PaginaInicio() {
   const { agregar, aviso, cerrarAviso } = useAgregarAlCarrito()
 
   // Bienvenida tras crear una cuenta: el registro envía el nombre en el
-  // "state" de la navegación. Se copia a un estado propio y se borra del
-  // historial; si no, el aviso volvería a salir al recargar la página.
-  const ubicacion = useLocation()
-  const navegar = useNavigate()
-  const [bienvenida, setBienvenida] = useState(ubicacion.state?.bienvenida ?? null)
-
-  useEffect(() => {
-    if (ubicacion.state?.bienvenida) navegar(ubicacion.pathname, { replace: true, state: null })
-  }, [ubicacion, navegar])
+  // "state" de la navegación (ver useMensajeDeRuta).
+  const [bienvenida, cerrarBienvenida] = useMensajeDeRuta('bienvenida')
 
   return (
     <>
       {bienvenida && (
         <Container className="pt-3">
-          <Alert variant="success" onClose={() => setBienvenida(null)} dismissible className="mb-0">
+          <Alert variant="success" onClose={cerrarBienvenida} dismissible className="mb-0">
             <strong>¡Bienvenido/a, {bienvenida}!</strong> Tu cuenta quedó creada y ya iniciaste sesión.
           </Alert>
         </Container>

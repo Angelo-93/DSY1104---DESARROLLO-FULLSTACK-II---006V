@@ -144,7 +144,8 @@ function anotar(errores, campo, mensaje) {
 /**
  * Reglas de producto (Anexo 1 EP1): código mín. 3, nombre máx. 100, descripción
  * opcional máx. 500, precio mín. 0, stock entero mín. 0, stock crítico opcional,
- * categoría obligatoria. Nuevo en la EP2: precio de oferta opcional y menor al precio.
+ * categoría obligatoria. Nuevo en la EP2: precio de oferta opcional y menor al
+ * precio, y especificaciones opcionales (máx. 200, la línea corta de la tarjeta).
  *
  * @param {object} datos - Valores del formulario de producto.
  * @returns {object} Errores por campo.
@@ -157,6 +158,7 @@ export function validarProducto(datos) {
   else if (codigo.length < 3) errores.codigo = 'Mínimo 3 caracteres.'
 
   anotar(errores, 'nombre', validarTexto(datos.nombre, { maximo: 100, siVacio: 'El nombre es obligatorio.' }))
+  anotar(errores, 'especificaciones', validarTexto(datos.especificaciones, { maximo: 200 }))
   anotar(errores, 'descripcion', validarTexto(datos.descripcion, { maximo: 500 }))
 
   if (estaVacio(datos.precio)) errores.precio = 'El precio es obligatorio.'

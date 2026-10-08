@@ -439,6 +439,51 @@ button:focus-visible,
   }
 }
 
+/* Tarjetas de indicadores del Dashboard (Figura 9): azul, verde y ámbar.
+   El ámbar lleva texto oscuro porque el blanco sobre ámbar no se lee bien. */
+.tarjeta-indicador {
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  color: #ffffff;
+}
+
+.tarjeta-indicador--primario {
+  background: var(--inf-primario);
+}
+
+.tarjeta-indicador--exito {
+  background: #1d6b4f;
+}
+
+.tarjeta-indicador--acento {
+  background: var(--inf-acento);
+  color: #1c1206;
+}
+
+.tarjeta-indicador__titulo {
+  font-weight: 600;
+}
+
+.tarjeta-indicador__valor {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.tarjeta-indicador__detalle {
+  opacity: 0.9;
+}
+
+.tarjeta-acceso {
+  color: var(--inf-texto);
+  border-top: 3px solid var(--inf-primario);
+  transition: box-shadow 0.15s ease;
+}
+
+.tarjeta-acceso:hover {
+  box-shadow: 0 4px 14px rgba(11, 61, 99, 0.12);
+}
+
 /* ---------- 7. Página 404 ---------- */
 .codigo-error {
   font-size: clamp(4rem, 12vw, 7rem);
@@ -453,7 +498,8 @@ button:focus-visible,
     scroll-behavior: auto;
   }
 
-  .tarjeta-producto {
+  .tarjeta-producto,
+  .tarjeta-acceso {
     transition: none;
   }
 }

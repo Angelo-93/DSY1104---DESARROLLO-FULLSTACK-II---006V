@@ -8,9 +8,13 @@ import { formatearPrecio } from '../../utils/formato.js'
  * @param {object} props
  * @param {{precio: number, precioOferta?: number|null}} props.producto
  * @param {boolean} [props.grande=false] - Versión grande para el detalle.
+ * @param {boolean} [props.compacto=false] - Versión de tamaño normal para las
+ *   tablas del panel, donde un precio grande desordenaría las filas.
  */
-function PrecioProducto({ producto, grande = false }) {
-  const claseMonto = grande ? 'fs-3 fw-bold' : 'fs-5 fw-bold'
+function PrecioProducto({ producto, grande = false, compacto = false }) {
+  let claseMonto = 'fs-5 fw-bold'
+  if (grande) claseMonto = 'fs-3 fw-bold'
+  else if (compacto) claseMonto = 'fw-semibold'
 
   if (!estaEnOferta(producto)) {
     return <p className={`${claseMonto} mb-0`}>{formatearPrecio(producto.precio)}</p>

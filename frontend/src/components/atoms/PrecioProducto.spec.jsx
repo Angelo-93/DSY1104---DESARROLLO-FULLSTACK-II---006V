@@ -17,4 +17,12 @@ describe('PrecioProducto', () => {
     expect(screen.getByTestId('precio-oferta').textContent).toBe('$349.990')
     expect(screen.getByText('-13%')).toBeTruthy()
   })
+
+  it('en versión compacta usa el tamaño de texto normal', () => {
+    render(<PrecioProducto producto={{ precio: 1000, precioOferta: null }} compacto />)
+
+    const monto = screen.getByText('$1.000')
+    expect(monto.classList.contains('fw-semibold')).toBeTrue()
+    expect(monto.classList.contains('fs-5')).toBeFalse()
+  })
 })

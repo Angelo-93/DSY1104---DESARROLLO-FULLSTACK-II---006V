@@ -16,6 +16,12 @@ import { Route, Routes } from 'react-router-dom'
 
 import PlantillaAdmin from './components/templates/PlantillaAdmin.jsx'
 import PlantillaTienda from './components/templates/PlantillaTienda.jsx'
+import PaginaBoleta from './pages/admin/PaginaBoleta.jsx'
+import PaginaDashboard from './pages/admin/PaginaDashboard.jsx'
+import PaginaFormularioProducto from './pages/admin/PaginaFormularioProducto.jsx'
+import PaginaOrdenes from './pages/admin/PaginaOrdenes.jsx'
+import PaginaProductosAdmin from './pages/admin/PaginaProductosAdmin.jsx'
+import PaginaProductosCriticos from './pages/admin/PaginaProductosCriticos.jsx'
 import PaginaEnConstruccion from './pages/comunes/PaginaEnConstruccion.jsx'
 import PaginaNoEncontrada from './pages/comunes/PaginaNoEncontrada.jsx'
 import PaginaBlogs from './pages/tienda/PaginaBlogs.jsx'
@@ -75,18 +81,18 @@ function App() {
         }
       >
         {/* Consulta: Administrador y Vendedor */}
-        <Route index element={<PaginaEnConstruccion titulo="Dashboard" />} />
-        <Route path="ordenes" element={<PaginaEnConstruccion titulo="Órdenes y boletas" />} />
-        <Route path="ordenes/:numeroOrden" element={<PaginaEnConstruccion titulo="Boleta" />} />
-        <Route path="productos" element={<PaginaEnConstruccion titulo="Productos" />} />
-        <Route path="productos/criticos" element={<PaginaEnConstruccion titulo="Productos críticos" />} />
+        <Route index element={<PaginaDashboard />} />
+        <Route path="ordenes" element={<PaginaOrdenes />} />
+        <Route path="ordenes/:numeroOrden" element={<PaginaBoleta />} />
+        <Route path="productos" element={<PaginaProductosAdmin />} />
+        <Route path="productos/criticos" element={<PaginaProductosCriticos />} />
         <Route path="perfil" element={<PaginaEnConstruccion titulo="Perfil" />} />
 
         {/* Administración: solo Administrador. Esta ruta no tiene "path": solo
             agrupa a sus hijas detrás de una segunda guardia (layout route). */}
         <Route element={<RutaProtegida permiso={esAdministrador} />}>
-          <Route path="productos/nuevo" element={<PaginaEnConstruccion titulo="Nuevo producto" />} />
-          <Route path="productos/:codigo/editar" element={<PaginaEnConstruccion titulo="Editar producto" />} />
+          <Route path="productos/nuevo" element={<PaginaFormularioProducto />} />
+          <Route path="productos/:codigo/editar" element={<PaginaFormularioProducto />} />
           <Route path="categorias" element={<PaginaEnConstruccion titulo="Categorías" />} />
           <Route path="categorias/nueva" element={<PaginaEnConstruccion titulo="Nueva categoría" />} />
           <Route path="categorias/:idCategoria/editar" element={<PaginaEnConstruccion titulo="Editar categoría" />} />
