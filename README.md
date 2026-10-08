@@ -1,24 +1,30 @@
 # INFORCORE — Tienda Online
 
-Proyecto de la Evaluación Parcial 1 de la asignatura DSY1104 Desarrollo Fullstack II.
+Proyecto transversal de la asignatura **DSY1104 Desarrollo Fullstack II** (Duoc UC, sede Maipú, sección 006V).
+Tienda online de hardware corporativo y educacional, desarrollada en tres evaluaciones parciales.
 
-Sitio web de tienda online desarrollado con HTML5, CSS3 y JavaScript vanilla,
-para la empresa ficticia INFORCORE (venta de hardware corporativo y educacional).
+**Autor:** Angelo Pastene — Grupo 1 (individual, autorizado por el docente).
+**Docente:** Daniel Antonio Vega Vargas.
 
-## Autor
-Angelo Pastene — Grupo 1 (individual, autorizado por el docente)
+## Estructura del repositorio
 
-## Tecnologías
-- HTML5 semántico
-- CSS3 (Flexbox y Grid, sin frameworks)
-- JavaScript vanilla (validación de formularios, carrito con localStorage)
+| Carpeta | Contenido | Evaluación |
+| --- | --- | --- |
+| `frontend/` | Aplicación React + Bootstrap con pruebas Jasmine/Karma | EP2 |
+| `backend/` | API REST con base de datos (se agrega en la EP3) | EP3 |
 
-## Estructura del proyecto
-- `/` — vistas públicas de la tienda
-- `/admin` — vistas del panel administrador
-- `/css` — hoja de estilos externa
-- `/js` — lógica de la aplicación y datos (productos, regiones y comunas)
+La versión entregada en la **EP1** (HTML5, CSS3 y JavaScript vanilla) queda conservada
+en la etiqueta Git [`ep1-entrega`](../../tree/ep1-entrega).
 
-## Cómo ejecutar
-No requiere servidor ni instalación. Abrir `index.html` directamente en el navegador
-(recomendado usar la extensión Live Server de VS Code).
+## Cómo ejecutar el frontend
+
+Requisitos: Node.js 22 o superior.
+
+```bash
+cd frontend
+npm install
+npm run dev      # servidor de desarrollo en http://localhost:5173
+npm test         # pruebas unitarias con Karma + Jasmine e informe de cobertura
+```
+
+El detalle técnico está en [`frontend/README.md`](frontend/README.md).

@@ -1,0 +1,216 @@
+/* =========================================================
+   INFORCORE — Identidad visual sobre Bootstrap 5.3
+   Bootstrap pone la grilla, los componentes y lo responsivo.
+   Este archivo solo cambia lo que hace que se vea INFORCORE:
+   la paleta de la EP1 (azul corporativo + ámbar) y unos pocos
+   estilos propios (marca, pie de página, menú del admin).
+   ========================================================= */
+
+/* ---------- 1. Paleta heredada de la EP1 ---------- */
+:root {
+  --inf-primario: #0b3d63;
+  --inf-primario-oscuro: #082a45;
+  --inf-primario-claro: #14568c;
+  --inf-superficie: #f4f6f8;
+  --inf-borde: #dde3e8;
+  --inf-texto: #1c2b36;
+  --inf-texto-secundario: #5a6b78;
+  --inf-acento: #d98c1f;
+  --inf-acento-oscuro: #b5710f;
+
+  /* Bootstrap 5.3 lee estas variables en tiempo de ejecución, así que basta con
+     reasignarlas para cambiar el color "primary" sin recompilar Bootstrap con Sass.
+     --bs-primary-rgb existe aparte porque Bootstrap lo usa en colores con
+     transparencia (por ejemplo bg-primary bg-opacity-10). */
+  --bs-primary: var(--inf-primario);
+  --bs-primary-rgb: 11, 61, 99;
+  --bs-body-color: var(--inf-texto);
+  --bs-secondary-color: var(--inf-texto-secundario);
+  --bs-border-color: var(--inf-borde);
+  --bs-link-color: var(--inf-primario-claro);
+  --bs-link-color-rgb: 20, 86, 140;
+  --bs-link-hover-color: var(--inf-primario-oscuro);
+  --bs-link-hover-color-rgb: 8, 42, 69;
+}
+
+/* ---------- 2. Botones ---------- */
+/* Los botones de Bootstrap no usan --bs-primary: cada variante trae sus propias
+   variables (--bs-btn-*), por eso se reasignan aquí una por una. */
+.btn-primary {
+  --bs-btn-bg: var(--inf-primario);
+  --bs-btn-border-color: var(--inf-primario);
+  --bs-btn-hover-bg: var(--inf-primario-oscuro);
+  --bs-btn-hover-border-color: var(--inf-primario-oscuro);
+  --bs-btn-active-bg: var(--inf-primario-oscuro);
+  --bs-btn-active-border-color: var(--inf-primario-oscuro);
+  --bs-btn-disabled-bg: var(--inf-primario);
+  --bs-btn-disabled-border-color: var(--inf-primario);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--inf-primario);
+  --bs-btn-border-color: var(--inf-primario);
+  --bs-btn-hover-bg: var(--inf-primario);
+  --bs-btn-hover-border-color: var(--inf-primario);
+  --bs-btn-active-bg: var(--inf-primario-oscuro);
+  --bs-btn-active-border-color: var(--inf-primario-oscuro);
+}
+
+/* Variante propia para la acción de compra: el ámbar se reserva para el carrito
+   y los botones de pago, así el ojo del cliente siempre encuentra dónde comprar. */
+.btn-acento {
+  --bs-btn-color: #1c1206;
+  --bs-btn-bg: var(--inf-acento);
+  --bs-btn-border-color: var(--inf-acento);
+  --bs-btn-hover-color: #ffffff;
+  --bs-btn-hover-bg: var(--inf-acento-oscuro);
+  --bs-btn-hover-border-color: var(--inf-acento-oscuro);
+  --bs-btn-active-color: #ffffff;
+  --bs-btn-active-bg: var(--inf-acento-oscuro);
+  --bs-btn-active-border-color: var(--inf-acento-oscuro);
+  --bs-btn-focus-shadow-rgb: 217, 140, 31;
+}
+
+/* Foco visible para quien navega con teclado (Tab). */
+a:focus-visible,
+button:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--inf-acento);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+/* ---------- 3. Marca ---------- */
+.marca {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  font-size: 1.15rem;
+  letter-spacing: 0.02em;
+  color: var(--inf-primario-oscuro);
+}
+
+.marca__nucleo {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--inf-acento);
+  box-shadow: 0 0 0 3px var(--inf-primario);
+}
+
+.marca--clara {
+  color: #ffffff;
+}
+
+.marca--clara .marca__nucleo {
+  box-shadow: 0 0 0 3px #cfe0ee;
+}
+
+/* ---------- 4. Barra de navegación de la tienda ---------- */
+.barra-navegacion {
+  background: #ffffff;
+  border-bottom: 1px solid var(--inf-borde);
+}
+
+.barra-navegacion .nav-link {
+  color: var(--inf-texto);
+  font-weight: 500;
+}
+
+/* NavLink de react-router agrega la clase "active" a la ruta actual.
+   La marca cambia según el formato del menú: línea inferior cuando los enlaces
+   van en fila (escritorio) y línea izquierda cuando van en columna (celular). */
+.barra-navegacion .nav-link.active {
+  color: var(--inf-primario);
+  font-weight: 600;
+}
+
+@media (min-width: 992px) {
+  .barra-navegacion .nav-link.active {
+    box-shadow: inset 0 -2px 0 var(--inf-acento);
+  }
+}
+
+@media (max-width: 991.98px) {
+  .barra-navegacion .nav-link {
+    padding-left: 0.75rem;
+  }
+
+  .barra-navegacion .nav-link.active {
+    box-shadow: inset 3px 0 0 var(--inf-acento);
+  }
+}
+
+/* ---------- 5. Pie de página ---------- */
+.pie-pagina {
+  background: var(--inf-primario-oscuro);
+  color: #cfe0ee;
+}
+
+.pie-pagina h2 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.pie-pagina a {
+  color: #cfe0ee;
+  text-decoration: none;
+}
+
+.pie-pagina a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.pie-pagina__legal {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  color: #a9c3d8;
+  font-size: 0.8rem;
+}
+
+/* ---------- 6. Panel administrador ---------- */
+.admin-cabecera {
+  background: var(--inf-primario-oscuro);
+}
+
+.admin-menu {
+  background: var(--inf-superficie);
+  border-right: 1px solid var(--inf-borde);
+}
+
+.admin-menu .nav-link {
+  color: var(--inf-texto);
+  border-radius: 0.375rem;
+  white-space: nowrap;
+}
+
+.admin-menu .nav-link.active {
+  background: var(--inf-primario);
+  color: #ffffff;
+}
+
+/* En pantallas chicas el menú lateral pasa a ser una franja horizontal arriba
+   del contenido, con desplazamiento lateral, en vez de ocupar media pantalla. */
+@media (max-width: 767.98px) {
+  .admin-menu {
+    border-right: 0;
+    border-bottom: 1px solid var(--inf-borde);
+  }
+}
+
+/* ---------- 7. Página 404 ---------- */
+.codigo-error {
+  font-size: clamp(4rem, 12vw, 7rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--inf-borde);
+}
+
+/* Quien pidió al sistema reducir animaciones no ve el desplazamiento suave. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
