@@ -10,17 +10,26 @@ import Form from 'react-bootstrap/Form'
  *   enfoca el campo, y el lector de pantalla lee la etiqueta).
  * @param {string} props.etiqueta
  * @param {string} [props.error] - Si viene, el campo se pinta en rojo y el
- *   mensaje aparece debajo.
+ *   mensaje aparece debajo. aria-invalid y aria-describedby hacen que el
+ *   lector de pantalla también anuncie el error, no solo el color.
  * @param {string} [props.ayuda] - Texto de apoyo bajo el campo.
  * El resto de las props (type, value, onChange, as, maxLength...) pasa directo
  * al campo de Bootstrap.
  */
 function CampoFormulario({ id, etiqueta, error, ayuda, ...propsCampo }) {
+  const idError = `${id}-error`
   return (
     <Form.Group className="mb-3" controlId={id}>
       <Form.Label>{etiqueta}</Form.Label>
-      <Form.Control isInvalid={Boolean(error)} {...propsCampo} />
-      <Form.Control.Feedback type="invalid">{error}</Form.Control.Feedback>
+      <Form.Control
+        isInvalid={Boolean(error)}
+        aria-invalid={error ? true : undefined}
+        aria-describedby={error ? idError : undefined}
+        {...propsCampo}
+      />
+      <Form.Control.Feedback id={idError} type="invalid">
+        {error}
+      </Form.Control.Feedback>
       {ayuda && <Form.Text muted>{ayuda}</Form.Text>}
     </Form.Group>
   )

@@ -9,6 +9,7 @@ import GrillaProductos from '../../components/organisms/GrillaProductos.jsx'
 import { useAgregarAlCarrito } from '../../hooks/useAgregarAlCarrito.js'
 import { listarCategorias } from '../../services/categoriasService.js'
 import { listarProductosPorCategoria } from '../../services/productosService.js'
+import { pluralizar } from '../../utils/texto.js'
 
 /** Productos de una categoría: /categorias/:idCategoria. */
 function PaginaDetalleCategoria() {
@@ -42,7 +43,7 @@ function PaginaDetalleCategoria() {
       <h1>{categoria.nombre}</h1>
       {categoria.descripcion && <p className="text-secondary">{categoria.descripcion}</p>}
       <p className="small text-secondary">
-        {productos.length} {productos.length === 1 ? 'producto' : 'productos'}
+        {pluralizar(productos.length, 'producto', 'productos')}
       </p>
 
       <GrillaProductos

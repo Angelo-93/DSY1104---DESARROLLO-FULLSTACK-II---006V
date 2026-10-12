@@ -10,8 +10,9 @@
  *    checkout, que existe para poder mostrar ambos resultados a voluntad.
  * En la EP3, la causa simulada se reemplaza por la respuesta de la pasarela.
  */
+import { actualizarLinea } from '../utils/calculos.js'
 import { crearOrden } from './ordenesService.js'
-import { descontarStock, verificarStock } from './productosService.js'
+import { descontarStock, obtenerProducto, verificarStock } from './productosService.js'
 
 /**
  * @param {object} datos
@@ -21,7 +22,11 @@ import { descontarStock, verificarStock } from './productosService.js'
  * @param {boolean} [datos.simularRechazo=false]
  * @returns {object} La orden creada, con estado 'pagada' o 'rechazada'.
  */
-export function procesarCompra({ cliente, direccion, items, simularRechazo = false }) {
+export function procesarCompra({ cliente, direccion, items: itemsCarrito, simularRechazo = false }) {
+  // Los precios se toman del catálogo en este momento y no de lo que trae el
+  // carrito: el carrito vive en localStorage y alguien podría editarlo a mano.
+  const items = itemsCarrito.map((item) => actualizarLinea(item, obtenerProducto(item.codigo)))
+
   // Se revisa el stock en el momento de pagar, no cuando se agregó al carrito:
   // entre ambos momentos el inventario pudo cambiar.
   const faltantes = verificarStock(items)

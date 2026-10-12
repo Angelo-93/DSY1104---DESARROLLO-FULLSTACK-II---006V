@@ -1,5 +1,5 @@
 /*
- * Vistas del Bloque 6a con la App completa (rutas reales y guardias de rol):
+ * Vistas de consulta del panel con la App completa (rutas reales y guardias de rol):
  * Dashboard, Órdenes, Boleta, Productos, Productos críticos y formulario.
  */
 import { fireEvent, screen, within } from '@testing-library/react'
@@ -35,7 +35,7 @@ describe('Panel: Dashboard', () => {
     abrir('/admin')
 
     // 1 orden pagada de $1.015.000; 3 productos con 13 unidades (3 + 10 + 0).
-    expect(screen.getByText('Ventas: $1.015.000 · 1 rechazadas')).toBeTruthy()
+    expect(screen.getByText('Ventas: $1.015.000 · 1 rechazada')).toBeTruthy()
     expect(screen.getByText(/Inventario: 13 unidades/)).toBeTruthy()
     expect(screen.getByText('Clientes: 0 · Personal: 2')).toBeTruthy()
   })
@@ -67,7 +67,7 @@ describe('Panel: Órdenes y Boleta', () => {
   it('la boleta de una orden rechazada muestra el motivo y que no se cobró', () => {
     abrir('/admin/ordenes/1011')
 
-    expect(screen.getByRole('heading', { name: 'Boleta N° 1011' })).toBeTruthy()
+    expect(screen.getByRole('heading', { name: 'Orden N° 1011' })).toBeTruthy()
     expect(screen.getByText(/rechazo simulado/)).toBeTruthy()
     expect(screen.getByText('Total (no cobrado): $500')).toBeTruthy()
   })

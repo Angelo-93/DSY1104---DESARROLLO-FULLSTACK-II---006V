@@ -2,6 +2,7 @@ import Table from 'react-bootstrap/Table'
 
 import { calcularSubtotal } from '../../utils/calculos.js'
 import { formatearPrecio } from '../../utils/formato.js'
+import { pluralizar } from '../../utils/texto.js'
 import ImagenProducto from '../atoms/ImagenProducto.jsx'
 import SelectorCantidad from '../molecules/SelectorCantidad.jsx'
 
@@ -59,7 +60,7 @@ function TablaCarrito({ items, editable = false, stockPorCodigo = {}, onCambiarC
                     bajó después de agregar el producto al carrito. */}
                 {excedeStock && (
                   <p className="small text-danger mb-0" role="alert">
-                    {stock === 0 ? 'Sin stock: quítalo del carrito.' : `Solo quedan ${stock} unidades.`}
+                    {stock === 0 ? 'Sin stock: quítalo del carrito.' : `Solo ${stock === 1 ? 'queda' : 'quedan'} ${pluralizar(stock, 'unidad', 'unidades')}.`}
                   </p>
                 )}
               </td>

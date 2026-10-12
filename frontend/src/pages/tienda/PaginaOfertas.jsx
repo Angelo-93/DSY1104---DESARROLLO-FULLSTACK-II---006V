@@ -8,6 +8,7 @@ import { useAgregarAlCarrito } from '../../hooks/useAgregarAlCarrito.js'
 import { obtenerNombresCategoria } from '../../services/categoriasService.js'
 import { listarOfertas } from '../../services/productosService.js'
 import { porcentajeDescuento } from '../../utils/calculos.js'
+import { pluralizar } from '../../utils/texto.js'
 
 /** Vista Ofertas (nueva en la EP2): productos con precio de oferta vigente. */
 function PaginaOfertas() {
@@ -23,7 +24,7 @@ function PaginaOfertas() {
       <h1>Ofertas</h1>
       <p className="text-secondary mb-4">
         {ofertas.length > 0
-          ? `${ofertas.length} productos con precio rebajado, ordenados de mayor a menor descuento.`
+          ? `${pluralizar(ofertas.length, 'producto', 'productos')} con precio rebajado, ordenados de mayor a menor descuento.`
           : 'Revisa más adelante: publicamos ofertas nuevas cada semana.'}
       </p>
 

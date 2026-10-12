@@ -20,24 +20,31 @@ Aplicación de una sola página (SPA) en React para la tienda INFORCORE.
 ```
 src/
 ├── components/
-│   ├── atoms/       piezas mínimas (marca)
-│   ├── molecules/   combinaciones simples de átomos (desde el Bloque 4)
-│   ├── organisms/   bloques completos (menú, pie de página, menú del admin)
+│   ├── atoms/       piezas mínimas: marca, imagen y precio del producto, estado de una orden,
+│   │                ícono del resultado del pago y confeti de la compra
+│   ├── molecules/   combinaciones simples: campo de formulario, tarjetas, buscador, selector de cantidad
+│   ├── organisms/   bloques completos: menús, pie de página, formularios, tablas, gráfico de barras
 │   └── templates/   esqueletos de página (tienda y panel admin)
 ├── pages/           vistas completas, una por ruta
 ├── context/         estado compartido (sesión y carrito) con Context de React
-├── hooks/           useSesion, useCarrito y useCerrarSesion para leer ese estado
+├── hooks/           useSesion y useCarrito (leen ese estado) y ayudantes: useCerrarSesion,
+│                    useAgregarAlCarrito y useMensajeDeRuta
 ├── routing/         RutaProtegida: acceso al panel según el rol
-├── data/            datos semilla: productos, categorías, usuarios, órdenes, regiones
+├── data/            datos semilla: productos, categorías, usuarios, órdenes, regiones y comunas,
+│                    artículos del blog y secciones del menú del panel
 ├── services/        CRUD sobre localStorage (la "base de datos simulada")
-├── utils/           funciones puras: validaciones, cálculos, formato de precios y fechas
+├── utils/           funciones puras: validaciones, cálculos, estadísticas, permisos por rol,
+│                    texto (búsqueda, plurales e identificadores de URL) y formato de precios y fechas
 ├── testing/         mocks para las pruebas (no forman parte de la app)
 ├── styles/          identidad visual de INFORCORE sobre Bootstrap
 ├── App.jsx          mapa de rutas
 └── main.jsx         punto de entrada
 ```
 
-Cada archivo tiene su prueba al lado, con el mismo nombre y extensión `.spec.js` o `.spec.jsx`.
+Las pruebas están junto al código, con el mismo nombre y extensión `.spec.js` o `.spec.jsx`
+(por ejemplo, `TarjetaProducto.spec.jsx`). Varias páginas se prueban juntas, en archivos agrupados
+por flujo (`FlujoCompra.spec.jsx`, `PaginasAdmin*.spec.jsx`), y los hooks a través de los
+componentes y proveedores que los usan.
 Los `import` de archivos propios llevan la extensión (`./App.jsx`): el proyecto usa módulos ES
 (`"type": "module"`), y así lo exige webpack al compilar las pruebas.
 
@@ -84,7 +91,8 @@ Las órdenes rechazadas también se guardan (con su motivo) y no descuentan stoc
 Datos ficticios. Las contraseñas están en texto plano porque es una simulación sin backend;
 la autenticación segura corresponde a la EP3.
 
-Administrador: acceso total al panel. Vendedor: solo consulta productos y órdenes.
+Administrador: acceso total al panel. Vendedor: consulta productos y órdenes (sin modificarlos)
+y edita su propio perfil.
 Cliente: solo la tienda.
 
 | Rol | Correo | Contraseña |
@@ -96,10 +104,14 @@ Cliente: solo la tienda.
 
 ## Comandos
 
+Requisitos: Node.js 22 (desde la 22.18) o Node.js 24 o posterior (desde la 24.11), las versiones
+que exige Babel 8 (ver `engines` en `package.json`), y Google Chrome para las pruebas.
+
 ```bash
 npm install              # instala dependencias
 npm run dev              # servidor de desarrollo (http://localhost:5173)
 npm run build            # compila para producción en dist/
+npm run preview          # sirve lo compilado en dist/ para revisarlo antes de publicar
 npm test                 # pruebas en Chrome sin ventana + informe en coverage/index.html
 npm run test:rubrica     # solo las 10 pruebas marcadas para la rúbrica, con su nombre
 npm run test:watch       # pruebas en Chrome visible, se repiten al guardar
@@ -111,8 +123,9 @@ La cobertura mínima exigida es 60% (umbral indicado por el docente); bajo ese v
 
 ## Pruebas
 
-Hay pruebas para componentes, páginas, hooks, servicios y funciones de `utils`. Cada una está
-junto al archivo que prueba. Las herramientas son Karma (ejecuta las pruebas en Chrome),
+Hay pruebas para componentes, páginas, proveedores de contexto, servicios y funciones de `utils`;
+los hooks se prueban a través de los componentes que los usan. Dónde está cada prueba se explica
+en la sección Estructura. Las herramientas son Karma (ejecuta las pruebas en Chrome),
 Jasmine (`describe`, `it`, `expect`, mocks) y React Testing Library (dibuja el componente y
 simula al usuario).
 

@@ -1,6 +1,6 @@
 import { instalarLocalStorageFalso } from '../testing/localStorageFalso.js'
 import { CLAVES } from './almacenamiento.js'
-import { crearOrden, listarOrdenes, listarOrdenesPorCorreo, obtenerOrden } from './ordenesService.js'
+import { crearOrden, listarOrdenes, listarOrdenesDeUsuario, obtenerOrden } from './ordenesService.js'
 
 const CLIENTE = { run: null, nombre: 'Ana', apellidos: 'Pérez', correo: 'ana@gmail.com' }
 
@@ -36,7 +36,16 @@ describe('ordenesService (con localStorage simulado)', () => {
     expect(orden.numero).toBe(1003)
     expect(orden.fecha).toBe('2026-10-07T15:00:00.000Z')
     expect(orden.total).toBe(3000)
-    expect(listarOrdenesPorCorreo('ANA@gmail.com').map((o) => o.numero)).toEqual([1003, 1001])
+    expect(listarOrdenesDeUsuario({ run: '999', correo: 'ANA@gmail.com' }).map((o) => o.numero)).toEqual([1003, 1001])
+  })
+
+  it('el historial incluye las compras con su RUN aunque usen otro correo', () => {
+    const items = [{ codigo: 'A', nombre: 'A', precioUnitario: 1000, cantidad: 1 }]
+    crearOrden({ cliente: { ...CLIENTE, run: '201112222', correo: 'otro.correo@gmail.com' }, direccion: {}, estado: 'pagada', items })
+
+    const historial = listarOrdenesDeUsuario({ run: '201112222', correo: 'ana@gmail.com' })
+
+    expect(historial.map((o) => o.numero)).toEqual([1003, 1001])
   })
 
   it('guarda el motivo solo en las órdenes rechazadas', () => {

@@ -20,14 +20,26 @@ const COLOR_TEXTO = '#5a6b78'
  * @param {string} props.titulo - También es el nombre accesible del gráfico.
  * @param {string[]} props.etiquetas - Una por barra.
  * @param {number[]} props.valores
- * @param {(valor: number) => string} [props.formatoValor] - Para ejes y tooltip.
+ * @param {(valor: number) => string} [props.formatoValor] - Para las marcas del eje.
+ * @param {(valor: number) => string} [props.formatoTooltip] - Para el cuadro que
+ *   aparece al pasar el mouse sobre una barra; si no viene, usa formatoValor.
+ *   Sirve para mostrar el valor exacto cuando el eje usa una forma abreviada.
  * @param {boolean} [props.horizontal=false] - Barras acostadas: mejor para
  *   nombres largos (productos, categorías).
  * @param {number} [props.alto=280] - Alto en píxeles.
  * @param {boolean} [props.soloEnteros=false] - El eje no muestra decimales
  *   (ej: unidades vendidas: no existen 0,5 unidades).
  */
-function GraficoBarras({ titulo, etiquetas, valores, formatoValor = String, horizontal = false, alto = 280, soloEnteros = false }) {
+function GraficoBarras({
+  titulo,
+  etiquetas,
+  valores,
+  formatoValor = String,
+  formatoTooltip = formatoValor,
+  horizontal = false,
+  alto = 280,
+  soloEnteros = false,
+}) {
   // Sin animación si el sistema pide reducir movimiento.
   const [reducirMovimiento] = useState(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches)
 
@@ -58,7 +70,7 @@ function GraficoBarras({ titulo, etiquetas, valores, formatoValor = String, hori
     maintainAspectRatio: false, // usa el alto del contenedor
     animation: reducirMovimiento ? false : undefined,
     plugins: {
-      tooltip: { callbacks: { label: (contexto) => formatoValor(contexto.parsed[horizontal ? 'x' : 'y']) } },
+      tooltip: { callbacks: { label: (contexto) => formatoTooltip(contexto.parsed[horizontal ? 'x' : 'y']) } },
     },
     scales: horizontal ? { x: ejeValores, y: ejeCategorias } : { x: ejeCategorias, y: ejeValores },
   }
@@ -66,7 +78,7 @@ function GraficoBarras({ titulo, etiquetas, valores, formatoValor = String, hori
   return (
     <div style={{ position: 'relative', height: alto }}>
       {/* role="img" + aria-label: un lector de pantalla anuncia el gráfico por
-          su título. Los números exactos están en la tabla de la página. */}
+          su título (un canvas no tiene texto que leer). */}
       <Bar data={datos} options={opciones} role="img" aria-label={titulo} />
     </div>
   )

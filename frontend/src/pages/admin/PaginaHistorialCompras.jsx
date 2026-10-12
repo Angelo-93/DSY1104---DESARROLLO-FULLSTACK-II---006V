@@ -7,20 +7,21 @@ import Row from 'react-bootstrap/Row'
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin.jsx'
 import TarjetaIndicador from '../../components/molecules/TarjetaIndicador.jsx'
 import TablaOrdenes from '../../components/organisms/TablaOrdenes.jsx'
-import { listarOrdenesPorCorreo } from '../../services/ordenesService.js'
+import { listarOrdenesDeUsuario } from '../../services/ordenesService.js'
 import { obtenerUsuario } from '../../services/usuariosService.js'
 import { resumirVentas } from '../../utils/estadisticas.js'
 import { formatearPrecio, formatearRun } from '../../utils/formato.js'
+import { pluralizar } from '../../utils/texto.js'
 
 /**
  * Historial de compras de un usuario: /admin/usuarios/:run/historial.
- * Busca por correo, así también aparecen las compras que hizo como invitado
- * antes de crear su cuenta (ver ordenesService.listarOrdenesPorCorreo).
+ * Reúne las compras hechas con su cuenta y las que hizo como invitado con su
+ * correo (ver ordenesService.listarOrdenesDeUsuario).
  */
 function PaginaHistorialCompras() {
   const { run } = useParams()
   const [usuario] = useState(() => obtenerUsuario(run))
-  const [ordenes] = useState(() => (usuario ? listarOrdenesPorCorreo(usuario.correo) : []))
+  const [ordenes] = useState(() => (usuario ? listarOrdenesDeUsuario(usuario) : []))
 
   if (!usuario) {
     return (
@@ -46,7 +47,7 @@ function PaginaHistorialCompras() {
 
       <Row xs={1} md={2} className="g-3 mb-4">
         <Col>
-          <TarjetaIndicador titulo="Compras pagadas" valor={resumen.pagadas} detalle={`${resumen.rechazadas} pagos rechazados`} />
+          <TarjetaIndicador titulo="Compras pagadas" valor={resumen.pagadas} detalle={pluralizar(resumen.rechazadas, 'pago rechazado', 'pagos rechazados')} />
         </Col>
         <Col>
           <TarjetaIndicador titulo="Total gastado" valor={formatearPrecio(resumen.montoVendido)} detalle="Suma de las compras pagadas" variante="exito" />

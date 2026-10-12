@@ -5,8 +5,8 @@ import { formatearFecha, formatearPrecio } from '../../utils/formato.js'
 import EstadoOrden from '../atoms/EstadoOrden.jsx'
 
 /**
- * Lista de órdenes del panel. La usan Órdenes y, en el Bloque 6b, el
- * Historial de compras de cada usuario.
+ * Lista de órdenes del panel. La usan Órdenes y el Historial de compras de
+ * cada usuario.
  *
  * @param {object} props
  * @param {object[]} props.ordenes
@@ -48,8 +48,9 @@ function TablaOrdenes({ ordenes, mensajeVacio = 'No hay órdenes para mostrar.' 
               <EstadoOrden estado={orden.estado} />
             </td>
             <td className="text-end">
+              {/* Solo una compra pagada tiene boleta; una rechazada se revisa como orden. */}
               <Link to={`/admin/ordenes/${orden.numero}`} className="btn btn-outline-primary btn-sm text-nowrap">
-                Ver boleta
+                {orden.estado === 'pagada' ? 'Ver boleta' : 'Ver detalle'}
               </Link>
             </td>
           </tr>

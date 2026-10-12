@@ -18,8 +18,11 @@ const CLASE_ROL = {
  * @param {object[]} props.usuarios - Sin contraseña.
  * @param {string} props.runSesion - RUN del usuario conectado.
  * @param {(usuario: object) => void} props.onEliminar
+ * @param {string} [props.mensajeVacio] - Se muestra si la lista viene vacía (búsqueda sin resultados).
  */
-function TablaUsuariosAdmin({ usuarios, runSesion, onEliminar }) {
+function TablaUsuariosAdmin({ usuarios, runSesion, onEliminar, mensajeVacio = 'No hay usuarios para mostrar.' }) {
+  if (usuarios.length === 0) return <p className="text-secondary py-3 mb-0">{mensajeVacio}</p>
+
   return (
     <Table responsive hover className="align-middle mb-0">
       <thead>

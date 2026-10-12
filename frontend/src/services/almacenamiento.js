@@ -69,8 +69,8 @@ export function eliminarDato(clave) {
 
 /**
  * Borra todos los datos de INFORCORE: en la próxima lectura cada servicio
- * vuelve a los datos semilla. Útil para dejar la tienda limpia antes de una
- * demostración.
+ * vuelve a los datos semilla. Hoy lo usan las pruebas para partir limpias; en
+ * el navegador se logra lo mismo borrando las claves desde DevTools.
  */
 export function restablecerDatos() {
   Object.values(CLAVES).forEach(eliminarDato)

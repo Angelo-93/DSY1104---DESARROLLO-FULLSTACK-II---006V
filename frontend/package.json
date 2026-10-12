@@ -2,7 +2,11 @@
   "name": "inforcore-frontend",
   "private": true,
   "version": "0.0.0",
+  "description": "Tienda online INFORCORE (EP2 DSY1104): React + Bootstrap con pruebas Jasmine y Karma",
   "type": "module",
+  "engines": {
+    "node": "^22.18.0 || >=24.11.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",

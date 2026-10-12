@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react'
 
 import { CLAVES, guardarDato, leerDato } from '../services/almacenamiento.js'
 import { obtenerProducto } from '../services/productosService.js'
-import { calcularTotal, contarUnidades, precioVigente } from '../utils/calculos.js'
+import { precioVigente } from '../utils/calculos.js'
 import { CarritoContext } from './CarritoContext.js'
 
 // Stock actual del producto según el catálogo (puede haber cambiado desde que
@@ -30,8 +30,10 @@ function stockDisponible(codigo) {
 /**
  * Envuelve la aplicación (en main.jsx) y comparte el carrito con todos sus hijos.
  *
- * Cada línea guarda nombre y precio del momento en que se agregó, igual que
- * una orden; el checkout vuelve a verificar el stock antes de pagar.
+ * Cada línea guarda una copia del nombre y el precio para que el carrito se
+ * vea aunque el producto se elimine del catálogo. Lo que se muestra y se cobra
+ * es el precio vigente: lo pone al día el hook useCarrito, y compraService lo
+ * vuelve a calcular al pagar, junto con el stock.
  *
  * @param {{children: React.ReactNode}} props
  */
@@ -51,7 +53,8 @@ export function CarritoProvider({ children }) {
    *
    * @param {object} producto - Producto del catálogo.
    * @param {number} [cantidad=1]
-   * @returns {boolean} false si no se pudo agregar todo por falta de stock.
+   * @returns {number} Unidades que sí se agregaron (menos de las pedidas, o 0,
+   *   si no alcanzaba el stock). Con eso la página arma el mensaje correcto.
    */
   function agregarProducto(producto, cantidad = 1) {
     const existente = items.find((item) => item.codigo === producto.codigo)
@@ -59,7 +62,7 @@ export function CarritoProvider({ children }) {
     const maximo = stockDisponible(producto.codigo)
     const nuevaCantidad = Math.min(cantidadActual + cantidad, maximo)
 
-    if (nuevaCantidad <= cantidadActual) return false
+    if (nuevaCantidad <= cantidadActual) return 0
 
     if (existente) {
       setItems(items.map((item) => (item.codigo === producto.codigo ? { ...item, cantidad: nuevaCantidad } : item)))
@@ -77,7 +80,7 @@ export function CarritoProvider({ children }) {
         },
       ])
     }
-    return nuevaCantidad === cantidadActual + cantidad
+    return nuevaCantidad - cantidadActual
   }
 
   /**
@@ -101,10 +104,9 @@ export function CarritoProvider({ children }) {
     setItems([])
   }
 
+  // Los totales no van aquí: los calcula useCarrito con los precios vigentes.
   const valor = {
     items,
-    total: calcularTotal(items),
-    cantidadUnidades: contarUnidades(items),
     agregarProducto,
     cambiarCantidad,
     quitarProducto,

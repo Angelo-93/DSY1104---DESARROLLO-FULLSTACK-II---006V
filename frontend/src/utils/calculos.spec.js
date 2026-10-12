@@ -1,6 +1,8 @@
 import {
+  actualizarLinea,
   calcularSubtotal,
   calcularTotal,
+  contarPorCategoria,
   contarUnidades,
   esStockCritico,
   estaEnOferta,
@@ -50,6 +52,24 @@ describe('calculos', () => {
     it('devuelve 0 para un carrito vacío', () => {
       expect(calcularTotal([])).toBe(0)
       expect(contarUnidades([])).toBe(0)
+    })
+  })
+
+  describe('carrito y catálogo', () => {
+    it('pone al día nombre y precio de una línea con el producto del catálogo', () => {
+      const linea = { codigo: 'A', nombre: 'Viejo', precioUnitario: 100, cantidad: 2 }
+      const producto = { codigo: 'A', nombre: 'Nuevo', idCategoria: 'x', precio: 200, precioOferta: 150 }
+
+      expect(actualizarLinea(linea, producto)).toEqual({ codigo: 'A', nombre: 'Nuevo', idCategoria: 'x', precioUnitario: 150, cantidad: 2 })
+      expect(actualizarLinea(linea, null)).toBe(linea) // producto eliminado: queda igual
+    })
+
+    it('cuenta productos por categoría, incluso con un id como "constructor"', () => {
+      const conteo = contarPorCategoria([{ idCategoria: 'a' }, { idCategoria: 'a' }, { idCategoria: 'constructor' }])
+
+      expect(conteo.a).toBe(2)
+      expect(conteo.constructor).toBe(1)
+      expect(conteo.toString).toBeUndefined() // sin propiedades heredadas
     })
   })
 })

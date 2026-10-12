@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 import Col from 'react-bootstrap/Col'
 import Container from 'react-bootstrap/Container'
@@ -17,6 +17,9 @@ function PaginaCarrito() {
   const { items, total, cantidadUnidades, cambiarCantidad, quitarProducto, vaciarCarrito } = useCarrito()
   const [confirmarVaciado, setConfirmarVaciado] = useState(false)
   const navegar = useNavigate()
+  // Si se llegó desde un pago rechazado por stock, el número de esa orden se
+  // pasa al checkout para que los datos del cliente vuelvan precargados.
+  const { state: estadoNavegacion } = useLocation()
 
   if (items.length === 0) {
     return (
@@ -84,7 +87,7 @@ function PaginaCarrito() {
               <button
                 type="button"
                 className="btn btn-acento w-100"
-                onClick={() => navegar('/checkout')}
+                onClick={() => navegar('/checkout', { state: estadoNavegacion })}
                 disabled={excedeStock}
               >
                 Comprar ahora

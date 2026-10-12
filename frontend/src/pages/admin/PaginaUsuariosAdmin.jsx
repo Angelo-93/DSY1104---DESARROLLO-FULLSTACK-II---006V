@@ -10,14 +10,18 @@ import TablaUsuariosAdmin from '../../components/organisms/TablaUsuariosAdmin.js
 import { useMensajeDeRuta } from '../../hooks/useMensajeDeRuta.js'
 import { useSesion } from '../../hooks/useSesion.js'
 import { eliminarUsuario, listarUsuarios } from '../../services/usuariosService.js'
-import { normalizarTexto } from '../../utils/texto.js'
+import { normalizarTexto, pluralizar } from '../../utils/texto.js'
 
 /** Mantenedor de usuarios (solo Administrador). */
 function PaginaUsuariosAdmin() {
   const { usuario: sesion } = useSesion()
   const [usuarios, setUsuarios] = useState(listarUsuarios)
   const [busqueda, setBusqueda] = useState('')
+  // El usuario elegido se conserva aunque el modal se cierre: así su nombre no
+  // desaparece del texto durante la animación de cierre. Que el modal se vea
+  // lo decide "confirmando".
   const [porEliminar, setPorEliminar] = useState(null)
+  const [confirmando, setConfirmando] = useState(false)
   const [mensaje, cerrarMensaje] = useMensajeDeRuta('mensaje')
   const [resultado, setResultado] = useState(null)
 
@@ -26,7 +30,15 @@ function PaginaUsuariosAdmin() {
     normalizarTexto(`${u.run} ${u.nombre} ${u.apellidos} ${u.correo} ${u.tipoUsuario}`).includes(buscado),
   )
 
+  function pedirConfirmacion(usuario) {
+    setPorEliminar(usuario)
+    setConfirmando(true)
+  }
+
   function confirmarEliminacion() {
+    // Un segundo clic durante la animación de cierre no debe eliminar dos veces.
+    if (!confirmando) return
+    setConfirmando(false)
     // Solo se muestra el aviso más reciente: el que llegó desde el formulario
     // (ej: "Se creó...") se cierra para que no queden dos avisos apilados.
     cerrarMensaje()
@@ -37,12 +49,11 @@ function PaginaUsuariosAdmin() {
     } catch (error) {
       setResultado({ tipo: 'danger', texto: error.message }) // ej: único Administrador
     }
-    setPorEliminar(null)
   }
 
   return (
     <>
-      <EncabezadoAdmin titulo="Usuarios" descripcion={`${usuarios.length} cuentas registradas.`}>
+      <EncabezadoAdmin titulo="Usuarios" descripcion={`${pluralizar(usuarios.length, 'cuenta registrada', 'cuentas registradas')}.`}>
         <Link to="/admin/usuarios/nuevo" className="btn btn-primary">
           Nuevo usuario
         </Link>
@@ -70,17 +81,22 @@ function PaginaUsuariosAdmin() {
 
       <Card>
         <Card.Body>
-          <TablaUsuariosAdmin usuarios={filtrados} runSesion={sesion.run} onEliminar={setPorEliminar} />
+          <TablaUsuariosAdmin
+            usuarios={filtrados}
+            runSesion={sesion.run}
+            onEliminar={pedirConfirmacion}
+            mensajeVacio="Ningún usuario coincide con la búsqueda."
+          />
         </Card.Body>
       </Card>
 
       <ModalConfirmacion
-        mostrar={Boolean(porEliminar)}
+        mostrar={confirmando}
         titulo="Eliminar usuario"
         mensaje={`Se eliminará la cuenta de ${porEliminar?.nombre} ${porEliminar?.apellidos}. Sus órdenes se conservan. ¿Continuar?`}
         textoConfirmar="Eliminar"
         onConfirmar={confirmarEliminacion}
-        onCancelar={() => setPorEliminar(null)}
+        onCancelar={() => setConfirmando(false)}
       />
     </>
   )

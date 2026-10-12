@@ -1,5 +1,5 @@
 /*
- * Vistas del Bloque 6b con la App completa: Categorías, Usuarios,
+ * Vistas de administración del panel con la App completa: Categorías, Usuarios,
  * Historial de compras, Perfil y Reportes.
  */
 import { fireEvent, screen, within } from '@testing-library/react'
@@ -13,7 +13,7 @@ import { renderizarConProveedores } from '../../testing/renderizarConProveedores
 // Usuarios guardados (con contraseña) y la sesión (sin ella), como en la app.
 const ADMIN = {
   run: '182345679', nombre: 'Camila', apellidos: 'Fuentes', correo: 'camila@profesor.duoc.cl', contrasena: 'admin123',
-  tipoUsuario: 'Administrador', fechaNacimiento: '', region: 'Región Metropolitana de Santiago', comuna: 'Providencia', direccion: 'Av. Holanda 099',
+  tipoUsuario: 'Administrador', fechaNacimiento: '', region: 'Región Metropolitana de Santiago', comuna: 'Providencia', direccion: 'Av. Ejemplo 1234',
 }
 const CLIENTE = { ...ADMIN, run: '201112222', nombre: 'Ana', apellidos: 'Pérez Soto', correo: 'ana@gmail.com', contrasena: 'cliente1', tipoUsuario: 'Cliente' }
 const { contrasena: _sinClave, ...SESION_ADMIN } = ADMIN
@@ -76,6 +76,24 @@ describe('Panel: Categorías', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Crear categoría' }))
     expect(screen.getByText('Se creó la categoría Redes y WiFi.')).toBeTruthy()
     expect(screen.getByText('/redes-y-wifi')).toBeTruthy()
+  })
+
+  // Regresión: mientras el modal se desvanecía, un segundo clic volvía a eliminar
+  // (y el texto mostraba "undefined").
+  it('un doble clic en Eliminar no elimina dos veces ni muestra errores', () => {
+    const memoria = iniciar()
+    abrir('/admin/categorias')
+
+    fireEvent.click(screen.getByRole('button', { name: 'Eliminar Vacía' }))
+    const dialogo = screen.getByRole('dialog')
+    const botonEliminar = within(dialogo).getByRole('button', { name: 'Eliminar' })
+    fireEvent.click(botonEliminar)
+    fireEvent.click(botonEliminar) // el modal aún está cerrándose
+
+    expect(within(dialogo).getByText(/"Vacía"/)).toBeTruthy()
+    expect(screen.getByText('Se eliminó la categoría Vacía.')).toBeTruthy()
+    expect(screen.queryByText(/No existe/)).toBeNull()
+    expect(JSON.parse(memoria[CLAVES.categorias]).map((c) => c.id)).toEqual(['notebooks'])
   })
 
   // Regresión: el aviso "Se creó..." quedaba apilado sobre "Se eliminó...".
@@ -169,7 +187,7 @@ describe('Panel: Reportes', () => {
     expect(await screen.findByRole('img', { name: 'Ventas por mes' })).toBeTruthy()
     expect(screen.getByRole('img', { name: 'Productos más vendidos en unidades' })).toBeTruthy()
     // Una sola orden pagada de $1.015.000 (la rechazada no cuenta).
-    expect(screen.getByText('1 compras pagadas')).toBeTruthy()
+    expect(screen.getByText('1 compra pagada')).toBeTruthy()
     const filaNotebooks = screen.getByRole('cell', { name: 'Notebooks' }).closest('tr')
     expect(within(filaNotebooks).getByText('$1.000.000')).toBeTruthy()
   })

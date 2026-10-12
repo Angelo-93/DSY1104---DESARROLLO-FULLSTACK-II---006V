@@ -11,9 +11,10 @@ import { obtenerNombresCategoria } from '../../services/categoriasService.js'
 import { listarOrdenes } from '../../services/ordenesService.js'
 import { productosMasVendidos, resumirVentas, ventasPorCategoria, ventasPorMes } from '../../utils/estadisticas.js'
 import { formatearPrecio } from '../../utils/formato.js'
+import { pluralizar } from '../../utils/texto.js'
 
-// Montos de los ejes en forma corta ($1,2 M, $350 mil): el valor exacto
-// aparece en el tooltip y en la tabla.
+// Montos de los ejes en forma corta ($1,2 M en vez de $1.200.000) para que
+// quepan; el valor exacto aparece al pasar el mouse sobre la barra (tooltip).
 const FORMATO_CORTO = new Intl.NumberFormat('es-CL', { notation: 'compact', maximumFractionDigits: 1 })
 function precioCorto(valor) {
   return `$${FORMATO_CORTO.format(valor)}`
@@ -55,7 +56,7 @@ function PaginaReportes() {
 
       <Row xs={1} md={3} className="g-3 mb-4">
         <Col>
-          <TarjetaIndicador titulo="Ventas totales" valor={formatearPrecio(resumen.montoVendido)} detalle={`${resumen.pagadas} compras pagadas`} />
+          <TarjetaIndicador titulo="Ventas totales" valor={formatearPrecio(resumen.montoVendido)} detalle={pluralizar(resumen.pagadas, 'compra pagada', 'compras pagadas')} />
         </Col>
         <Col>
           <TarjetaIndicador titulo="Ticket promedio" valor={formatearPrecio(ticketPromedio)} detalle="Monto medio por compra" variante="exito" />
@@ -64,7 +65,7 @@ function PaginaReportes() {
           <TarjetaIndicador
             titulo="Unidades vendidas"
             valor={porCategoria.reduce((total, c) => total + c.unidades, 0)}
-            detalle={`${resumen.rechazadas} pagos rechazados`}
+            detalle={pluralizar(resumen.rechazadas, 'pago rechazado', 'pagos rechazados')}
             variante="acento"
           />
         </Col>
@@ -78,6 +79,7 @@ function PaginaReportes() {
             etiquetas={porMes.map((m) => m.etiqueta)}
             valores={porMes.map((m) => m.total)}
             formatoValor={precioCorto}
+            formatoTooltip={formatearPrecio}
           />
         </Card.Body>
       </Card>
@@ -93,6 +95,7 @@ function PaginaReportes() {
                 etiquetas={porCategoria.map((c) => c.nombre)}
                 valores={porCategoria.map((c) => c.total)}
                 formatoValor={precioCorto}
+                formatoTooltip={formatearPrecio}
                 horizontal
               />
             </Card.Body>

@@ -25,7 +25,9 @@ describe('TablaOrdenes', () => {
     expect(filas.length).toBe(2)
     expect(within(filas[0]).getByText('Pagada')).toBeTruthy()
     expect(within(filas[1]).getByText('Rechazada')).toBeTruthy()
-    expect(within(filas[1]).getByRole('link', { name: 'Ver boleta' }).getAttribute('href')).toBe('/admin/ordenes/1011')
+    expect(within(filas[0]).getByRole('link', { name: 'Ver boleta' })).toBeTruthy()
+    // Una orden rechazada no tiene boleta: se abre su detalle en la misma ruta.
+    expect(within(filas[1]).getByRole('link', { name: 'Ver detalle' }).getAttribute('href')).toBe('/admin/ordenes/1011')
   })
 
   it('marca como "Invitado" solo las compras sin cuenta', () => {

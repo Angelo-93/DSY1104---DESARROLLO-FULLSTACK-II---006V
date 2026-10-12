@@ -43,13 +43,13 @@ describe('CarritoProvider (estado del carrito)', () => {
     act(() => {
       resultado = result.current.agregarProducto(NOTEBOOK, 5)
     })
-    expect(resultado).toBeFalse() // pidió 5, solo había 3
+    expect(resultado).toBe(3) // pidió 5, solo había 3: avisa cuántas entraron
     expect(result.current.items[0].cantidad).toBe(3)
 
     act(() => {
       resultado = result.current.agregarProducto(CAMARA_AGOTADA)
     })
-    expect(resultado).toBeFalse()
+    expect(resultado).toBe(0)
     expect(result.current.items.length).toBe(1)
   })
 
@@ -68,6 +68,18 @@ describe('CarritoProvider (estado del carrito)', () => {
 
     act(() => result.current.vaciarCarrito())
     expect(result.current.items).toEqual([])
+  })
+
+  it('muestra el precio vigente si el admin cambió la oferta después de agregar', () => {
+    const { result, rerender } = usarCarrito()
+    act(() => result.current.agregarProducto(MOUSE_OFERTA)) // en oferta: $15.000
+
+    // El admin quita la oferta: el catálogo guardado cambia, el carrito no.
+    memoria[CLAVES.productos] = JSON.stringify([NOTEBOOK, { ...MOUSE_OFERTA, precioOferta: null }, CAMARA_AGOTADA])
+    rerender()
+
+    expect(result.current.items[0].precioUnitario).toBe(20000)
+    expect(result.current.total).toBe(20000)
   })
 
   it('guarda el carrito en localStorage y lo recupera al volver a montarse', () => {

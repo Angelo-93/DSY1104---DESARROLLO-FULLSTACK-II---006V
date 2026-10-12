@@ -29,20 +29,25 @@ export function obtenerOrden(numero) {
 }
 
 /**
- * Historial de compras de una persona. Se busca por correo y no por RUN porque
- * también incluye las compras que hizo como invitado, antes de crear su cuenta.
+ * Historial de compras de una persona. Una orden es suya si lleva su RUN (la
+ * hizo con sesión iniciada) o su correo (la hizo como invitado, quizás antes
+ * de crear la cuenta). Con las dos condiciones, el historial no pierde órdenes
+ * si la persona cambia su correo o escribe otro en el checkout.
  *
- * @param {string} correo
+ * @param {{run: string, correo: string}} usuario
  * @returns {object[]} Sus órdenes, de la más reciente a la más antigua.
  */
-export function listarOrdenesPorCorreo(correo) {
-  const buscado = String(correo ?? '').trim().toLowerCase()
-  return listarOrdenes().filter((orden) => orden.cliente.correo.toLowerCase() === buscado)
+export function listarOrdenesDeUsuario({ run, correo }) {
+  const correoBuscado = String(correo ?? '').trim().toLowerCase()
+  return listarOrdenes().filter(
+    (orden) => orden.cliente.run === run || orden.cliente.correo.toLowerCase() === correoBuscado,
+  )
 }
 
 /**
- * Registra una orden nueva. El número, la fecha y el total los calcula el
- * servicio (no el formulario), para que no se puedan alterar desde la interfaz.
+ * Registra una orden nueva. El número, la fecha y el total los calcula este
+ * servicio y no el formulario. Los precios de cada línea llegan desde
+ * compraService, que los toma del catálogo en el momento del pago.
  *
  * @param {object} datos
  * @param {{run: string|null, nombre: string, apellidos: string, correo: string}} datos.cliente

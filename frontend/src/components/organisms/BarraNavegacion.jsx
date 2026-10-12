@@ -5,6 +5,7 @@ import NavDropdown from 'react-bootstrap/NavDropdown'
 import Navbar from 'react-bootstrap/Navbar'
 
 import { puedeEntrarAlPanel } from '../../utils/permisos.js'
+import { pluralizar } from '../../utils/texto.js'
 import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
 import BuscadorProductos from '../molecules/BuscadorProductos.jsx'
 
@@ -73,7 +74,7 @@ function BarraNavegacion({ cantidadCarrito = 0, usuario = null, onCerrarSesion, 
           <Link
             className="btn btn-acento btn-sm"
             to="/carrito"
-            aria-label={`Carrito, ${cantidadCarrito} productos`}
+            aria-label={`Carrito, ${pluralizar(cantidadCarrito, 'producto', 'productos')}`}
           >
             Carrito{' '}
             <span className="badge text-bg-light" data-testid="contador-carrito">

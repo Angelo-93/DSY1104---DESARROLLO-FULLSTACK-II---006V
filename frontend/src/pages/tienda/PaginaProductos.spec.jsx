@@ -64,6 +64,13 @@ describe('PaginaProductos (filtros)', () => {
     expect(nombresVisibles()).toEqual(['Notebook Uno'])
   })
 
+  it('una categoría que no existe en la URL muestra todo el catálogo', () => {
+    renderizarCatalogo('/productos?categoria=no-existe')
+
+    expect(screen.getByLabelText('Filtrar por categoría').value).toBe('')
+    expect(nombresVisibles().length).toBe(3)
+  })
+
   it('sin coincidencias muestra un mensaje que orienta', () => {
     renderizarCatalogo('/productos?buscar=xyz')
 

@@ -16,12 +16,15 @@ export function useAgregarAlCarrito() {
   const [aviso, setAviso] = useState(null)
 
   function agregar(producto, cantidad = 1) {
-    const completo = agregarProducto(producto, cantidad)
-    setAviso(
-      completo
-        ? { tipo: 'exito', texto: `Agregaste ${cantidad} × ${producto.nombre} al carrito.` }
-        : { tipo: 'advertencia', texto: `No hay más stock de ${producto.nombre}: tu carrito ya tiene el máximo disponible.` },
-    )
+    const agregadas = agregarProducto(producto, cantidad)
+    if (agregadas === cantidad) {
+      setAviso({ tipo: 'exito', texto: `Agregaste ${cantidad} × ${producto.nombre} al carrito.` })
+    } else if (agregadas > 0) {
+      // Agregado parcial: se dice cuántas entraron para que no parezca que no pasó nada.
+      setAviso({ tipo: 'advertencia', texto: `Solo pudimos agregar ${agregadas} de ${cantidad} × ${producto.nombre}: tu carrito ya tiene todo el stock disponible.` })
+    } else {
+      setAviso({ tipo: 'advertencia', texto: `No hay más stock de ${producto.nombre}: tu carrito ya tiene el máximo disponible.` })
+    }
   }
 
   return { agregar, aviso, cerrarAviso: () => setAviso(null) }

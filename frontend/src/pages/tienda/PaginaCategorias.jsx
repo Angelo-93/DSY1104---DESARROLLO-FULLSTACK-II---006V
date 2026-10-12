@@ -7,6 +7,7 @@ import RutaNavegacion from '../../components/molecules/RutaNavegacion.jsx'
 import TarjetaCategoria from '../../components/molecules/TarjetaCategoria.jsx'
 import { listarCategorias } from '../../services/categoriasService.js'
 import { listarProductos } from '../../services/productosService.js'
+import { contarPorCategoria } from '../../utils/calculos.js'
 
 /** Vista Categorías (nueva en la EP2, Anexo 1 Figura 4): una tarjeta por categoría. */
 function PaginaCategorias() {
@@ -15,10 +16,7 @@ function PaginaCategorias() {
 
   // Cuenta productos por categoría recorriendo el catálogo una sola vez:
   // { notebooks: 4, monitores: 2, ... }
-  const cantidadPorCategoria = productos.reduce((conteo, producto) => {
-    conteo[producto.idCategoria] = (conteo[producto.idCategoria] ?? 0) + 1
-    return conteo
-  }, {})
+  const cantidadPorCategoria = contarPorCategoria(productos)
 
   return (
     <Container className="py-4">

@@ -48,7 +48,7 @@ describe('TablaCarrito', () => {
   it('muestra el aviso de stock solo en la línea que lo supera', () => {
     render(<TablaCarrito items={ITEMS_PRUEBA} editable stockPorCodigo={{ 'NB-1': 1, 'AC-1': 5 }} onCambiarCantidad={() => {}} onQuitar={() => {}} />)
 
-    expect(within(filas()[0]).getByRole('alert').textContent).toBe('Solo quedan 1 unidades.')
+    expect(within(filas()[0]).getByRole('alert').textContent).toBe('Solo queda 1 unidad.')
     expect(within(filas()[1]).queryByRole('alert')).toBeNull()
   })
 })

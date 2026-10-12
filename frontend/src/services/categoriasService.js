@@ -3,7 +3,7 @@
  * en el código; ahora el administrador las crea, edita y elimina.
  */
 import { CATEGORIAS_INICIALES } from '../data/categoriasIniciales.js'
-import { generarSlug, normalizarTexto } from '../utils/texto.js'
+import { generarSlug, normalizarTexto, pluralizar } from '../utils/texto.js'
 import { CLAVES, guardarDato, leerDato } from './almacenamiento.js'
 import { listarProductosPorCategoria } from './productosService.js'
 
@@ -116,7 +116,7 @@ export function eliminarCategoria(id) {
   const cantidadProductos = listarProductosPorCategoria(id).length
   if (cantidadProductos > 0) {
     throw new Error(
-      `No se puede eliminar: la categoría tiene ${cantidadProductos} producto(s). Muévelos a otra categoría primero.`,
+      `No se puede eliminar: la categoría tiene ${pluralizar(cantidadProductos, 'producto', 'productos')}. Muévelos a otra categoría primero.`,
     )
   }
 

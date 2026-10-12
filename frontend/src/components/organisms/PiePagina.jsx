@@ -12,8 +12,10 @@ import MarcaInforcore from '../atoms/MarcaInforcore.jsx'
 const ANIO_ACTUAL = new Date().getFullYear()
 
 /**
- * Pie de página de la tienda. Los datos de contacto son ficticios
- * (decisión del proyecto: el repositorio es público).
+ * Pie de página de la tienda. Los datos de contacto son ficticios (decisión
+ * del proyecto: el repositorio es público y no debe mostrar el correo ni la
+ * dirección reales de la empresa). El dominio .example está reservado para
+ * ejemplos (no pertenece a nadie), así que ningún correo llega a un tercero.
  */
 function PiePagina() {
   return (
@@ -26,7 +28,7 @@ function PiePagina() {
             <p className="mt-2 mb-0 small">
               Hardware corporativo y educacional.
               <br />
-              Av. Holanda 099, Of. 1101, Providencia, Santiago.
+              Av. Ejemplo 1234, Of. 56, Providencia, Santiago.
             </p>
           </Col>
 
@@ -44,7 +46,15 @@ function PiePagina() {
           <Col xs={6} md={4}>
             <h2>Contacto</h2>
             <ul className="list-unstyled small mb-0">
-              <li><a href="mailto:ventas@inforcore.cl">ventas@inforcore.cl</a></li>
+              {/* En el celular esta columna mide media pantalla y el correo no cabe en
+                  una línea: <wbr /> marca un punto donde el navegador PUEDE cortar
+                  (después de la @) y text-break (Bootstrap) corta en cualquier
+                  letra solo si aun así no cabe. Sin esto la página se desborda. */}
+              <li>
+                <a href="mailto:ventas@inforcore.example" className="text-break">
+                  ventas@<wbr />inforcore.example
+                </a>
+              </li>
               <li><Link to="/contacto">Formulario de contacto</Link></li>
               <li>Providencia, Santiago</li>
             </ul>

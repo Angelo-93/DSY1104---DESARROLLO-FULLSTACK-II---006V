@@ -61,4 +61,14 @@ describe('usuariosService (con localStorage simulado)', () => {
     eliminarUsuario('201112222')
     expect(obtenerUsuario('201112222')).toBeNull()
   })
+
+  it('encuentra, edita y elimina un RUN con K aunque llegue en minúscula', () => {
+    const conK = { ...CLIENTE, run: '19011029K', correo: 'k@gmail.com' }
+    memoria[CLAVES.usuarios] = JSON.stringify([ADMIN, conK])
+
+    expect(obtenerUsuario('19011029k').run).toBe('19011029K')
+    expect(actualizarUsuario('19011029k', { ...conK, nombre: 'Kati', contrasena: '' }).nombre).toBe('Kati')
+    eliminarUsuario('19011029k')
+    expect(obtenerUsuario('19011029K')).toBeNull()
+  })
 })

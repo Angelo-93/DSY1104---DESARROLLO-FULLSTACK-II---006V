@@ -13,6 +13,7 @@ import { listarUsuarios } from '../../services/usuariosService.js'
 import { resumirInventario, resumirUsuarios, resumirVentas } from '../../utils/estadisticas.js'
 import { formatearPrecio } from '../../utils/formato.js'
 import { esAdministrador } from '../../utils/permisos.js'
+import { pluralizar } from '../../utils/texto.js'
 
 /** Inicio del panel (Anexo 1, Figura 9): indicadores y accesos directos. */
 function PaginaDashboard() {
@@ -35,14 +36,14 @@ function PaginaDashboard() {
           <TarjetaIndicador
             titulo="Compras"
             valor={ventas.pagadas}
-            detalle={`Ventas: ${formatearPrecio(ventas.montoVendido)} · ${ventas.rechazadas} rechazadas`}
+            detalle={`Ventas: ${formatearPrecio(ventas.montoVendido)} · ${pluralizar(ventas.rechazadas, 'rechazada', 'rechazadas')}`}
           />
         </Col>
         <Col>
           <TarjetaIndicador
             titulo="Productos"
             valor={inventario.productos}
-            detalle={`Inventario: ${inventario.unidades} unidades · ${inventario.criticos} en stock crítico`}
+            detalle={`Inventario: ${pluralizar(inventario.unidades, 'unidad', 'unidades')} · ${inventario.criticos} en stock crítico`}
             variante="exito"
           />
         </Col>

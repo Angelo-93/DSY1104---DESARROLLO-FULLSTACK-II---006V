@@ -9,7 +9,7 @@ import GrillaProductos from '../../components/organisms/GrillaProductos.jsx'
 import { useAgregarAlCarrito } from '../../hooks/useAgregarAlCarrito.js'
 import { listarCategorias } from '../../services/categoriasService.js'
 import { listarProductos } from '../../services/productosService.js'
-import { normalizarTexto } from '../../utils/texto.js'
+import { normalizarTexto, pluralizar } from '../../utils/texto.js'
 
 /**
  * Catálogo con filtro por categoría y búsqueda por texto.
@@ -24,7 +24,10 @@ function PaginaProductos() {
   const [parametros, setParametros] = useSearchParams()
   const { agregar, aviso, cerrarAviso } = useAgregarAlCarrito()
 
-  const idCategoria = parametros.get('categoria') ?? ''
+  // Una categoría que no existe (enlace viejo o mal escrito) se trata como
+  // "todas": si no, el selector diría "Todas" y la grilla saldría vacía.
+  const categoriaPedida = parametros.get('categoria') ?? ''
+  const idCategoria = categorias.some((c) => c.id === categoriaPedida) ? categoriaPedida : ''
   const textoBusqueda = parametros.get('buscar') ?? ''
 
   // Cambia un parámetro y deja el otro; un valor vacío se quita de la URL.
@@ -67,7 +70,7 @@ function PaginaProductos() {
 
       {/* aria-live: el lector de pantalla anuncia el nuevo total al filtrar. */}
       <p className="text-secondary small" aria-live="polite">
-        {filtrados.length} {filtrados.length === 1 ? 'producto' : 'productos'}
+        {pluralizar(filtrados.length, 'producto', 'productos')}
       </p>
 
       <GrillaProductos

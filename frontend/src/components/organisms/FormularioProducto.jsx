@@ -96,6 +96,8 @@ function FormularioProducto({ producto, categorias, onGuardar, onCancelar, error
           value={datos.idCategoria}
           onChange={(evento) => cambiarCampo('idCategoria', evento.target.value)}
           isInvalid={Boolean(errores.idCategoria)}
+          aria-invalid={errores.idCategoria ? true : undefined}
+          aria-describedby={errores.idCategoria ? 'producto-categoria-error' : undefined}
         >
           <option value="">Selecciona una categoría</option>
           {categorias.map((categoria) => (
@@ -104,7 +106,9 @@ function FormularioProducto({ producto, categorias, onGuardar, onCancelar, error
             </option>
           ))}
         </Form.Select>
-        <Form.Control.Feedback type="invalid">{errores.idCategoria}</Form.Control.Feedback>
+        <Form.Control.Feedback id="producto-categoria-error" type="invalid">
+          {errores.idCategoria}
+        </Form.Control.Feedback>
       </Form.Group>
 
       <CampoFormulario
@@ -150,7 +154,7 @@ function FormularioProducto({ producto, categorias, onGuardar, onCancelar, error
             type="number"
             min={0}
             step={1}
-            ayuda="Bajo este número se avisa reponer."
+            ayuda="Al llegar a este número (o menos) se avisa reponer."
             {...propsCampo('stockCritico')}
           />
         </Col>

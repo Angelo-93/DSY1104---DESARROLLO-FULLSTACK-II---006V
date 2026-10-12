@@ -13,12 +13,16 @@ Tienda online de hardware corporativo y educacional, desarrollada en tres evalua
 | `frontend/` | Aplicación React + Bootstrap con pruebas Jasmine/Karma | EP2 |
 | `backend/` | API REST con base de datos (se agrega en la EP3) | EP3 |
 
-La versión entregada en la **EP1** (HTML5, CSS3 y JavaScript vanilla) queda conservada
-en la etiqueta Git [`ep1-entrega`](../../tree/ep1-entrega).
+La versión final de la **EP1** (HTML5, CSS3 y JavaScript vanilla) queda conservada en la
+etiqueta Git [`ep1-entrega`](../../tree/ep1-entrega). Incluye una corrección menor hecha después
+de la entrega (`producto-detalle.html`, commit `dc04afe`); el commit anterior, `6193f74`, es la
+versión tal como se entregó.
 
 ## Cómo ejecutar el frontend
 
-Requisitos: Node.js 22 o superior.
+Requisitos: Node.js 22 (desde la 22.18) o Node.js 24 o posterior (desde la 24.11), las versiones
+que exige Babel 8, y Google Chrome para ejecutar las pruebas. `npm run test:navegadores` necesita
+además Firefox y Edge.
 
 ```bash
 cd frontend

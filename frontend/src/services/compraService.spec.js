@@ -34,6 +34,17 @@ describe('compraService (con localStorage simulado)', () => {
     expect(stockGuardado('AAA')).toBe(3)
   })
 
+  it('cobra el precio del catálogo aunque el carrito traiga otro (editado a mano)', () => {
+    const orden = procesarCompra({
+      cliente: CLIENTE,
+      direccion: DIRECCION,
+      items: [{ codigo: 'AAA', nombre: 'Monitor', precioUnitario: 1, cantidad: 2 }],
+    })
+
+    expect(orden.items[0].precioUnitario).toBe(100)
+    expect(orden.total).toBe(200)
+  })
+
   it('con rechazo simulado registra la orden rechazada sin tocar el stock', () => {
     const orden = procesarCompra({
       cliente: CLIENTE,

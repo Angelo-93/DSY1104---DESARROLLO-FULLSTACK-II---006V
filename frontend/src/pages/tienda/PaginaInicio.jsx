@@ -53,7 +53,9 @@ function PaginaInicio() {
 
       <section className="portada">
         <Container>
-          <Row className="align-items-center g-5">
+          {/* Espacio amplio entre columnas solo desde pantallas grandes (gx-lg-5): en
+              celular, un g-5 sobresale del contenedor y genera desplazamiento lateral. */}
+          <Row className="align-items-center gy-4 gx-lg-5">
             <Col xs={12} lg={6}>
               <p className="portada__etiqueta">Tecnología corporativa y educativa</p>
               <h1 className="portada__titulo">Tu núcleo informático</h1>

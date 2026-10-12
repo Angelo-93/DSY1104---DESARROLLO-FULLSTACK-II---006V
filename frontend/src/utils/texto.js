@@ -20,6 +20,21 @@ export function normalizarTexto(texto) {
 }
 
 /**
+ * Escribe una cantidad con la palabra en singular o plural según corresponda:
+ * pluralizar(1, 'unidad', 'unidades') → "1 unidad"; con 3 → "3 unidades".
+ * El plural se recibe completo porque en español no siempre basta con
+ * agregar una "s" (unidad → unidades, orden → órdenes).
+ *
+ * @param {number} cantidad
+ * @param {string} singular
+ * @param {string} plural
+ * @returns {string}
+ */
+export function pluralizar(cantidad, singular, plural) {
+  return `${cantidad} ${cantidad === 1 ? singular : plural}`
+}
+
+/**
  * Convierte un nombre en un identificador apto para URL ("slug"):
  * "Audio y Videoconferencia" → "audio-y-videoconferencia".
  *

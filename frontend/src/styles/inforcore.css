@@ -249,6 +249,17 @@ button:focus-visible,
   appearance: textfield;
 }
 
+/* ---------- 4c-bis. Tablas con desplazamiento lateral ---------- */
+/* Bootstrap envuelve las tablas anchas en .table-responsive, que se desplaza
+   hacia el lado dentro de su propia caja. Pero los textos ocultos para
+   lectores de pantalla (.visually-hidden, en las columnas "Acciones") usan
+   position: absolute y se ubican respecto del primer contenedor posicionado:
+   sin esta regla quedaban fuera de la caja y ensanchaban toda la página en el
+   celular. position: relative los deja dentro de la tabla. */
+.table-responsive {
+  position: relative;
+}
+
 /* ---------- 4d. Carrito, checkout y boleta ---------- */
 .tabla-carrito__imagen {
   width: 72px;
@@ -345,6 +356,17 @@ button:focus-visible,
     min-width: 0;
     max-width: 8rem;
     margin-inline: 0;
+  }
+}
+
+/* Celulares muy angostos (menos de 360 px, como el iPhone SE de primera
+   generación, de 320 px): la fila de arriba no cabe por unos pocos píxeles y
+   desbordaría la página. Se achican la columna de la imagen y el espacio entre
+   columnas; el resto del diseño de celular se mantiene igual. */
+@media screen and (max-width: 359.98px) {
+  .tabla-carrito tr {
+    grid-template-columns: 40px 1fr 6.5rem;
+    column-gap: 0.5rem;
   }
 }
 

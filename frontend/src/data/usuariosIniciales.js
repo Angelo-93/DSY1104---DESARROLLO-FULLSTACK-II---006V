@@ -23,7 +23,7 @@ export const USUARIOS_INICIALES = [
     tipoUsuario: 'Administrador',
     region: 'Región Metropolitana de Santiago',
     comuna: 'Providencia',
-    direccion: 'Av. Holanda 099, Of. 1101',
+    direccion: 'Av. Ejemplo 1234, Of. 56',
   },
   {
     run: '167890121',

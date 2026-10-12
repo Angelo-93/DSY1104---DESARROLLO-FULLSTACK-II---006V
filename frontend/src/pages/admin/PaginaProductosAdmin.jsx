@@ -12,7 +12,7 @@ import { useSesion } from '../../hooks/useSesion.js'
 import { obtenerNombresCategoria } from '../../services/categoriasService.js'
 import { eliminarProducto, listarProductos } from '../../services/productosService.js'
 import { esAdministrador } from '../../utils/permisos.js'
-import { normalizarTexto } from '../../utils/texto.js'
+import { normalizarTexto, pluralizar } from '../../utils/texto.js'
 
 /**
  * Inventario del panel. El Administrador crea, edita y elimina; el Vendedor
@@ -24,7 +24,11 @@ function PaginaProductosAdmin() {
   const [productos, setProductos] = useState(listarProductos)
   const [nombresCategoria] = useState(obtenerNombresCategoria)
   const [busqueda, setBusqueda] = useState('')
-  const [porEliminar, setPorEliminar] = useState(null) // producto que espera confirmación
+  // El producto elegido se conserva aunque el modal se cierre: así su nombre no
+  // desaparece del texto durante la animación de cierre. Que el modal se vea
+  // lo decide "confirmando".
+  const [porEliminar, setPorEliminar] = useState(null)
+  const [confirmando, setConfirmando] = useState(false)
   const [mensaje, cerrarMensaje] = useMensajeDeRuta('mensaje') // viene del formulario al guardar
   const [mensajeEliminado, setMensajeEliminado] = useState('')
 
@@ -33,7 +37,15 @@ function PaginaProductosAdmin() {
     normalizarTexto(`${producto.codigo} ${producto.nombre}`).includes(buscado),
   )
 
+  function pedirConfirmacion(producto) {
+    setPorEliminar(producto)
+    setConfirmando(true)
+  }
+
   function confirmarEliminacion() {
+    // Un segundo clic durante la animación de cierre no debe eliminar dos veces.
+    if (!confirmando) return
+    setConfirmando(false)
     eliminarProducto(porEliminar.codigo)
     // Se vuelve a leer desde el servicio: así la tabla muestra lo que
     // realmente quedó guardado, no una copia que podría desincronizarse.
@@ -42,12 +54,11 @@ function PaginaProductosAdmin() {
     // Solo se muestra el aviso más reciente: el que llegó desde el formulario
     // (ej: "Producto creado") se cierra para que no queden dos avisos apilados.
     cerrarMensaje()
-    setPorEliminar(null)
   }
 
   return (
     <>
-      <EncabezadoAdmin titulo="Productos" descripcion={`${productos.length} productos en el catálogo.`}>
+      <EncabezadoAdmin titulo="Productos" descripcion={`${pluralizar(productos.length, 'producto', 'productos')} en el catálogo.`}>
         <Link to="/admin/productos/criticos" className="btn btn-outline-primary">
           Productos críticos
         </Link>
@@ -89,19 +100,19 @@ function PaginaProductosAdmin() {
             productos={filtrados}
             nombresCategoria={nombresCategoria}
             puedeEditar={puedeEditar}
-            onEliminar={setPorEliminar}
+            onEliminar={pedirConfirmacion}
             mensajeVacio="Ningún producto coincide con la búsqueda."
           />
         </Card.Body>
       </Card>
 
       <ModalConfirmacion
-        mostrar={Boolean(porEliminar)}
+        mostrar={confirmando}
         titulo="Eliminar producto"
         mensaje={`Se eliminará "${porEliminar?.nombre}" del catálogo. Las órdenes anteriores conservan su detalle. ¿Continuar?`}
         textoConfirmar="Eliminar"
         onConfirmar={confirmarEliminacion}
-        onCancelar={() => setPorEliminar(null)}
+        onCancelar={() => setConfirmando(false)}
       />
     </>
   )

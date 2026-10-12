@@ -55,6 +55,22 @@ export function esStockCritico(producto) {
 }
 
 /**
+ * Pone al día una línea del carrito con el catálogo actual: nombre, categoría y
+ * precio vigente. Así el carrito y la orden cobran el precio de hoy, no el del
+ * momento en que se agregó el producto (el admin pudo crear o quitar una oferta
+ * entremedio). Si el producto ya no existe, la línea queda como estaba; el
+ * checkout la rechaza después por falta de stock.
+ *
+ * @param {{codigo: string, cantidad: number}} item - Línea del carrito.
+ * @param {object|null|undefined} producto - El mismo producto en el catálogo actual.
+ * @returns {object} Una línea nueva (no modifica la recibida).
+ */
+export function actualizarLinea(item, producto) {
+  if (!producto) return item
+  return { ...item, nombre: producto.nombre, idCategoria: producto.idCategoria, precioUnitario: precioVigente(producto) }
+}
+
+/**
  * @param {{precioUnitario: number, cantidad: number}} item - Línea de carrito u orden.
  * @returns {number}
  */
@@ -68,6 +84,22 @@ export function calcularSubtotal(item) {
  */
 export function calcularTotal(items) {
   return items.reduce((total, item) => total + calcularSubtotal(item), 0)
+}
+
+/**
+ * Cuenta cuántos productos tiene cada categoría: { notebooks: 4, monitores: 2 }.
+ * El objeto se crea con Object.create(null), sin las propiedades que todo
+ * objeto hereda: así una categoría llamada "Constructor" (id "constructor") no
+ * choca con Object.prototype.constructor y su conteo parte en 0 como las demás.
+ *
+ * @param {Array<{idCategoria: string}>} productos
+ * @returns {Object<string, number>}
+ */
+export function contarPorCategoria(productos) {
+  return productos.reduce((conteo, producto) => {
+    conteo[producto.idCategoria] = (conteo[producto.idCategoria] ?? 0) + 1
+    return conteo
+  }, Object.create(null))
 }
 
 /**

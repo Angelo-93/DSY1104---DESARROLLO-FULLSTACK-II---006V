@@ -7,7 +7,7 @@ import Row from 'react-bootstrap/Row'
 import EncabezadoAdmin from '../../components/molecules/EncabezadoAdmin.jsx'
 import TablaOrdenes from '../../components/organisms/TablaOrdenes.jsx'
 import { listarOrdenes } from '../../services/ordenesService.js'
-import { normalizarTexto } from '../../utils/texto.js'
+import { normalizarTexto, pluralizar } from '../../utils/texto.js'
 
 /** Órdenes y boletas: lista con filtro por estado y búsqueda. */
 function PaginaOrdenes() {
@@ -24,7 +24,7 @@ function PaginaOrdenes() {
 
   return (
     <>
-      <EncabezadoAdmin titulo="Órdenes y boletas" descripcion={`${ordenes.length} órdenes registradas.`} />
+      <EncabezadoAdmin titulo="Órdenes y boletas" descripcion={`${pluralizar(ordenes.length, 'orden registrada', 'órdenes registradas')}.`} />
 
       <Form role="search" onSubmit={(evento) => evento.preventDefault()} className="mb-3">
         <Row className="g-2">
@@ -49,7 +49,10 @@ function PaginaOrdenes() {
 
       <Card>
         <Card.Body>
-          <TablaOrdenes ordenes={filtradas} mensajeVacio="Ninguna orden coincide con el filtro." />
+          <TablaOrdenes
+            ordenes={filtradas}
+            mensajeVacio={ordenes.length === 0 ? 'Todavía no hay órdenes registradas.' : 'Ninguna orden coincide con el filtro.'}
+          />
         </Card.Body>
       </Card>
     </>

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
+import { pluralizar } from '../../utils/texto.js'
 import ImagenProducto from '../atoms/ImagenProducto.jsx'
 import PrecioProducto from '../atoms/PrecioProducto.jsx'
 import SelectorCantidad from '../molecules/SelectorCantidad.jsx'
@@ -38,7 +39,7 @@ function FichaProducto({ producto, categoria, onAgregar }) {
 
         {/* Renderizado condicional del estado del stock. */}
         <p className={`small mt-2 ${agotado ? 'text-danger' : 'text-secondary'}`}>
-          {agotado ? 'Producto agotado' : `Stock disponible: ${producto.stock} unidades`}
+          {agotado ? 'Producto agotado' : `Stock disponible: ${pluralizar(producto.stock, 'unidad', 'unidades')}`}
         </p>
 
         {producto.descripcion && <p>{producto.descripcion}</p>}

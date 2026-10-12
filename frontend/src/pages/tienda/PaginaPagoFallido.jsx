@@ -53,7 +53,7 @@ function PaginaPagoFallido() {
                 {/* Renderizado condicional: sin stock, reintentar daría el mismo
                     error, así que primero se ofrece corregir el carrito. */}
                 {faltaStock ? (
-                  <Link to="/carrito" className="btn btn-acento">
+                  <Link to="/carrito" state={{ reintentarOrden: orden.numero }} className="btn btn-acento">
                     Revisar carrito
                   </Link>
                 ) : (

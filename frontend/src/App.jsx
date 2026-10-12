@@ -75,7 +75,7 @@ function App() {
         <Route path="compra/exitosa/:numeroOrden" element={<PaginaCompraExitosa />} />
         <Route path="compra/fallida/:numeroOrden" element={<PaginaPagoFallido />} />
 
-        {/* Comodín: cualquier URL que no calzó arriba (ni en /admin) cae aquí. */}
+        {/* Comodín: cualquier URL de la tienda que no calzó arriba cae aquí. */}
         <Route path="*" element={<PaginaNoEncontrada />} />
       </Route>
 
@@ -95,6 +95,9 @@ function App() {
         <Route path="productos" element={<PaginaProductosAdmin />} />
         <Route path="productos/criticos" element={<PaginaProductosCriticos />} />
         <Route path="perfil" element={<PaginaPerfil />} />
+        {/* Comodín del panel: una URL desconocida bajo /admin muestra el 404
+            dentro del panel (y solo después de pasar la guardia de sesión). */}
+        <Route path="*" element={<PaginaNoEncontrada />} />
 
         {/* Administración: solo Administrador. Esta ruta no tiene "path": solo
             agrupa a sus hijas detrás de una segunda guardia (layout route). */}

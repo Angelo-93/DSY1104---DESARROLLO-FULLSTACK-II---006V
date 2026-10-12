@@ -23,12 +23,14 @@ describe('validaciones', () => {
       expect(validarRun('182345670')).toBeFalse()
       expect(validarRun('18.234.567-9')).toBeFalse()
       expect(validarRun('12345')).toBeFalse()
+      expect(validarRun('0000000')).toBeFalse() // pasaría el módulo 11, pero no es un RUN
     })
 
     it('entrega el mensaje que corresponde a cada error del campo', () => {
       expect(validarCampoRun('')).toBe('El RUN es obligatorio.')
       expect(validarCampoRun('1234')).toContain('entre 7 y 9 caracteres')
       expect(validarCampoRun('182345670')).toContain('dígito verificador')
+      expect(validarCampoRun('12345678-')).toContain('sin puntos ni guion') // formato, no verificador
       expect(validarCampoRun('182345679')).toBe('')
     })
   })
@@ -78,6 +80,13 @@ describe('validaciones', () => {
       expect(errores.precio).toBe('El precio no puede ser negativo.')
       expect(errores.stock).toContain('entero')
       expect(errores.idCategoria).toBe('Selecciona una categoría.')
+    })
+
+    it('exige precios enteros y un código que se pueda usar en la URL', () => {
+      const errores = validarProducto({ ...valido, codigo: 'NB/01', precio: '1000.5', precioOferta: '10.5' })
+      expect(errores.codigo).toContain('Solo letras, números y guiones')
+      expect(errores.precio).toContain('entero')
+      expect(errores.precioOferta).toContain('entero')
     })
 
     it('rechaza un precio de oferta igual o mayor al precio normal', () => {

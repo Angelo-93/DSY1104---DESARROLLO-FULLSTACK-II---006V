@@ -84,6 +84,8 @@ function FormularioUsuario({ modo, usuario, bloquearRol = false, onGuardar, onCa
                 onChange={(evento) => cambiarCampo('tipoUsuario', evento.target.value)}
                 disabled={bloquearRol}
                 isInvalid={Boolean(errores.tipoUsuario)}
+                aria-invalid={errores.tipoUsuario ? true : undefined}
+                aria-describedby={errores.tipoUsuario ? 'usuario-rol-error' : undefined}
               >
                 <option value="">Selecciona un tipo</option>
                 {TIPOS_USUARIO.map((tipo) => (
@@ -92,7 +94,9 @@ function FormularioUsuario({ modo, usuario, bloquearRol = false, onGuardar, onCa
                   </option>
                 ))}
               </Form.Select>
-              <Form.Control.Feedback type="invalid">{errores.tipoUsuario}</Form.Control.Feedback>
+              <Form.Control.Feedback id="usuario-rol-error" type="invalid">
+                {errores.tipoUsuario}
+              </Form.Control.Feedback>
               {bloquearRol && <Form.Text muted>No puedes cambiar tu propio rol.</Form.Text>}
             </Form.Group>
           </Col>

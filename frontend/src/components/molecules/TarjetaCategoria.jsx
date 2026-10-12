@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import Card from 'react-bootstrap/Card'
 
+import { pluralizar } from '../../utils/texto.js'
 import ImagenProducto from '../atoms/ImagenProducto.jsx'
 
 /**
@@ -25,7 +26,7 @@ function TarjetaCategoria({ categoria, cantidadProductos }) {
         </h2>
         {categoria.descripcion && <p className="small text-secondary mb-2">{categoria.descripcion}</p>}
         <p className="small fw-semibold mb-0">
-          {cantidadProductos} {cantidadProductos === 1 ? 'producto' : 'productos'}
+          {pluralizar(cantidadProductos, 'producto', 'productos')}
         </p>
       </Card.Body>
     </Card>

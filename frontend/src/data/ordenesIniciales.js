@@ -102,7 +102,7 @@ export const ORDENES_INICIALES = [
     estado: 'pagada',
     cliente: { run: null, nombre: 'Rodrigo', apellidos: 'Paredes Soto', correo: 'rodrigo.paredes@profesor.duoc.cl' },
     direccion: {
-      calle: 'Av. Vicuña Mackenna 4917',
+      calle: 'Av. Ejemplo 500',
       departamento: '',
       region: 'Región Metropolitana de Santiago',
       comuna: 'San Joaquín',

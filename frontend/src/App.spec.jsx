@@ -44,6 +44,15 @@ describe('App (rutas)', () => {
     expect(screen.queryByRole('contentinfo')).toBeNull() // el admin no lleva el pie de la tienda
   })
 
+  it('una URL desconocida del panel muestra el 404 dentro del panel', () => {
+    instalarLocalStorageFalso({ [CLAVES.sesion]: ADMIN_PRUEBA })
+    renderizarAppEn('/admin/seccion-inexistente')
+
+    expect(screen.getByText(/no existe en el panel/)).toBeTruthy()
+    expect(screen.getByRole('link', { name: 'Volver al Dashboard' })).toBeTruthy()
+    expect(screen.getByRole('navigation', { name: 'Menú del administrador' })).toBeTruthy()
+  })
+
   it('el Vendedor consulta órdenes pero no entra a Usuarios', () => {
     instalarLocalStorageFalso({ [CLAVES.sesion]: VENDEDOR_PRUEBA })
 

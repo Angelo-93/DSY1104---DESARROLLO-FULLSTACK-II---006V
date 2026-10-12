@@ -1,7 +1,7 @@
 /**
  * Indicadores del panel administrador, calculados a partir de los datos.
  * Funciones puras: reciben los arreglos ya leídos y devuelven números. Así el
- * Dashboard (y los Reportes del Bloque 6b) no repiten cálculos, y cada
+ * Dashboard, los Reportes y el Historial de compras no repiten cálculos, y cada
  * fórmula se prueba con datos pequeños hechos a mano.
  */
 import { esStockCritico } from './calculos.js'

@@ -29,7 +29,13 @@ function SelectorRegionComuna({ idPrefijo, region, comuna, onCambiar, errores = 
       <Col xs={12} md={6}>
         <Form.Group controlId={`${idPrefijo}-region`}>
           <Form.Label>Región</Form.Label>
-          <Form.Select value={region} onChange={manejarRegion} isInvalid={Boolean(errores.region)}>
+          <Form.Select
+            value={region}
+            onChange={manejarRegion}
+            isInvalid={Boolean(errores.region)}
+            aria-invalid={errores.region ? true : undefined}
+            aria-describedby={errores.region ? `${idPrefijo}-region-error` : undefined}
+          >
             <option value="">Selecciona la región</option>
             {REGIONES.map((r) => (
               <option key={r.id} value={r.nombre}>
@@ -37,7 +43,9 @@ function SelectorRegionComuna({ idPrefijo, region, comuna, onCambiar, errores = 
               </option>
             ))}
           </Form.Select>
-          <Form.Control.Feedback type="invalid">{errores.region}</Form.Control.Feedback>
+          <Form.Control.Feedback id={`${idPrefijo}-region-error`} type="invalid">
+            {errores.region}
+          </Form.Control.Feedback>
         </Form.Group>
       </Col>
       <Col xs={12} md={6}>
@@ -49,6 +57,8 @@ function SelectorRegionComuna({ idPrefijo, region, comuna, onCambiar, errores = 
             onChange={(evento) => onCambiar('comuna', evento.target.value)}
             disabled={!region}
             isInvalid={Boolean(errores.comuna)}
+            aria-invalid={errores.comuna ? true : undefined}
+            aria-describedby={errores.comuna ? `${idPrefijo}-comuna-error` : undefined}
           >
             <option value="">Selecciona la comuna</option>
             {comunas.map((nombreComuna) => (
@@ -57,7 +67,9 @@ function SelectorRegionComuna({ idPrefijo, region, comuna, onCambiar, errores = 
               </option>
             ))}
           </Form.Select>
-          <Form.Control.Feedback type="invalid">{errores.comuna}</Form.Control.Feedback>
+          <Form.Control.Feedback id={`${idPrefijo}-comuna-error`} type="invalid">
+            {errores.comuna}
+          </Form.Control.Feedback>
         </Form.Group>
       </Col>
     </Row>

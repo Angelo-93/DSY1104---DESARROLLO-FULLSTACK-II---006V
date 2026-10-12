@@ -31,7 +31,9 @@ const MENSAJE_DOMINIO = 'Solo se aceptan correos @duoc.cl, @profesor.duoc.cl o @
 export function validarRun(runSinFormato) {
   const run = String(runSinFormato ?? '').trim().toUpperCase()
 
-  if (!/^[0-9]+[0-9K]$/.test(run)) return false
+  // Solo dígitos y un verificador (0-9 o K) al final. El primer dígito no puede
+  // ser 0: sin esa regla, "0000000" pasaría el módulo 11 (suma 0 → verificador 0).
+  if (!/^[1-9][0-9]*[0-9K]$/.test(run)) return false
   if (run.length < 7 || run.length > 9) return false
 
   const cuerpo = run.slice(0, -1)
@@ -110,6 +112,8 @@ export function validarCampoRun(valor) {
   const run = String(valor ?? '').trim()
   if (!run) return 'El RUN es obligatorio.'
   if (run.length < 7 || run.length > 9) return 'Debe tener entre 7 y 9 caracteres, sin puntos ni guion.'
+  // Primero el formato y después el módulo 11, para que el mensaje diga qué corregir.
+  if (!/^[1-9][0-9]*[0-9Kk]$/.test(run)) return 'Escribe solo números (y K al final si corresponde), sin puntos ni guion.'
   if (!validarRun(run)) return 'El RUN no es válido. Verifica el dígito verificador.'
   return ''
 }
@@ -172,18 +176,23 @@ export function validarProducto(datos) {
   const codigo = String(datos.codigo ?? '').trim()
   if (!codigo) errores.codigo = 'El código es obligatorio.'
   else if (codigo.length < 3) errores.codigo = 'Mínimo 3 caracteres.'
+  // El código va en la URL del producto (/productos/NB-HP250G10): un "/", "?"
+  // o "#" la rompería y el producto no se podría abrir ni editar.
+  else if (!/^[A-Za-z0-9-]+$/.test(codigo)) errores.codigo = 'Solo letras, números y guiones (sin espacios).'
 
   anotar(errores, 'nombre', validarTexto(datos.nombre, { maximo: 100, siVacio: 'El nombre es obligatorio.' }))
   anotar(errores, 'especificaciones', validarTexto(datos.especificaciones, { maximo: 200 }))
   anotar(errores, 'descripcion', validarTexto(datos.descripcion, { maximo: 500 }))
 
+  // Los precios son en pesos chilenos, que no tienen decimales: se exigen enteros.
   if (estaVacio(datos.precio)) errores.precio = 'El precio es obligatorio.'
   else if (Number.isNaN(Number(datos.precio))) errores.precio = 'El precio debe ser un número.'
   else if (Number(datos.precio) < 0) errores.precio = 'El precio no puede ser negativo.'
+  else if (!Number.isInteger(Number(datos.precio))) errores.precio = 'El precio debe ser un número entero (sin decimales).'
 
   if (!estaVacio(datos.precioOferta)) {
     const oferta = Number(datos.precioOferta)
-    if (Number.isNaN(oferta) || oferta < 0) errores.precioOferta = 'Debe ser un número, mínimo 0.'
+    if (!esEnteroNoNegativo(oferta)) errores.precioOferta = 'Debe ser un número entero, mínimo 0.'
     else if (!errores.precio && oferta >= Number(datos.precio)) {
       errores.precioOferta = 'El precio de oferta debe ser menor que el precio normal.'
     }

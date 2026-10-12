@@ -17,8 +17,8 @@ function Dato({ etiqueta, valor, ancho = 4 }) {
 
 /**
  * Detalle completo de una orden: cliente, dirección, productos y total
- * (Figuras 7 y 8 del Anexo). Lo usan la compra exitosa, el pago con error y,
- * en el Bloque 6, la boleta del panel administrador.
+ * (Figuras 7 y 8 del Anexo). Lo usan la compra exitosa, el pago con error y
+ * la boleta del panel administrador.
  *
  * @param {object} props
  * @param {object} props.orden - Una orden de ordenesService.

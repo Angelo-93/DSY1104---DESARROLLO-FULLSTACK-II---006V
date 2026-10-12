@@ -25,7 +25,8 @@ function PaginaBoleta() {
 
   return (
     <>
-      <EncabezadoAdmin titulo={`Boleta N° ${orden.numero}`}>
+      {/* Una boleta solo se emite si se pagó: la orden rechazada se titula "Orden". */}
+      <EncabezadoAdmin titulo={`${orden.estado === 'pagada' ? 'Boleta' : 'Orden'} N° ${orden.numero}`}>
         <Link to="/admin/ordenes" className="btn btn-outline-secondary">
           Volver
         </Link>

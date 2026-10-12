@@ -56,12 +56,18 @@ export function listarUsuarios() {
   return leerUsuarios().map(sinContrasena)
 }
 
+// Los RUN se guardan en mayúsculas (19011029K); así "19011029k" en una URL
+// encuentra al mismo usuario en las tres funciones que buscan por RUN.
+function normalizarRun(run) {
+  return String(run ?? '').trim().toUpperCase()
+}
+
 /**
  * @param {string} run - Sin puntos ni guion.
  * @returns {object|null} El usuario sin contraseña, o null.
  */
 export function obtenerUsuario(run) {
-  const buscado = String(run).toUpperCase()
+  const buscado = normalizarRun(run)
   const usuario = leerUsuarios().find((u) => u.run === buscado)
   return usuario ? sinContrasena(usuario) : null
 }
@@ -113,7 +119,8 @@ export function crearUsuario(datos) {
  * @throws {Error} Si no existe, si el correo ya lo usa otro usuario o si se le
  *   quita el rol al único Administrador.
  */
-export function actualizarUsuario(run, datos) {
+export function actualizarUsuario(runRecibido, datos) {
+  const run = normalizarRun(runRecibido)
   const usuarios = leerUsuarios()
   const indice = usuarios.findIndex((u) => u.run === run)
   if (indice === -1) throw new Error(`No existe el usuario con RUN ${run}.`)
@@ -141,7 +148,8 @@ export function actualizarUsuario(run, datos) {
  * @param {string} run
  * @throws {Error} Si no existe o si es el último Administrador.
  */
-export function eliminarUsuario(run) {
+export function eliminarUsuario(runRecibido) {
+  const run = normalizarRun(runRecibido)
   const usuarios = leerUsuarios()
   const usuario = usuarios.find((u) => u.run === run)
   if (!usuario) throw new Error(`No existe el usuario con RUN ${run}.`)

@@ -35,4 +35,22 @@ describe('SelectorCantidad', () => {
 
     expect(onCambiar).toHaveBeenCalledWith(4)
   })
+
+  // Regresión: antes el campo no se podía vaciar y lo escrito quedaba pegado ("13").
+  it('permite borrar el número para escribir otro, y al salir vacío vuelve a la cantidad', () => {
+    const onCambiar = jasmine.createSpy('onCambiar')
+    render(<SelectorCantidad valor={1} maximo={5} onCambiar={onCambiar} />)
+    const campo = screen.getByRole('spinbutton')
+
+    fireEvent.change(campo, { target: { value: '' } })
+    expect(campo.value).toBe('')
+    expect(onCambiar).not.toHaveBeenCalled()
+
+    fireEvent.change(campo, { target: { value: '3' } })
+    expect(onCambiar).toHaveBeenCalledOnceWith(3)
+
+    fireEvent.change(campo, { target: { value: '' } })
+    fireEvent.blur(campo)
+    expect(campo.value).toBe('1')
+  })
 })
