@@ -3,7 +3,7 @@
 Proyecto transversal de la asignatura **DSY1104 Desarrollo Fullstack II** (Duoc UC, sede Maipú, sección 006V).
 Tienda online de hardware corporativo y educacional, desarrollada en tres evaluaciones parciales.
 
-**Autor:** Angelo Pastene — Grupo 1 (individual, autorizado por el docente).
+**Autor:** Angelo Pastene — Grupo 8 (individual, autorizado por el docente).
 **Docente:** Daniel Antonio Vega Vargas.
 
 ## Estructura del repositorio
