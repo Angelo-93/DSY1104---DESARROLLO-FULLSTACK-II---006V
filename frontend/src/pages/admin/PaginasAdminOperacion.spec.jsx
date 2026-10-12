@@ -64,6 +64,25 @@ describe('Panel: Órdenes y Boleta', () => {
     expect(within(filas[0]).getByText('1011')).toBeTruthy()
   })
 
+  it('busca por número, cliente o correo y combina la búsqueda con el estado', () => {
+    abrir('/admin/ordenes')
+    const buscar = (texto) => fireEvent.change(screen.getByLabelText('Buscar órdenes'), { target: { value: texto } })
+    const filas = () => screen.queryAllByRole('row').slice(1)
+
+    buscar('1011')
+    expect(filas().length).toBe(1)
+
+    buscar('PEREZ') // "Pérez" sin tilde y en mayúsculas: las dos órdenes son de Ana
+    expect(filas().length).toBe(2)
+
+    fireEvent.change(screen.getByLabelText('Filtrar por estado'), { target: { value: 'pagada' } })
+    expect(filas().length).toBe(1)
+    expect(within(filas()[0]).getByText('1010')).toBeTruthy()
+
+    buscar('nadie@duoc.cl')
+    expect(screen.getByText('Ninguna orden coincide con el filtro.')).toBeTruthy()
+  })
+
   it('la boleta de una orden rechazada muestra el motivo y que no se cobró', () => {
     abrir('/admin/ordenes/1011')
 
@@ -101,6 +120,24 @@ describe('Panel: Productos', () => {
     expect(screen.getByText(/Tu rol \(Vendedor\) permite consultar/)).toBeTruthy()
     expect(screen.queryByRole('link', { name: 'Nuevo producto' })).toBeNull()
     expect(screen.queryByRole('button', { name: /Eliminar/ })).toBeNull()
+  })
+
+  it('busca por código o nombre sin importar tildes ni mayúsculas', () => {
+    iniciarCon(VENDEDOR_PRUEBA)
+    abrir('/admin/productos')
+    const buscar = (texto) => fireEvent.change(screen.getByLabelText('Buscar productos'), { target: { value: texto } })
+    const filas = () => screen.queryAllByRole('row').slice(1)
+
+    buscar('nb-1')
+    expect(filas().length).toBe(1)
+    expect(within(filas()[0]).getByText('Notebook Uno')).toBeTruthy()
+
+    buscar('CAMARA') // "Cámara Agotada", escrito sin tilde
+    expect(filas().length).toBe(1)
+    expect(within(filas()[0]).getByText('Cámara Agotada')).toBeTruthy()
+
+    buscar('impresora')
+    expect(screen.getByText('Ningún producto coincide con la búsqueda.')).toBeTruthy()
   })
 
   it('el Vendedor no puede abrir el formulario aunque escriba la URL', () => {

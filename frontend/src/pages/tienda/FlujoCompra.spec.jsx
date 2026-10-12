@@ -75,6 +75,14 @@ describe('Flujo de compra', () => {
     expect(screen.getByLabelText('Correo').value).toBe('')
   })
 
+  it('con el carrito vacío no muestra el formulario ni permite pagar', () => {
+    memoria[CLAVES.carrito] = JSON.stringify([])
+    renderizarCompra()
+
+    expect(screen.getByRole('heading', { name: 'No hay productos para pagar' })).toBeTruthy()
+    expect(screen.queryByRole('button', { name: /Pagar ahora/ })).toBeNull()
+  })
+
   it('pago aprobado: muestra la boleta, vacía el carrito y descuenta el stock', () => {
     renderizarCompra()
     pagar()
@@ -142,5 +150,15 @@ describe('Flujo de compra', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Enviar boleta por email' }))
 
     expect(screen.getByText(/Simulación: la boleta se enviaría a francisca.munoz@gmail.com/)).toBeTruthy()
+  })
+
+  it('"Imprimir boleta en PDF" abre el diálogo de impresión del navegador', () => {
+    spyOn(window, 'print') // mock: sin él se abriría el diálogo real de impresión
+    renderizarCompra()
+    pagar()
+
+    fireEvent.click(screen.getByRole('button', { name: 'Imprimir boleta en PDF' }))
+
+    expect(window.print).toHaveBeenCalledTimes(1)
   })
 })

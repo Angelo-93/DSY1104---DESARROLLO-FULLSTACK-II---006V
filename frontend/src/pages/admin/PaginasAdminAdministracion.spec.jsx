@@ -78,6 +78,19 @@ describe('Panel: Categorías', () => {
     expect(screen.getByText('/redes-y-wifi')).toBeTruthy()
   })
 
+  it('edita el nombre de una categoría sin cambiar su dirección', () => {
+    const memoria = iniciar()
+    abrir('/admin/categorias/vacia/editar')
+
+    expect(screen.getByRole('heading', { name: 'Editar categoría Vacía' })).toBeTruthy()
+    escribir('Nombre', 'Redes')
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar cambios' }))
+
+    expect(screen.getByText('Se actualizó la categoría Redes.')).toBeTruthy()
+    // El id ("vacia") se mantiene: así los productos y enlaces no quedan huérfanos.
+    expect(JSON.parse(memoria[CLAVES.categorias]).find((c) => c.id === 'vacia').nombre).toBe('Redes')
+  })
+
   // Regresión: mientras el modal se desvanecía, un segundo clic volvía a eliminar
   // (y el texto mostraba "undefined").
   it('un doble clic en Eliminar no elimina dos veces ni muestra errores', () => {
@@ -154,6 +167,24 @@ describe('Panel: Usuarios', () => {
     expect(JSON.parse(memoria[CLAVES.usuarios]).length).toBe(1)
   })
 
+  it('busca por RUN, nombre, correo o rol y avisa si no hay coincidencias', () => {
+    iniciar()
+    abrir('/admin/usuarios')
+    const buscar = (texto) => fireEvent.change(screen.getByLabelText('Buscar usuarios'), { target: { value: texto } })
+    const filas = () => screen.queryAllByRole('row').slice(1)
+
+    buscar('CLIENTE') // por rol, sin importar mayúsculas
+    expect(filas().length).toBe(1)
+    expect(within(filas()[0]).getByText('Ana Pérez Soto')).toBeTruthy()
+
+    buscar('18234') // parte del RUN de Camila
+    expect(filas().length).toBe(1)
+    expect(within(filas()[0]).getByText('Camila Fuentes')).toBeTruthy()
+
+    buscar('nadie')
+    expect(screen.getByText('Ningún usuario coincide con la búsqueda.')).toBeTruthy()
+  })
+
   it('el historial incluye las compras hechas como invitado con el mismo correo', () => {
     iniciar()
     abrir('/admin/usuarios/201112222/historial')
@@ -176,6 +207,17 @@ describe('Panel: Perfil', () => {
     expect(screen.getByText('Camila Andrea Fuentes (Administrador)')).toBeTruthy()
     expect(JSON.parse(memoria[CLAVES.sesion]).nombre).toBe('Camila Andrea')
   })
+
+  it('no guarda un correo que ya usa otra cuenta y explica por qué', () => {
+    const memoria = iniciar()
+    abrir('/admin/perfil')
+
+    escribir('Correo', 'ana@gmail.com') // es el correo de la cuenta de Ana
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar mi perfil' }))
+
+    expect(screen.getByText('Ese correo ya está registrado.')).toBeTruthy()
+    expect(JSON.parse(memoria[CLAVES.sesion]).correo).toBe('camila@profesor.duoc.cl') // la sesión no cambió
+  })
 })
 
 describe('Panel: Reportes', () => {
@@ -190,5 +232,15 @@ describe('Panel: Reportes', () => {
     expect(screen.getByText('1 compra pagada')).toBeTruthy()
     const filaNotebooks = screen.getByRole('cell', { name: 'Notebooks' }).closest('tr')
     expect(within(filaNotebooks).getByText('$1.000.000')).toBeTruthy()
+  })
+
+  it('el botón Imprimir abre el diálogo de impresión del navegador', async () => {
+    spyOn(window, 'print') // mock: sin él se abriría el diálogo real de impresión
+    iniciar()
+    abrir('/admin/reportes')
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Imprimir' }))
+
+    expect(window.print).toHaveBeenCalledTimes(1)
   })
 })
