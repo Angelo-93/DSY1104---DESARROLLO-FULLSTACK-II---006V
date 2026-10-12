@@ -57,6 +57,26 @@ describe('PaginaDetalleProducto', () => {
     expect(screen.getByRole('status').textContent).toBe('Agregaste 2 × Notebook Uno al carrito.')
   })
 
+  // Casos de borde del stock: pedir más de lo que queda agrega solo lo que
+  // alcanza, y con el máximo ya en el carrito no agrega nada. El aviso cambia
+  // en cada caso para que la persona sepa qué pasó.
+  it('avisa cuántas unidades entraron cuando el stock no alcanza y cuándo ya no queda', () => {
+    renderizarDetalle('NB-1') // stock 3
+    const agregar = () => fireEvent.click(screen.getAllByRole('button', { name: 'Agregar al carrito' })[0])
+    fireEvent.click(screen.getByRole('button', { name: 'Aumentar cantidad' })) // cantidad 2
+
+    agregar() // 2 de 3: entran completas
+    agregar() // pide 2, queda 1
+    expect(screen.getByText('Stock limitado')).toBeTruthy()
+    expect(screen.getByRole('status').textContent).toBe(
+      'Solo pudimos agregar 1 de 2 × Notebook Uno: tu carrito ya tiene todo el stock disponible.',
+    )
+
+    agregar() // ya están las 3
+    expect(screen.getByRole('status').textContent).toBe('No hay más stock de Notebook Uno: tu carrito ya tiene el máximo disponible.')
+    expect(JSON.parse(memoria[CLAVES.carrito])[0].cantidad).toBe(3)
+  })
+
   it('con un código inexistente avisa que el producto no existe', () => {
     renderizarDetalle('NO-EXISTE')
 

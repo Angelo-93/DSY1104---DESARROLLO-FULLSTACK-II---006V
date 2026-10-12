@@ -59,6 +59,16 @@ describe('estadisticas', () => {
       expect(ventasPorMes([])).toEqual([])
     })
 
+    // Caso de borde: después de diciembre el mes vuelve a 1 y el año sube.
+    it('completa los meses vacíos aunque el período cruce de un año al siguiente', () => {
+      const deNoviembreAFebrero = [
+        { estado: 'pagada', fecha: '2026-11-20T12:00:00-03:00', total: 100, items: [] },
+        { estado: 'pagada', fecha: '2027-02-05T12:00:00-03:00', total: 50, items: [] },
+      ]
+
+      expect(ventasPorMes(deNoviembreAFebrero).map((m) => m.etiqueta)).toEqual(['Nov 2026', 'Dic 2026', 'Ene 2027', 'Feb 2027'])
+    })
+
     it('suma por categoría desde las líneas, sin contar las órdenes rechazadas', () => {
       expect(ventasPorCategoria(ORDENES, { notebooks: 'Notebooks' })).toEqual([
         { nombre: 'Notebooks', total: 300, unidades: 3 },

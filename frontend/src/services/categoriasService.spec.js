@@ -24,10 +24,11 @@ describe('categoriasService (con localStorage simulado)', () => {
     const nueva = crearCategoria({ nombre: 'Redes y WiFi', descripcion: 'Routers' })
     expect(nueva.id).toBe('redes-y-wifi')
 
-    // Mismo slug que una existente pero distinto nombre → se agrega un número.
-    const otra = crearCategoria({ nombre: 'Vacia!' + ' 2' })
-    expect(otra.id).toBe('vacia-2')
-    expect(listarCategorias().length).toBe(4)
+    // Nombre distinto pero con la misma dirección que una existente ("Vacía!" →
+    // "vacia"): se agrega un número, y si ese también existe, el siguiente.
+    expect(crearCategoria({ nombre: 'Vacía!' }).id).toBe('vacia-2')
+    expect(crearCategoria({ nombre: 'Vacía?' }).id).toBe('vacia-3')
+    expect(listarCategorias().length).toBe(5)
   })
 
   it('rechaza nombres repetidos aunque cambien mayúsculas o tildes', () => {

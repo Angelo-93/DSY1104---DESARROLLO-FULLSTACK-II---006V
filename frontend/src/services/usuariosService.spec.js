@@ -53,6 +53,13 @@ describe('usuariosService (con localStorage simulado)', () => {
     expect(guardado.contrasena).toBe('cliente1')
   })
 
+  it('al editar no permite usar el correo de otro usuario', () => {
+    // Mismo correo de Camila escrito en mayúsculas: igual cuenta como repetido.
+    expect(() => actualizarUsuario('201112222', { ...CLIENTE, correo: 'CAMILA@profesor.duoc.cl', contrasena: '' }))
+      .toThrowError('Ese correo ya está registrado.')
+    expect(obtenerUsuario('201112222').correo).toBe('fran@gmail.com') // no se guardó nada
+  })
+
   it('protege al único Administrador de ser eliminado o perder su rol', () => {
     expect(() => eliminarUsuario('182345679')).toThrowError(/único Administrador/)
     expect(() => actualizarUsuario('182345679', { ...ADMIN, tipoUsuario: 'Cliente' }))

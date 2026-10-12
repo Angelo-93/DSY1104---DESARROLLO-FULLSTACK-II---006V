@@ -26,6 +26,13 @@ describe('validaciones', () => {
       expect(validarRun('0000000')).toBeFalse() // pasaría el módulo 11, pero no es un RUN
     })
 
+    // Caso de borde del módulo 11: cuando 11 menos el resto da 11, el verificador
+    // es 0 (no "11"). Es la rama menos frecuente del cálculo.
+    it('acepta un RUN cuyo dígito verificador es 0 y lo rechaza con otro dígito', () => {
+      expect(validarRun('10000130')).toBeTrue()
+      expect(validarRun('10000131')).toBeFalse()
+    })
+
     it('entrega el mensaje que corresponde a cada error del campo', () => {
       expect(validarCampoRun('')).toBe('El RUN es obligatorio.')
       expect(validarCampoRun('1234')).toContain('entre 7 y 9 caracteres')
@@ -92,6 +99,16 @@ describe('validaciones', () => {
     it('rechaza un precio de oferta igual o mayor al precio normal', () => {
       const errores = validarProducto({ ...valido, precioOferta: '100000' })
       expect(errores.precioOferta).toContain('menor que el precio normal')
+    })
+
+    it('rechaza un precio que no es número y un stock crítico negativo o con decimales', () => {
+      const errores = validarProducto({ ...valido, precio: 'abc', stockCritico: '-1' })
+      expect(errores.precio).toBe('El precio debe ser un número.')
+      expect(errores.stockCritico).toBe('Debe ser un número entero, mínimo 0.')
+
+      expect(validarProducto({ ...valido, stockCritico: '1.5' }).stockCritico).toBeDefined()
+      // Borde: 0 es un stock crítico válido (avisa solo cuando el producto se agota).
+      expect(validarProducto({ ...valido, stockCritico: '0' }).stockCritico).toBeUndefined()
     })
   })
 
